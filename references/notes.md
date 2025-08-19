@@ -1,6 +1,6 @@
 # Minishell Notes
 
-Conceptual Architecture:
+**Conceptual Architecture:**
 
 ```
 Input -> [Lexer] -> [Tokenizer] -> [Parser] -> [Expander] -> [Executor] -> Output
@@ -53,6 +53,8 @@ The `-I` flag adds the correct directory to the header search path, so #`include
 
 # 2. The Parser
 The parser's job is to take the raw string of input and convert it to a structured data format that the executor can understand. This is often the most challenging part. It's typically broken down into several stages:
+
+> **TLDR**: the *tokenizer*'s role is to <u>**extract**</u> all the meaningful chunks from reading a stream of characters, while the *lexer* is meant to <u>**categorize**</u> these tokens. So they are not necessarily separate steps in the process of parsing, but rather (and in practice), they are fused into a single, cohesive scanning step. 
 
 ## 2.1. Lexer (Lexical Analysis)
 - **Goal:** Split the input string into a sequence of meaningful "tokens".
