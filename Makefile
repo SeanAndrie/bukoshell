@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/08/20 01:27:04 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/08/21 19:30:34 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,9 @@ SRCS_DIR = src
 OBJS_DIR = obj
 
 PARSING_DIR = parsing
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c token_utils.c)
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c processor.c token_utils.c)
 
-SRCS = $(addprefix $(SRCS_DIR)/, bukoshell.c $(PARSING_FUNCS))
+SRCS = $(addprefix $(SRCS_DIR)/, bukoshell.c debug.c $(PARSING_FUNCS))
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 all: libft $(NAME)
