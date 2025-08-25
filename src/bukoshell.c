@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bukoshell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: seang <seang@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/24 21:14:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/25 17:17:27 by seang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	main(void)
 	while (true)
 	{
 		line = readline(PROMPT);
+		if (!line)
+			break ;
 		if (ft_strncmp(line, "eof", 3) == 0)
 		{
 			free(line);
@@ -27,14 +29,10 @@ int	main(void)
 		}
 		add_history(line);
 		head = create_tokens(line);
-		if (!head)
-		{
-			free(line);
-			break ;
-		}
-		print_tokens(head);
-		free_tokens(&head);
 		free(line);
+		print_tokens(head);
+		if (head)
+			free_tokens(&head);
 	}
 	return (0);
 }

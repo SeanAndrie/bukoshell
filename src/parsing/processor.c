@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/24 21:15:12 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:12:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token_type	categorize_ctrl_op(char **line_ptr, bool is_double)
 			return (T_AND);
 		return (T_BACKGROUND);
 	}
-	return (T_EOF);
+	return (TOKEN_NONE);
 }
 
 t_token_type	categorize_redirection(char **line_ptr, bool is_double)
@@ -43,5 +43,5 @@ t_token_type	categorize_redirection(char **line_ptr, bool is_double)
 			return (T_REDIR_APPEND);
 		return (T_REDIR_OUT);
 	}
-	return (T_EOF);
+	return (TOKEN_NONE);
 }

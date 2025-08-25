@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/24 15:49:06 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:12:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ static char *process_quotes(char **line_ptr, t_token_type *type)
 		(*line_ptr)++;
 	if (**line_ptr && ft_strchr("\'\"", **line_ptr))
 		(*line_ptr)++;
+	else
+	{
+		ft_dprintf(STDERR_FILENO, "bukoshell: syntax error\n");
+		return (NULL);
+	}
 	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)

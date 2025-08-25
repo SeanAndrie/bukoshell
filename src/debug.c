@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/23 17:53:42 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:12:53 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static void	print_token_word(t_token_type type)
 
 void	print_tokens(t_token *head)
 {
+	if (!head)
+		return ;
 	while (head)
 	{
 		ft_printf("[%s : ", head->lexeme);

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/24 14:50:07 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/26 01:00:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@
 # define TOKEN_REDIR_OP (1 << 3) // 0000 0000 0000 1000
 # define TOKEN_METACHAR (1 << 4) // 0000 0000 0001 0000
 # define TOKEN_GROUP (1 << 5)    // 0000 0000 0010 0000
-# define TOKEN_EOF (1 << 6)      // 0000 0000 0100 0000
-# define TOKEN_NONE (1 << 7)  // 0000 0000 1000 0000
+# define TOKEN_NONE (1 << 6)  // 0000 0000 1000 0000
 
 // Specific Token Definitions
 typedef enum e_token_type
@@ -42,7 +41,6 @@ typedef enum e_token_type
 	T_OR = TOKEN_CTRL_OP | TOKEN_METACHAR | (1 << 13),
 	T_AND = TOKEN_CTRL_OP | TOKEN_METACHAR | (1 << 14),
 	T_BACKGROUND = TOKEN_CTRL_OP | TOKEN_METACHAR | (1 << 15),
-	// T_SEMICOLON = TOKEN_CTRL_OP | TOKEN_METACHAR | (1 << 16),
 
 	// Redirection Operators (Redirection + Metacharacter)
 	T_REDIR_IN = TOKEN_REDIR_OP | TOKEN_METACHAR | (1 << 16),
@@ -55,9 +53,6 @@ typedef enum e_token_type
 	T_RPAREN = TOKEN_GROUP | TOKEN_METACHAR | (1 << 21),
 	T_LBRACE = TOKEN_GROUP | TOKEN_METACHAR | (1 << 22),
 	T_RBRACE = TOKEN_GROUP | TOKEN_METACHAR | (1 << 23),
-
-	// Special
-	T_EOF = TOKEN_EOF,
 }						t_token_type;
 
 typedef struct s_token
