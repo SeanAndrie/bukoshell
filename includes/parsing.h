@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/26 01:00:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/26 12:05:01 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,12 @@ typedef struct s_token
 	char				*lexeme;
 }						t_token;
 
-// Tokenizer
+// Lexer
 t_token					*create_tokens(char *line);
 
-t_token_type	categorize_ctrl_op(char **line_ptr, bool is_double);
-t_token_type	categorize_redirection(char **line_ptr, bool is_double);
+// Lexer Utils 
+t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
+t_token_type			categorize_redirection(char **line_ptr, bool is_double);
 
 // Token Utilities
 void					free_tokens(t_token **head);
