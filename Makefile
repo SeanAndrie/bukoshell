@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/08/21 19:30:34 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/08/26 01:45:03 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,13 @@ CFLAGS = -Wall -Werror -Wextra -Iincludes -Ilibft/includes
 SRCS_DIR = src
 OBJS_DIR = obj
 
+DEBUG_DIR = debug
 PARSING_DIR = parsing
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c processor.c token_utils.c)
 
-SRCS = $(addprefix $(SRCS_DIR)/, bukoshell.c debug.c $(PARSING_FUNCS))
+DEBUG_FUNCS = $(addprefix $(DEBUG_DIR)/, print_tokens.c)
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c lexer_utils.c token_utils.c)
+
+SRCS = $(addprefix $(SRCS_DIR)/, bukoshell.c $(PARSING_FUNCS) $(DEBUG_FUNCS))
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 all: libft $(NAME)
