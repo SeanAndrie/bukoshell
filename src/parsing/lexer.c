@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/26 01:10:24 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:51:49 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*process_operator(char **line_ptr, t_token_type *type)
 	char	*lexeme;
 	bool	is_double;
 
-	is_double = (*(*line_ptr + 1) && ft_strchr("&|<>", *(*line_ptr + 1)));
+	is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
 	if (ft_strchr("|&", **line_ptr))
 		*type = categorize_ctrl_op(line_ptr, is_double);
 	else
@@ -45,22 +45,20 @@ static char *process_quotes(char **line_ptr, t_token_type *type)
 	char	*start;
 	char	*end;
 	char	*lexeme;
+	char	quote;
 
-	if (**line_ptr == '\'')
-		*type = T_WORD_SQUOTE;
-	else if (**line_ptr == '\"')
-		*type = T_WORD_DQUOTE;
+	quote = **line_ptr;
 	start = *line_ptr;
 	(*line_ptr)++;
-	while (**line_ptr && !ft_strchr("\'\"", **line_ptr))
+	while (**line_ptr && **line_ptr != quote)
 		(*line_ptr)++;
-	if (**line_ptr && ft_strchr("\'\"", **line_ptr))
+	if (**line_ptr && **line_ptr == quote)
 		(*line_ptr)++;
 	else
-	{
-		ft_dprintf(STDERR_FILENO, "bukoshell: syntax error\n");
 		return (NULL);
-	}
+	*type = categorize_grouping(quote, line_ptr);
+	if (is_token_type(*type, TOKEN_NONE))
+		return (NULL);
 	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
@@ -72,7 +70,7 @@ static char *process_quotes(char **line_ptr, t_token_type *type)
 static char	*process_grouping(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
-
+	
 	if (**line_ptr == '\'' || **line_ptr == '\"')
 		return (process_quotes(line_ptr, type));
 	if (**line_ptr == '(')
@@ -96,18 +94,25 @@ static char	*process_word(char **line_ptr, t_token_type *type)
 	char	*start;
 	char	*end;
 	char	*lexeme;
-
+	char	quote;
+	
+	quote = '\0';
 	*type = T_WORD;
 	start = *line_ptr;
-	while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(GROUP_TOKENS,
-			**line_ptr))
+	while (**line_ptr && !ft_isspace(**line_ptr)) 		
+	{
+		if (!quote && (**line_ptr == '\'' || **line_ptr == '\"'))
+			quote = **line_ptr;	
 		(*line_ptr)++;
+	}
 	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
-		return (NULL);
+		return (NULL);	
 	ft_strlcpy(lexeme, start, (end - start) + 1);
-	return (lexeme);
+	if (quote && lexeme[(end - start) - 1] != quote)
+		return (free(lexeme), NULL);
+	return (lexeme); 
 }
 
 t_token	*create_tokens(char *line)

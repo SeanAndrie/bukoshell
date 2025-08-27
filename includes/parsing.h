@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/26 12:05:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/27 16:23:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_token					*create_tokens(char *line);
 // Lexer Utils 
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
+t_token_type			categorize_grouping(char quote, char **line_ptr);
 
 // Token Utilities
 void					free_tokens(t_token **head);
