@@ -6,17 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/27 22:51:49 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/28 03:26:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-static char	*process_operator(char **line_ptr, t_token_type *type)
+static char *process_operator(char **line_ptr, t_token_type *type)
 {
-	size_t	len;
-	char	*lexeme;
-	bool	is_double;
+	size_t len;
+	char *lexeme;
+	bool is_double;
 
 	is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
 	if (ft_strchr("|&", **line_ptr))
@@ -42,10 +42,10 @@ static char	*process_operator(char **line_ptr, t_token_type *type)
 
 static char *process_quotes(char **line_ptr, t_token_type *type)
 {
-	char	*start;
-	char	*end;
-	char	*lexeme;
-	char	quote;
+	char *start;
+	char *end;
+	char *lexeme;
+	char quote;
 
 	quote = **line_ptr;
 	start = *line_ptr;
@@ -67,10 +67,10 @@ static char *process_quotes(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-static char	*process_grouping(char **line_ptr, t_token_type *type)
+static char *process_grouping(char **line_ptr, t_token_type *type)
 {
-	char	*lexeme;
-	
+	char *lexeme;
+
 	if (**line_ptr == '\'' || **line_ptr == '\"')
 		return (process_quotes(line_ptr, type));
 	if (**line_ptr == '(')
@@ -89,37 +89,37 @@ static char	*process_grouping(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-static char	*process_word(char **line_ptr, t_token_type *type)
+static char *process_word(char **line_ptr, t_token_type *type)
 {
-	char	*start;
-	char	*end;
-	char	*lexeme;
-	char	quote;
-	
-	quote = '\0';
+	char *start;
+	char *end;
+	char *quote;
+	char *lexeme;
+
+	quote = NULL;
 	*type = T_WORD;
 	start = *line_ptr;
-	while (**line_ptr && !ft_isspace(**line_ptr)) 		
+	while (**line_ptr && !ft_isspace(**line_ptr))
 	{
 		if (!quote && (**line_ptr == '\'' || **line_ptr == '\"'))
-			quote = **line_ptr;	
+			quote = *line_ptr;
 		(*line_ptr)++;
 	}
 	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
-		return (NULL);	
+		return (NULL);
 	ft_strlcpy(lexeme, start, (end - start) + 1);
-	if (quote && lexeme[(end - start) - 1] != quote)
+	if (quote && (lexeme[(end - start) - 1] != *quote || quote == (end - 1)))
 		return (free(lexeme), NULL);
-	return (lexeme); 
+	return (lexeme);
 }
 
-t_token	*create_tokens(char *line)
+t_token *create_tokens(char *line)
 {
-	t_token_type	type;
-	t_token			*head;
-	char			*lexeme;
+	t_token_type type;
+	t_token *head;
+	char *lexeme;
 
 	head = NULL;
 	type = TOKEN_NONE;
