@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bukoshell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 16:14:00 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 01:42:29 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(void)
 		add_history(line);
 		head = create_tokens(line);
 		free(line);
-		print_tokens(head);
+		print_tokens(head, false);
 		if (head)
 			free_tokens(&head);
 	}

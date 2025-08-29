@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 17:35:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 02:02:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	append_token(t_token **head, char *lexeme, t_token_type type)
 t_token	*concat_tokens(t_token **head)
 {
 	char	*concat;
-	t_token *curr;
+	t_token	*token;
+	t_token	*curr;
 	size_t	size;
 
 	size = 0;
@@ -71,33 +72,28 @@ t_token	*concat_tokens(t_token **head)
 		ft_strlcat(concat, curr->lexeme, size + 1);
 		curr = curr->next;
 	}
-	return (create_token(concat, T_WORD));	
+	token = create_token(concat, T_WORD);
+	if (!token)
+		return (NULL);
+	return (free(concat), token);
 }
 
-t_token	*pop_tokens(t_token **head, t_token_type type_to_extract)
+t_token	*pop_tokens(t_token **curr_ptr, t_token_type type_to_extract)
 {
-	t_token	*curr;
-	t_token *prev;
-	t_token *end;
+	t_token	*start;
+	t_token	*end;
 
-	curr = *head;
-	prev = NULL;
-	while (curr && !is_token_type(curr->type, type_to_extract))
-	{
-		prev = curr;
-		curr = curr->next;
-	}
-	if (!curr)
+	start = *curr_ptr;
+	if (!start || !is_token_type(start->type, type_to_extract))
 		return (NULL);
-	end = curr;
+	if (!start->next || !is_token_type(start->next->type, type_to_extract))
+		return (NULL);
+	end = start;
 	while (end->next && is_token_type(end->next->type, type_to_extract))
 		end = end->next;
-	if (prev)
-		prev->next = end->next;
-	else
-		*head = end->next;
+	*curr_ptr = end->next;
 	end->next = NULL;
-	return (curr);	
+	return (start);
 }
 
 void	free_tokens(t_token **head)

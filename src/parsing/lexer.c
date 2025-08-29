@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 17:59:56 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 00:52:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,17 @@ static char	*process_quotes(char **line_ptr, t_token_type *type)
 	if (quote == '\'')
 		*type = T_WORD_SQUOTE;
 	start = ++(*line_ptr);
-	while (**line_ptr && *(*line_ptr + 1) != quote)
+	while (**line_ptr && **line_ptr != quote)
 		(*line_ptr)++;
-	if (*(*line_ptr + 1) != quote)
+	if (**line_ptr != quote)
 		return (NULL);
-	end = ++(*line_ptr);
-	(*line_ptr)++;
+	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
-		return (NULL);	
+		return (NULL);
 	ft_strlcpy(lexeme, start, (end - start) + 1);
-	return (lexeme);	
+	(*line_ptr)++;
+	return (lexeme);
 }
 
 static char	*process_grouping(char **line_ptr, t_token_type *type)
@@ -98,14 +98,16 @@ static char	*process_word(char **line_ptr, t_token_type *type)
 		*type = T_WHITEPSACE;
 		while (**line_ptr && ft_isspace(**line_ptr))
 			(*line_ptr)++;
+		return (ft_strdup(""));
 	}
 	else
 	{
 		*type = T_WORD;
-		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr("\'\"", **line_ptr))
+		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr("\'\"",
+				**line_ptr))
 			(*line_ptr)++;
 	}
-	end = *line_ptr; 
+	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
 		return (NULL);
@@ -132,6 +134,11 @@ t_token	*create_tokens(char *line)
 			return (free_tokens(&head), NULL);
 		append_token(&head, lexeme, type);
 		free(lexeme);
+	}
+	if (!handle_concatenation(&head))
+	{
+		free_tokens(&head);
+		return (NULL);
 	}
 	return (head);
 }
