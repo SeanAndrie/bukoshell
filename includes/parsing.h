@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 16:11:10 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:08:02 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,21 @@
 # define OPERATOR_TOKENS "&|<>"
 
 // Higher Category Masks
-# define TOKEN_WORD (1 << 0)     // 0000 0000 0000 0001
-# define TOKEN_QUOTE (1 << 1)    // 0000 0000 0000 0010
-# define TOKEN_CTRL_OP (1 << 2)  // 0000 0000 0000 0100
-# define TOKEN_REDIR_OP (1 << 3) // 0000 0000 0000 1000
-# define TOKEN_METACHAR (1 << 4) // 0000 0000 0001 0000
-# define TOKEN_GROUP (1 << 5)    // 0000 0000 0010 0000
-# define TOKEN_NONE (1 << 6)  // 0000 0000 1000 0000
+# define TOKEN_WORD (1 << 0)
+# define TOKEN_QUOTE (1 << 1)   
+# define TOKEN_CTRL_OP (1 << 2) 
+# define TOKEN_REDIR_OP (1 << 3)
+# define TOKEN_METACHAR (1 << 4)
+# define TOKEN_GROUP (1 << 5)
+# define TOKEN_WHITESPACE (1 << 6)
+# define TOKEN_NONE (1 << 7)
 
 // Specific Token Definitions
 typedef enum e_token_type
 {
+	// Whitespace
+	T_WHITEPSACE = TOKEN_WHITESPACE,
+	
 	// Basic Words
 	T_WORD = TOKEN_WORD,
 	T_WORD_SQUOTE = TOKEN_WORD | TOKEN_QUOTE | (1 << 10),
@@ -72,7 +76,6 @@ typedef struct s_token
 t_token					*create_tokens(char *line);
 
 // Lexer Utils
-void					handle_concatenation(t_token **head);
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
 int						is_token_type(t_token_type type, int category_mask);

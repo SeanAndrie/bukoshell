@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 16:34:14 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:07:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,6 @@
 int	is_token_type(t_token_type type, int category_mask)
 {
 	return ((type & category_mask) == (unsigned int)category_mask);
-}
-
-void	handle_concatenation(t_token **head)
-{
-	t_token	**curr;
-	t_token *popped;
-	t_token *concat;
-
-	curr = head;
-	while (*curr)
-	{
-		popped = pop_tokens(curr, T_WORD);
-		if (popped)
-		{
-			concat = concat_tokens(&popped);
-			free_tokens(&popped);
-			if (!concat)
-				return ;
-			concat->next = *curr;
-			*curr = concat;
-			curr = &concat->next;
-		}
-		else
-			curr = &(*curr)->next;
-	}
 }
 
 t_token_type	categorize_ctrl_op(char **line_ptr, bool is_double)

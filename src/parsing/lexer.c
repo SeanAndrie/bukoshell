@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 16:11:24 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 17:59:56 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,19 @@ static char	*process_word(char **line_ptr, t_token_type *type)
 	char	*start;
 	char	*end;
 
-	*type = T_WORD;
 	start = *line_ptr;
-	while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr("\'\"", **line_ptr))
-		(*line_ptr)++;
+	if (ft_isspace(**line_ptr))
+	{
+		*type = T_WHITEPSACE;
+		while (**line_ptr && ft_isspace(**line_ptr))
+			(*line_ptr)++;
+	}
+	else
+	{
+		*type = T_WORD;
+		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr("\'\"", **line_ptr))
+			(*line_ptr)++;
+	}
 	end = *line_ptr; 
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
@@ -113,12 +122,7 @@ t_token	*create_tokens(char *line)
 	head = NULL;
 	while (*line)
 	{
-		if (ft_isspace(*line))
-		{
-			line++;
-			continue ;
-		}
-		else if (ft_strchr(OPERATOR_TOKENS, *line))
+		if (ft_strchr(OPERATOR_TOKENS, *line))
 			lexeme = process_operator(&line, &type);
 		else if (ft_strchr(GROUP_TOKENS, *line))
 			lexeme = process_grouping(&line, &type);
@@ -129,6 +133,5 @@ t_token	*create_tokens(char *line)
 		append_token(&head, lexeme, type);
 		free(lexeme);
 	}
-	handle_concatenation(&head);
 	return (head);
 }

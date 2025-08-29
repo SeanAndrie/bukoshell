@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/29 14:17:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:03:53 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static void	print_token_word(t_token_type type)
 		ft_printf("WORD_DQUOTE");
 	else if (type == T_WORD)
 		ft_printf("WORD");
+	else
+		ft_printf("[WHITESPACE");
 }
 
 void	print_tokens(t_token *head)
@@ -64,7 +66,8 @@ void	print_tokens(t_token *head)
 		return ;
 	while (head)
 	{
-		ft_printf("[%s : ", head->lexeme);
+		if (!is_token_type(head->type, TOKEN_WHITESPACE))
+			ft_printf("[%s : ", head->lexeme);
 		if (is_token_type(head->type, TOKEN_CTRL_OP))
 			print_token_operator(head->type);
 		else if (is_token_type(head->type, TOKEN_GROUP))
