@@ -3,30 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/28 02:32:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 16:34:14 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-t_token_type	categorize_grouping(char quote, char **line_ptr)
+int	is_token_type(t_token_type type, int category_mask)
 {
-	if (**line_ptr && ft_isascii(**line_ptr) && !ft_isspace(**line_ptr))
+	return ((type & category_mask) == (unsigned int)category_mask);
+}
+
+void	handle_concatenation(t_token **head)
+{
+	t_token	**curr;
+	t_token *popped;
+	t_token *concat;
+
+	curr = head;
+	while (*curr)
 	{
-		while (**line_ptr && ft_isascii(**line_ptr) && !ft_isspace(**line_ptr))
-			(*line_ptr)++;
-		if (!*line_ptr)
-			return (TOKEN_NONE);
-		return (T_WORD);
+		popped = pop_tokens(curr, T_WORD);
+		if (popped)
+		{
+			concat = concat_tokens(&popped);
+			free_tokens(&popped);
+			if (!concat)
+				return ;
+			concat->next = *curr;
+			*curr = concat;
+			curr = &concat->next;
+		}
+		else
+			curr = &(*curr)->next;
 	}
-	if (quote == '\'')
-		return (T_WORD_SQUOTE);
-	else if (quote == '\"')
-		return (T_WORD_DQUOTE);
-	return (TOKEN_NONE);
 }
 
 t_token_type	categorize_ctrl_op(char **line_ptr, bool is_double)

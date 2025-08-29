@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bukoshell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/27 21:47:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 16:14:00 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 
 	while (true)
 	{
-		line = readline(PROMPT);
+		line = readline(PS1);
 		if (!line)
 			break ;
 		if (ft_strncmp(line, "eof", 3) == 0)

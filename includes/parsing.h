@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/27 16:23:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/29 16:11:10 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 # define PARSING_H
 
 # include <libft.h>
+# include <stdio.h>
 # include <stdbool.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+
+# define PS1 "bukoshell> "
+# define PS2 ">"
 
 # define GROUP_TOKENS "{()}\'\""
 # define OPERATOR_TOKENS "&|<>"
@@ -65,16 +71,18 @@ typedef struct s_token
 // Lexer
 t_token					*create_tokens(char *line);
 
-// Lexer Utils 
+// Lexer Utils
+void					handle_concatenation(t_token **head);
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
-t_token_type			categorize_grouping(char quote, char **line_ptr);
+int						is_token_type(t_token_type type, int category_mask);
 
 // Token Utilities
 void					free_tokens(t_token **head);
+t_token					*concat_tokens(t_token **head);
 t_token					*create_token(char *lexeme, t_token_type type);
+t_token					*pop_tokens(t_token **head, t_token_type type);
 void					append_token(t_token **head, char *lexeme,
 							t_token_type type);
-int						is_token_type(t_token_type token, int category_mask);
 
 #endif
