@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/08/26 01:45:03 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/08/30 20:37:34 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ DEBUG_DIR = debug
 PARSING_DIR = parsing
 
 DEBUG_FUNCS = $(addprefix $(DEBUG_DIR)/, print_tokens.c)
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c lexer_utils.c token_utils.c)
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c lexer_utils.c token_utils.c cleanup.c)
 
 SRCS = $(addprefix $(SRCS_DIR)/, bukoshell.c $(PARSING_FUNCS) $(DEBUG_FUNCS))
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)

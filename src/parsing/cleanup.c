@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bukoshell.c                                        :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 20:54:13 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/08/30 20:30:04 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <bukoshell.h>
+#include <parsing.h>
 
-int	main(void)
+void	free_tokens(t_token **head)
 {
-	char	*line;
-	t_token	*head;
+	t_token	*next;
 
-	while (true)
+	while (*head)
 	{
-		line = readline(PS1);
-		if (!line)
-			break ;
-		if (ft_strncmp(line, "eof", 3) == 0)
-		{
-			free(line);
-			break ;
-		}
-		add_history(line);
-		head = create_tokens(line);
-		free(line);
-		print_tokens(head, true);
-		if (head)
-			free_tokens(&head);
+		next = (*head)->next;
+		free((*head)->lexeme);
+		free(*head);
+		*head = next;
 	}
-	return (0);
 }

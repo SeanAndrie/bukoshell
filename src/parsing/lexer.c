@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 00:52:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 20:52:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static char	*process_word(char **line_ptr, t_token_type *type)
 	start = *line_ptr;
 	if (ft_isspace(**line_ptr))
 	{
-		*type = T_WHITEPSACE;
+		*type = T_WHITESPACE;
 		while (**line_ptr && ft_isspace(**line_ptr))
 			(*line_ptr)++;
 		return (ft_strdup(""));
@@ -140,5 +140,6 @@ t_token	*create_tokens(char *line)
 		free_tokens(&head);
 		return (NULL);
 	}
+	strip_tokens(&head, T_WHITESPACE);
 	return (head);
 }

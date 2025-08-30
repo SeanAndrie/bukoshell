@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 07:25:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 20:44:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,22 @@ t_token	*pop_token_type(t_token **head, t_token_type type_to_extract)
 	return (start);
 }
 
-void	free_tokens(t_token **head)
+void	strip_tokens(t_token **head, t_token_type type_to_strip)
 {
-	t_token	*next;
+	t_token **curr;
+	t_token *temp;
 
-	while (*head)
+	curr = head;
+	while (*curr)
 	{
-		next = (*head)->next;
-		free((*head)->lexeme);
-		free(*head);
-		*head = next;
+		if (is_token_type((*curr)->type, type_to_strip))
+		{
+			temp = *curr;
+			*curr = (*curr)->next;
+			temp->next = NULL;
+			free(temp);	
+		}
+		else
+			curr = &(*curr)->next;
 	}
 }

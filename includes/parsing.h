@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 07:29:34 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 21:00:02 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@
  */
 typedef enum e_token_type
 {
-	T_WHITEPSACE = TOKEN_WHITESPACE,
 	T_WORD = TOKEN_WORD,
+	T_WHITESPACE = TOKEN_WHITESPACE,
 	T_WORD_SQUOTE = TOKEN_WORD | TOKEN_QUOTE | 0x400,
 	T_WORD_DQUOTE = TOKEN_WORD | TOKEN_QUOTE | 0x800,
 	T_PIPE = TOKEN_CTRL_OP | TOKEN_METACHAR | 0x1000,
@@ -119,12 +119,22 @@ t_token					*concat_tokens(t_token **head, t_token_type concat_type);
 */
 t_token					*pop_token_type(t_token **head, t_token_type type);
 
+/*
+** Removes and frees all tokens from the list that match the given type.
+** Updates the head pointer to maintain list integrity.
+**
+** @param head          Pointer to the head of the token list.
+** @param type_to_strip The token type(s) to remove (bitmask).
+** @return              None.
+*/
+void					strip_tokens(t_token **head, t_token_type type_to_strip);
+
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
 
-void					free_tokens(t_token **head);
 t_token					*create_token(char *lexeme, t_token_type type);
 void					append_token(t_token **head, char *lexeme,
 							t_token_type type);
 
+void					free_tokens(t_token **head);
 #endif
