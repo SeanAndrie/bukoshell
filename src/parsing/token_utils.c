@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 02:02:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 07:25:04 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	append_token(t_token **head, char *lexeme, t_token_type type)
 	last_token->next = token;
 }
 
-t_token	*concat_tokens(t_token **head)
+t_token	*concat_tokens(t_token **head, t_token_type concat_type)
 {
 	char	*concat;
 	t_token	*token;
@@ -72,26 +72,24 @@ t_token	*concat_tokens(t_token **head)
 		ft_strlcat(concat, curr->lexeme, size + 1);
 		curr = curr->next;
 	}
-	token = create_token(concat, T_WORD);
+	token = create_token(concat, concat_type);
 	if (!token)
 		return (NULL);
 	return (free(concat), token);
 }
 
-t_token	*pop_tokens(t_token **curr_ptr, t_token_type type_to_extract)
+t_token	*pop_token_type(t_token **head, t_token_type type_to_extract)
 {
 	t_token	*start;
 	t_token	*end;
 
-	start = *curr_ptr;
+	start = *head;
 	if (!start || !is_token_type(start->type, type_to_extract))
-		return (NULL);
-	if (!start->next || !is_token_type(start->next->type, type_to_extract))
 		return (NULL);
 	end = start;
 	while (end->next && is_token_type(end->next->type, type_to_extract))
 		end = end->next;
-	*curr_ptr = end->next;
+	*head = end->next;
 	end->next = NULL;
 	return (start);
 }

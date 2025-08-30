@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 02:55:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/08/30 07:29:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,28 +90,40 @@ int						handle_concatenation(t_token **head);
 ** Checks if a token's type matches the given category mask.
 **
 ** @param type          The token type to check.
-** @param category_mask The category mask to compare against.
+** @param category_mask Bitmask specifying token type(s) to match
 ** @return             1 if the token type matches, 0 otherwise.
 */
 int						is_token_type(t_token_type type, int category_mask);
 
 /*
-** Concatenates the lexemes of a linked list of WORD tokens
-** into a single string and creates a new token from it.
+** Concatenates the lexemes of a linked list of tokens into a single string
+** and creates a new token of the specified type.
 **
-** @param head   Pointer to the head of the WORD tokens list.
-** @return      A new token containing the concatenated string,
-**              or NULL if memory allocation or token creation fails.
+** @param head         Pointer to the head of the token list.
+** @param concat_type  The token type assigned to the newly created token.
+** @return             A new token containing the concatenated string,
+**                     or NULL if memory allocation or token creation fails.
 */
-t_token					*concat_tokens(t_token **head);
+t_token					*concat_tokens(t_token **head, t_token_type concat_type);
+
+/*
+** Pops the first consecutive sequence of tokens matching the given type
+** from the start of the list. Also works as a regular pop when the head
+** matches the requested type.
+**
+** @param head             Pointer to the head of the token list.
+**                         Updated to point to the next remaining token.
+** @param type_to_extract  The token type(s) to extract (bitmask).
+** @return                 Pointer to the extracted sublist of tokens,
+**                         or NULL if no matching tokens are found.
+*/
+t_token					*pop_token_type(t_token **head, t_token_type type);
 
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
 
-// Token Utilities
 void					free_tokens(t_token **head);
 t_token					*create_token(char *lexeme, t_token_type type);
-t_token					*pop_tokens(t_token **head, t_token_type type);
 void					append_token(t_token **head, char *lexeme,
 							t_token_type type);
 
