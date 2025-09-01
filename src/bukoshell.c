@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   bukoshell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 20:54:13 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/01 15:59:05 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
-
+// hello
 int	main(void)
 {
 	char	*line;
