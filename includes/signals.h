@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bukoshell.h                                        :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/01 18:09:57 by ccastro          ###   ########.fr       */
+/*   Created: 2025/09/01 16:19:37 by ccastro           #+#    #+#             */
+/*   Updated: 2025/09/01 17:45:39 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUKOSHELL_H
-# define BUKOSHELL_H
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
 # include <libft.h>
-# include <parsing.h>
-# include <signals.h>
+# include <signal.h>
+# include <termios.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-# define EXIT "bukoshell> exit\n"
-
-// Debugging
-void	print_tokens(t_token *head, bool show_whitespace);
+void	handle_signals(void);
+void	disable_echoctl(struct termios *term);
 
 #endif

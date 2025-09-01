@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bukoshell.h                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/01 18:09:57 by ccastro          ###   ########.fr       */
+/*   Created: 2025/09/01 17:48:06 by ccastro           #+#    #+#             */
+/*   Updated: 2025/09/01 18:26:29 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUKOSHELL_H
-# define BUKOSHELL_H
+#include <parsing.h>
 
-# include <libft.h>
-# include <parsing.h>
-# include <signals.h>
+char	*handle_prompt(const char *prompt_display)
+{
+	char	*line;
+	char	quote;
 
-# define EXIT "bukoshell> exit\n"
-
-// Debugging
-void	print_tokens(t_token *head, bool show_whitespace);
-
-#endif
+	line = readline(prompt_display);
+	if (!line)
+		return (NULL);
+	while (*line)
+	{
+		if (ft_strchr("\'", *line))
+		{
+			quote = *line;
+		} 
+		line++;
+	}
+	return (line);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 21:00:02 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/01 18:08:54 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,7 @@ void					append_token(t_token **head, char *lexeme,
 							t_token_type type);
 
 void					free_tokens(t_token **head);
+
+char					*handle_prompt(const char *prompt_display);
+
 #endif

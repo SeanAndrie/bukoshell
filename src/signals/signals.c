@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bukoshell.h                                        :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/01 18:09:57 by ccastro          ###   ########.fr       */
+/*   Created: 2025/09/01 16:21:58 by ccastro           #+#    #+#             */
+/*   Updated: 2025/09/01 17:42:45 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUKOSHELL_H
-# define BUKOSHELL_H
+#include <signals.h>
 
-# include <libft.h>
-# include <parsing.h>
-# include <signals.h>
+static void	handle_sigint(int sig);
 
-# define EXIT "bukoshell> exit\n"
+static void	handle_sigint(int sig)
+{
+	(void) sig;
+	rl_replace_line("", 0);
+	ft_printf("\n");
+	rl_redisplay();
+}
 
-// Debugging
-void	print_tokens(t_token *head, bool show_whitespace);
+void	disable_echoctl(struct termios *term)
+{
+	tcgetattr(STDIN_FILENO, term);
+	term->c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, term);
+}
 
-#endif
+void	handle_signals(void)
+{
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
