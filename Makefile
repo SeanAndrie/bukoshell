@@ -6,13 +6,13 @@
 #    By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/01 18:12:22 by ccastro          ###   ########.fr        #
+#    Updated: 2025/09/03 12:56:55 by ccastro          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = bukoshell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Iincludes -Ilibft/includes
+CFLAGS = -Wall -Werror -Wextra -Iincludes -Ilibft/includes -g3
 
 SRCS_DIR = src
 OBJS_DIR = obj

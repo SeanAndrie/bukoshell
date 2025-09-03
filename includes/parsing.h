@@ -6,7 +6,7 @@
 /*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/01 18:08:54 by ccastro          ###   ########.fr       */
+/*   Updated: 2025/09/03 17:19:05 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <readline/readline.h>
 
 # define PS1 "bukoshell> "
-# define PS2 ">"
+# define PS2 "> "
 
 # define GROUP_TOKENS "{()}\'\""
 # define OPERATOR_TOKENS "&|<>"
