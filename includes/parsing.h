@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/03 17:19:05 by ccastro          ###   ########.fr       */
+/*   Updated: 2025/09/04 19:02:19 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define PS1 "bukoshell> "
+# define PS1 "bukoshell $> "
 # define PS2 "> "
 
 # define GROUP_TOKENS "{()}\'\""
@@ -69,6 +69,23 @@ typedef struct s_token
 	char				*lexeme;
 }						t_token;
 
+typedef struct s_redirect
+{
+	int					fd;
+	char				*fname;
+	struct s_redirect	*next;
+}						t_redirect;
+
+typedef struct s_node
+{
+	struct s_node		*left;
+	struct s_node		*right;
+	char				**argv;
+	t_redirect			*redirect;
+	bool				is_operator;
+	int					operator_type;
+}						t_node;
+
 /*
 ** Tokenizes the input string into a linked list of tokens.
 **
@@ -104,7 +121,7 @@ int						is_token_type(t_token_type type, int category_mask);
 ** @return             A new token containing the concatenated string,
 **                     or NULL if memory allocation or token creation fails.
 */
-t_token					*concat_tokens(t_token **head, t_token_type concat_type);
+t_token					*concat_tokens(t_token *head, t_token_type concat_type);
 
 /*
 ** Pops the first consecutive sequence of tokens matching the given type
@@ -127,17 +144,50 @@ t_token					*pop_token_type(t_token **head, t_token_type type);
 ** @param type_to_strip The token type(s) to remove (bitmask).
 ** @return              None.
 */
-void					strip_tokens(t_token **head, t_token_type type_to_strip);
+void					strip_tokens(t_token **head,
+							t_token_type type_to_strip);
 
+/*
+** Builds a syntax tree from a linked list of tokens based on operator precedence.
+** Recursively splits the token list around the lowest-precedence operator to
+** construct the tree.
+**
+** @param head  Pointer to the head of the token list.
+** @return      Pointer to the root node of the constructed syntax tree,
+**              or NULL if memory allocation fails.
+*/
+t_node					*create_syntax_tree(t_token *head);
+
+/*
+** Creates a linked list of redirection nodes from a list of tokens.
+** Scans for redirection operators followed by WORD tokens and stores
+** them as redirection nodes.
+**
+** @param head  Pointer to the head of the token list.
+** @return      Pointer to the head of the created redirection list,
+**              or NULL if memory allocation fails.
+*/
+t_redirect				*create_redirections(t_token *head);
+
+/*
+** Converts a list of tokens into an argv-style array of strings.
+** Counts tokens until a redirection or control operator is reached,
+** then delegates allocation and copying to alloc_argv().
+**
+** @param head   Pointer to the head of the token list.
+** @return       A NULL-terminated array of strings (argv),
+**               or NULL if memory allocation fails.
+*/
+char					**tokens_to_argv(t_token *head);
+
+void					append_token(t_token **head, char *lexeme,
+							t_token_type type);
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
 
-t_token					*create_token(char *lexeme, t_token_type type);
-void					append_token(t_token **head, char *lexeme,
-							t_token_type type);
-
 void					free_tokens(t_token **head);
-
-char					*handle_prompt(const char *prompt_display);
+void					free_syntax_tree(t_node *root);
+void					free_redirects(t_redirect **head);
+void					free_str_arr(char **str_arr, int n);
 
 #endif

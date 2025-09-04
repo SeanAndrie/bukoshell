@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/03 12:56:55 by ccastro          ###   ########.fr        #
+#    Updated: 2025/09/04 19:00:56 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,11 @@ DEBUG_DIR = debug
 PARSING_DIR = parsing
 SIGNAL_DIR = signals
 
-DEBUG_FUNCS = $(addprefix $(DEBUG_DIR)/, print_tokens.c)
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c lexer_utils.c token_utils.c cleanup.c prompt.c)
+DEBUG_FUNCS = $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c)
 SIGNALS_FUNCS = $(addprefix $(SIGNAL_DIR)/, signals.c)
+
+PARSING_UTILS = $(addprefix utils/, lexer_utils.c token_utils.c tree_utils.c)
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c tree.c cleanup.c $(PARSING_UTILS))
 
 SRCS = $(addprefix $(SRCS_DIR)/, bukoshell.c $(PARSING_FUNCS) $(DEBUG_FUNCS) $(SIGNALS_FUNCS))
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bukoshell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/04 08:24:08 by ccastro          ###   ########.fr       */
+/*   Updated: 2025/09/04 18:55:35 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@ int	exit_status = 0;
 
 int	main(void)
 {
-	struct termios	term;
 	char			*line;
 	t_token			*head;
+	t_node			*root;
 
-	disable_echoctl(&term);
 	while (true)
 	{
 		exit_status = 0;
 		handle_signals();
-		line = handle_prompt(PS1);
+		line = readline(PS1);
 		if (!line)
 			return (ft_printf(EXIT), 0);
-		if (ft_strncmp(line, "eof", 3) == 0)
+		if (ft_strncmp(line, "exit", 4) == 0)
 		{
 			free(line);
 			break ;
@@ -37,6 +36,8 @@ int	main(void)
 		head = create_tokens(line);
 		free(line);
 		print_tokens(head, true);
+		root = create_syntax_tree(head);
+		print_syntax_tree(root, 0);
 		if (head)
 			free_tokens(&head);
 	}

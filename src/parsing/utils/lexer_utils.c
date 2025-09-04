@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 07:25:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:36:49 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	handle_concatenation(t_token **head)
 				popped = pop_token_type(curr, TOKEN_WORD);
 				if (!popped)
 					return (0);
-				concat = concat_tokens(&popped, TOKEN_WORD);	
+				concat = concat_tokens(popped, TOKEN_WORD);	
 				free_tokens(&popped);            	
 				if (!concat)                    	
 					return (0);                    	
