@@ -6,11 +6,13 @@
 /*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/03 13:24:29 by ccastro          ###   ########.fr       */
+/*   Updated: 2025/09/04 08:24:08 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
+
+int	exit_status = 0;
 
 int	main(void)
 {
@@ -21,6 +23,7 @@ int	main(void)
 	disable_echoctl(&term);
 	while (true)
 	{
+		exit_status = 0;
 		handle_signals();
 		line = handle_prompt(PS1);
 		if (!line)
