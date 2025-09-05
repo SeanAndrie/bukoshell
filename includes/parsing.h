@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/04 19:02:19 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/05 03:17:57 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdbool.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+
+# define DEBUG_MODE true
 
 # define PS1 "bukoshell $> "
 # define PS2 "> "
@@ -180,14 +182,19 @@ t_redirect				*create_redirections(t_token *head);
 */
 char					**tokens_to_argv(t_token *head);
 
+t_node 					*process_prompt(char *line);
+
 void					append_token(t_token **head, char *lexeme,
 							t_token_type type);
 t_token_type			categorize_ctrl_op(char **line_ptr, bool is_double);
 t_token_type			categorize_redirection(char **line_ptr, bool is_double);
 
 void					free_tokens(t_token **head);
-void					free_syntax_tree(t_node *root);
+void					free_syntax_tree(t_node **root);
 void					free_redirects(t_redirect **head);
 void					free_str_arr(char **str_arr, int n);
+
+void					print_syntax_tree(t_node *node, int level);
+void					print_tokens(t_token *head, bool show_whitespace);
 
 #endif

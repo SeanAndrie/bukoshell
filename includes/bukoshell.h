@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/04 18:53:48 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/05 02:56:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 # include <parsing.h>
 # include <signals.h>
 
-# define EXIT "exit\n"
+typedef struct s_shell
+{
+	char			*line;
+	struct s_node	*root;
+	int				status;
+}					t_shell;
 
-extern int exit_status;
-
-// Debugging
-void	print_tokens(t_token *head, bool show_whitespace);
-void	print_syntax_tree(t_node *node, int level);
+t_shell 			*init_shell(void);
+void				free_shell(t_shell *shell);
 
 #endif

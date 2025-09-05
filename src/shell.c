@@ -1,45 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bukoshell.c                                        :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/04 18:55:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/05 03:31:20 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 
-int	exit_status = 0;
-
-int	main(void)
+int main(void)
 {
-	char			*line;
-	t_token			*head;
-	t_node			*root;
+	t_shell *shell;
 
+	shell = init_shell();
+	if (!shell)
+		return (EXIT_FAILURE);
 	while (true)
 	{
-		exit_status = 0;
-		handle_signals();
-		line = readline(PS1);
-		if (!line)
-			return (ft_printf(EXIT), 0);
-		if (ft_strncmp(line, "exit", 4) == 0)
+		shell->line = readline(PS1);
+		if (!shell->line)
 		{
-			free(line);
-			break ;
+			ft_printf("exit\n");
+			free_shell(shell);
+			return (EXIT_SUCCESS);
 		}
-		add_history(line);
-		head = create_tokens(line);
-		free(line);
-		print_tokens(head, true);
-		root = create_syntax_tree(head);
-		print_syntax_tree(root, 0);
-		if (head)
-			free_tokens(&head);
+		add_history(shell->line);
+		shell->root = process_prompt(shell->line);
+		if (shell->root)
+		{
+			// Execution here ...
+			free_syntax_tree(&shell->root);
+		}
+		free(shell->line);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
