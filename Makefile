@@ -3,16 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
+#    By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/07 01:19:16 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/07 20:31:54 by ccastro          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = bukoshell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -Iincludes -Ilibft/includes -g3
+UNAME_S = $(shell uname -s)
+UNAME_M = $(shell uname -m)
+
+ifeq ($(UNAME_S), Darwin)
+	ifeq ($(UNAME_M), arm64)
+		RDL_LIB = -L/Users/carljosiah/.brew/Cellar/readline/8.3.1/lib
+		RDL_INC = -I/Users/carljosiah/.brew/Cellar/readline/8.3.1/include/readline
+	else ifeq ($(UNAME_M), x86_64)
+		RDL_LIB = -L/opt/vagrant/embedded/lib/
+		RDL_INC = -I/opt/vagrant/embedded/include/readline
+	else
+		$(error Unsupported Darwin Architecture: $(UNAME_M))
+endif
+
+else ifeq ($(UNAME_S), Linux)
+	RDL_LIB = -L/opt/vagrant/embedded/lib/
+	RDL_INC = -I/opt/vagrant/embedded/include/readline
+else
+	$(error Unsupported OS: $(UNAME_S))
+endif
 
 SRCS_DIR = src
 OBJS_DIR = obj
@@ -21,8 +41,8 @@ SIGNALS_DIR = signals
 PARSING_DIR = parsing
 
 PARSING_DEBUG = $(addprefix debug/, print_tokens.c print_tree.c)
-PARSING_UTILS = $(addprefix utils/, lexer_utils.c token_utils.c redir_utils.c tree_utils.c)
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, tokens.c lexer.c tree.c cleanup.c $(PARSING_UTILS) $(PARSING_DEBUG))
+PARSING_UTILS = $(addprefix utils/, lexer_utils.c token_utils.c tree_utils.c redir_utils.c)
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c tree.c cleanup.c tokens.c $(PARSING_UTILS) $(PARSING_DEBUG))
 
 SIGNALS_FUNCS = $(addprefix $(SIGNALS_DIR)/, signals.c)
 
@@ -35,7 +55,7 @@ libft:
 	@make -C libft
 
 $(NAME): $(OBJS) libft
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -Llibft -lft -lreadline -lncurses
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(RDL_LIB) $(RDL_INC) -Llibft -lft -lreadline -lncurses
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)

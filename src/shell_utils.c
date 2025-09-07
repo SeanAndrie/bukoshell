@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 22:35:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 19:04:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 20:28:06 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	free_shell(t_shell *shell)
 		free_syntax_tree(&shell->root);
 	free(shell);
 	clear_history();
-	rl_clear_history();
 }
 
 t_shell	*init_shell(void)
