@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/05 02:42:50 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/07 01:19:16 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ SIGNALS_DIR = signals
 PARSING_DIR = parsing
 
 PARSING_DEBUG = $(addprefix debug/, print_tokens.c print_tree.c)
-PARSING_UTILS = $(addprefix utils/, lexer_utils.c token_utils.c tree_utils.c)
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c tree.c cleanup.c $(PARSING_UTILS) $(PARSING_DEBUG))
+PARSING_UTILS = $(addprefix utils/, lexer_utils.c token_utils.c redir_utils.c tree_utils.c)
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, tokens.c lexer.c tree.c cleanup.c $(PARSING_UTILS) $(PARSING_DEBUG))
 
 SIGNALS_FUNCS = $(addprefix $(SIGNALS_DIR)/, signals.c)
 

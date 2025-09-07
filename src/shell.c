@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/05 03:31:20 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:02:56 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int main(void)
 {
+	int		status;
 	t_shell *shell;
 
 	shell = init_shell();
@@ -25,17 +26,14 @@ int main(void)
 		if (!shell->line)
 		{
 			ft_printf("exit\n");
-			free_shell(shell);
-			return (EXIT_SUCCESS);
+			break;
 		}
+		if (ft_strncmp(shell->line, "exit", 4) == 0)
+			break;
 		add_history(shell->line);
-		shell->root = process_prompt(shell->line);
-		if (shell->root)
-		{
-			// Execution here ...
-			free_syntax_tree(&shell->root);
-		}
-		free(shell->line);
+		shell->status = start_shell(shell);
 	}
-	return (EXIT_SUCCESS);
+	status = shell->status;
+	free_shell(shell);	
+	return (status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/05 01:54:33 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 14:43:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static void	print_token_group(t_token_type type)
 		ft_printf("LPAREN");
 	else if (type == T_RPAREN)
 		ft_printf("RPAREN");
-	else if (type == T_LBRACE)
-		ft_printf("LBRACE");
-	else if (type == T_RBRACE)
-		ft_printf("RBRACE");
+	// else if (type == T_LBRACE)
+	// 	ft_printf("LBRACE");
+	// else if (type == T_RBRACE)
+	// 	ft_printf("RBRACE");
 }
 
 static void	print_token_word(t_token_type type)
@@ -56,12 +56,15 @@ static void	print_token_word(t_token_type type)
 		ft_printf("WORD_DQUOTE");
 	else if (type == T_WORD)
 		ft_printf("WORD");
+	else if (type == T_PARAMETER)
+		ft_printf("PARAMETER");
 	else
 		ft_printf("WHITESPACE");
 }
 
 void	print_tokens(t_token *head, bool show_whitespace)
 {
+	ft_printf("\nTokens:\n");
 	while (head)
 	{
 		if (!show_whitespace && is_token_type(head->type, TOKEN_WHITESPACE))
