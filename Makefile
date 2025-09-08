@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/07 20:31:54 by ccastro          ###   ########.fr        #
+#    Updated: 2025/09/08 01:18:58 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,9 +40,11 @@ OBJS_DIR = obj
 SIGNALS_DIR = signals
 PARSING_DIR = parsing
 
-PARSING_DEBUG = $(addprefix debug/, print_tokens.c print_tree.c)
+PARSING_VALID = $(addprefix valid/, valid_tokens.c)
+PARSING_DEBUG = $(addprefix debug/, print_tokens.c print_tree.c print_error.c)
 PARSING_UTILS = $(addprefix utils/, lexer_utils.c token_utils.c tree_utils.c redir_utils.c)
-PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c tree.c cleanup.c tokens.c $(PARSING_UTILS) $(PARSING_DEBUG))
+PARSING_FUNCS = $(addprefix $(PARSING_DIR)/, lexer.c tree.c cleanup.c tokens.c \
+					$(PARSING_UTILS) $(PARSING_DEBUG) $(PARSING_VALID))
 
 SIGNALS_FUNCS = $(addprefix $(SIGNALS_DIR)/, signals.c)
 

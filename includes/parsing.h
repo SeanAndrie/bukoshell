@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 19:04:51 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/08 01:42:09 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,13 @@ typedef enum e_token_type
     T_LPAREN = TOKEN_GROUP | TOKEN_GROUP_OPEN | TOKEN_METACHAR | 0x200000,
     T_RPAREN = TOKEN_GROUP | TOKEN_GROUP_CLOSE | TOKEN_METACHAR | 0x400000,
     T_PARAMETER = TOKEN_PARAMETER | 0x800000
-} t_token_type;
+} 						t_token_type;
+
+typedef enum e_error_type
+{
+	ERROR_SYNTAX,
+	ERROR_RUNTIME
+}						t_error_type;
 
 typedef enum e_node_type
 {
@@ -199,7 +205,7 @@ t_redirect				*create_redirections(t_token *head);
 */
 char					**tokens_to_argv(t_token *head);
 
-unsigned int			create_token_mask(t_token *head);
+unsigned int			create_prompt_mask(t_token *head);
 
 t_token					*find_lowest_precedence(t_token *head);
 
@@ -222,5 +228,8 @@ void					free_str_arr(char **str_arr, int n);
 
 void					print_syntax_tree(t_node *node, int level);
 void					print_tokens(t_token *head, bool show_whitespace);
+void    				print_error(t_error_type type, const char *format, ...);
+
+bool					are_valid_tokens(t_token *head);
 
 #endif
