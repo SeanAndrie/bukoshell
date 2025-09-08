@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 16:19:37 by ccastro           #+#    #+#             */
-/*   Updated: 2025/09/05 02:26:28 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 20:13:39 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# ifndef ECHOCTL
-#  define ECHOCTL 0x00000040
-# endif
-
+void	rl_replace_line(const char *text, int clear_undo);
 void	handle_signals(void);
 
 #endif

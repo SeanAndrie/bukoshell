@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bukoshell.h                                        :+:      :+:    :+:   */
+/*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/08 01:42:38 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/09/07 23:02:35 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/09/08 01:18:57 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUKOSHELL_H
-# define BUKOSHELL_H
+#include <parsing.h>
 
-# include <libft.h>
-# include <parsing.h>
-# include <signals.h>
-
-# define ROOT_LEVEL 0
-
-typedef struct s_shell
+void    print_error(t_error_type type, const char *format, ...)
 {
-	char			*line;
-	struct s_token	*head;
-	struct s_node	*root;
-	int				status;
-	unsigned int	prompt_mask;
-}					t_shell;
+    va_list args;
 
-t_shell				*init_shell(void);
-int					start_shell(t_shell *shell);
-
-void				free_shell(t_shell *shell, bool full_free);
-#endif
+    va_start(args, format);
+    ft_dprintf(STDERR_FILENO, "bukoshell: ");
+    if (type == ERROR_SYNTAX)
+        ft_dprintf(STDERR_FILENO, "syntax error: ");
+    else
+        ft_dprintf(STDERR_FILENO, "runtime error: ");
+    ft_vdprintf(STDERR_FILENO, format, args);
+    va_end(args);
+}

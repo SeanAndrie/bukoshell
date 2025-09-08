@@ -3,63 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 02:08:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/04 12:04:19 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 19:04:48 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-static t_node	*create_node(t_token *head, bool is_operator)
+static t_node	*create_node(t_token *head, t_node_type type)
 {
 	t_node	*node;
 
-	node = malloc(sizeof(t_node));
+	node = ft_calloc(1, sizeof(t_node));
 	if (!node)
 		return (NULL);
-	node->is_operator = is_operator;
-	if (node->is_operator)
+	node->type = type;
+	node->operator = T_NONE;
+	if (head && node->type == N_OPERATOR)
+		node->operator = head->type;
+	else if (node->type == N_COMMAND)
 	{
-		node->operator_type = head->type;
-		node->argv = NULL;
-		node->redirect = NULL;
-	}
-	else
-	{
-		node->operator_type = TOKEN_NONE;
+		node->operator = T_NONE;
 		node->argv = tokens_to_argv(head);
 		if (!node->argv)
-			return (free(node), NULL);
+			return (NULL);
 		node->redirect = create_redirections(head);
 	}
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
-}
-
-static t_token	*find_lowest_precedence(t_token *head)
-{
-	t_token	*first_pipe;
-	t_token	*first_and_or;
-
-	first_pipe = NULL;
-	first_and_or = NULL;
-	while (head)
-	{
-		if (is_token_type(head->type, T_AND) || is_token_type(head->type, T_OR))
-		{
-			first_and_or = head;
-			break ;
-		}
-		else if (is_token_type(head->type, T_PIPE) && !first_pipe)
-			first_pipe = head;
-		head = head->next;
-	}
-	if (first_and_or)
-		return (first_and_or);
-	return (first_pipe);
 }
 
 t_node	*create_syntax_tree(t_token *head)
@@ -68,10 +42,12 @@ t_node	*create_syntax_tree(t_token *head)
 	t_token	**curr;
 	t_token	*operator;
 
+	if (!head)
+		return (NULL);
 	operator= find_lowest_precedence(head);
 	if (!operator)
-		return (create_node(head, false));
-	root = create_node(operator, true);
+		return (create_node(head, N_COMMAND));
+	root = create_node(operator, N_OPERATOR);
 	if (!root)
 		return (NULL);
 	curr = &head;
@@ -79,7 +55,10 @@ t_node	*create_syntax_tree(t_token *head)
 		curr = &(*curr)->next;
 	if (curr && *curr == operator)
 		*curr = NULL;
+	print_tokens(head, false);
+	print_tokens(operator->next, false);
 	root->left = create_syntax_tree(head);
 	root->right = create_syntax_tree(operator->next);
+	free_tokens(&operator);
 	return (root);
 }

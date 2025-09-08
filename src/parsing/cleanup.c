@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/05 03:18:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:02:57 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	free_redirects(t_redirect **head)
 {
 	t_redirect	*next;
 
+	if (!*head)
+		return ;
 	while (*head)
 	{
 		next = (*head)->next;

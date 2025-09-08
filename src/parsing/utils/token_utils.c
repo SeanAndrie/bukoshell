@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/04 12:06:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/06 07:31:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,24 @@ static t_token	*create_token(char *lexeme, t_token_type type)
 	return (token);
 }
 
-void	append_token(t_token **head, char *lexeme, t_token_type type)
+bool	append_token(t_token **head, char *lexeme, t_token_type type)
 {
 	t_token	*token;
 	t_token	*last_token;
 
 	token = create_token(lexeme, type);
 	if (!token)
-		return ;
+		return (false);
 	if (!*head)
 	{
 		*head = token;
-		return ;
+		return (true);
 	}
 	last_token = *head;
 	while (last_token->next)
 		last_token = last_token->next;
 	last_token->next = token;
+	return (true);
 }
 
 t_token	*concat_tokens(t_token *head, t_token_type concat_type)
@@ -74,7 +75,7 @@ t_token	*concat_tokens(t_token *head, t_token_type concat_type)
 	}
 	token = create_token(concat, concat_type);
 	if (!token)
-		return (NULL);
+		return (free(concat), NULL);
 	return (free(concat), token);
 }
 
@@ -94,7 +95,7 @@ t_token	*pop_token_type(t_token **head, t_token_type type_to_extract)
 	return (start);
 }
 
-void	strip_tokens(t_token **head, t_token_type type_to_strip)
+void	remove_tokens(t_token **head, t_token_type type_to_remove)
 {
 	t_token	**curr;
 	t_token	*temp;
@@ -102,11 +103,12 @@ void	strip_tokens(t_token **head, t_token_type type_to_strip)
 	curr = head;
 	while (*curr)
 	{
-		if (is_token_type((*curr)->type, type_to_strip))
+		if (is_token_type((*curr)->type, type_to_remove))
 		{
 			temp = *curr;
 			*curr = (*curr)->next;
 			temp->next = NULL;
+			free(temp->lexeme);
 			free(temp);
 		}
 		else

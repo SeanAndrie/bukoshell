@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/08/30 20:52:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/07 19:04:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-static char	*process_operator(char **line_ptr, t_token_type *type)
+char	*process_operator(char **line_ptr, t_token_type *type)
 {
 	size_t	len;
 	char	*lexeme;
@@ -21,9 +21,9 @@ static char	*process_operator(char **line_ptr, t_token_type *type)
 	len = 1;
 	is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
 	if (**line_ptr == '|' || **line_ptr == '&')
-		*type = categorize_ctrl_op(line_ptr, is_double);
+		*type = categorize_ctrl_op(**line_ptr, is_double);
 	else
-		*type = categorize_redirection(line_ptr, is_double);
+		*type = categorize_redirection(**line_ptr, is_double);
 	if (is_double)
 		len++;
 	lexeme = ft_calloc(len + 1, sizeof(char));
@@ -39,7 +39,7 @@ static char	*process_operator(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-static char	*process_quotes(char **line_ptr, t_token_type *type)
+char	*process_quotes(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
 	char	quote;
@@ -64,7 +64,7 @@ static char	*process_quotes(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-static char	*process_grouping(char **line_ptr, t_token_type *type)
+char	*process_grouping(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
 
@@ -74,10 +74,6 @@ static char	*process_grouping(char **line_ptr, t_token_type *type)
 		*type = T_LPAREN;
 	else if (**line_ptr == ')')
 		*type = T_RPAREN;
-	else if (**line_ptr == '{')
-		*type = T_LBRACE;
-	else if (**line_ptr == '}')
-		*type = T_RBRACE;
 	lexeme = ft_calloc(2, sizeof(char));
 	if (!lexeme)
 		return (NULL);
@@ -86,7 +82,31 @@ static char	*process_grouping(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-static char	*process_word(char **line_ptr, t_token_type *type)
+char	*process_parameter(char **line_ptr, t_token_type *type)
+{
+	char	*lexeme;
+	char	*start;
+	char	*end;
+
+	*type = T_PARAMETER;
+	start = *line_ptr;
+	(*line_ptr)++;
+	if (ft_strchr(SPECIAL_VARIABLES, **line_ptr) || ft_isdigit(**line_ptr))
+		(*line_ptr)++;
+	else
+	{
+		while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_')) 
+			(*line_ptr)++;
+	}
+	end = *line_ptr;	
+	lexeme = ft_calloc((end - start) + 1, sizeof(char));
+	if (!lexeme)
+		return (NULL);
+	ft_strlcpy(lexeme, start, (end - start) + 1);
+	return (lexeme);
+}
+
+char *process_word(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
 	char	*start;
@@ -103,7 +123,7 @@ static char	*process_word(char **line_ptr, t_token_type *type)
 	else
 	{
 		*type = T_WORD;
-		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr("\'\"",
+		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(GROUP_TOKENS,
 				**line_ptr))
 			(*line_ptr)++;
 	}
@@ -113,33 +133,4 @@ static char	*process_word(char **line_ptr, t_token_type *type)
 		return (NULL);
 	ft_strlcpy(lexeme, start, (end - start) + 1);
 	return (lexeme);
-}
-
-t_token	*create_tokens(char *line)
-{
-	t_token_type	type;
-	t_token			*head;
-	char			*lexeme;
-
-	head = NULL;
-	while (*line)
-	{
-		if (ft_strchr(OPERATOR_TOKENS, *line))
-			lexeme = process_operator(&line, &type);
-		else if (ft_strchr(GROUP_TOKENS, *line))
-			lexeme = process_grouping(&line, &type);
-		else
-			lexeme = process_word(&line, &type);
-		if (!lexeme)
-			return (free_tokens(&head), NULL);
-		append_token(&head, lexeme, type);
-		free(lexeme);
-	}
-	if (!handle_concatenation(&head))
-	{
-		free_tokens(&head);
-		return (NULL);
-	}
-	strip_tokens(&head, T_WHITESPACE);
-	return (head);
 }
