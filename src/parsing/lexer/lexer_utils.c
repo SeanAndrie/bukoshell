@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 16:02:59 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/09 21:40:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <parsing/clean.h>
+#include <parsing/lexer.h>
 
-int	handle_concatenation(t_token **head)
+bool	handle_concatenation(t_token **head)
 {
 	t_token	**curr;
 	t_token	*popped;
@@ -27,18 +28,18 @@ int	handle_concatenation(t_token **head)
 			{
 				popped = pop_token_type(curr, TOKEN_WORD);
 				if (!popped)
-					return (0);
+					return (false);
 				concat = concat_tokens(popped, TOKEN_WORD);
 				free_tokens(&popped);
 				if (!concat)
-					return (0);
+					return (false);
 				concat->next = *curr;
 				*curr = concat;
 			}
 		}
 		curr = &(*curr)->next;
 	}
-	return (1);
+	return (true);
 }
 
 t_token_type	categorize_ctrl_op(char c, bool is_double)

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 02:08:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 19:04:48 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/10 01:59:20 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <libft.h>
+#include <parsing/tree.h>
 
 static t_node	*create_node(t_token *head, t_node_type type)
 {
@@ -20,15 +21,15 @@ static t_node	*create_node(t_token *head, t_node_type type)
 	if (!node)
 		return (NULL);
 	node->type = type;
-	node->operator = T_NONE;
+	node->operand = T_NONE;
 	if (head && node->type == N_OPERATOR)
-		node->operator = head->type;
+		node->operand = head->type;
 	else if (node->type == N_COMMAND)
 	{
-		node->operator = T_NONE;
+		node->operand = T_NONE;
 		node->argv = tokens_to_argv(head);
 		if (!node->argv)
-			return (NULL);
+			return (free(node), NULL);
 		node->redirect = create_redirections(head);
 	}
 	node->left = NULL;
@@ -36,29 +37,38 @@ static t_node	*create_node(t_token *head, t_node_type type)
 	return (node);
 }
 
-t_node	*create_syntax_tree(t_token *head)
+static t_node	*create_subshell(t_token *start)
 {
 	t_node	*root;
-	t_token	**curr;
-	t_token	*operator;
+	t_token	*curr;
 
-	if (!head)
-		return (NULL);
-	operator= find_lowest_precedence(head);
-	if (!operator)
-		return (create_node(head, N_COMMAND));
-	root = create_node(operator, N_OPERATOR);
+	curr = start;
+	skip_parentheses(&curr);
+	root = create_node(NULL, N_SUBSHELL);
 	if (!root)
 		return (NULL);
-	curr = &head;
-	while (*curr && *curr != operator)
-		curr = &(*curr)->next;
-	if (curr && *curr == operator)
-		*curr = NULL;
-	print_tokens(head, false);
-	print_tokens(operator->next, false);
-	root->left = create_syntax_tree(head);
-	root->right = create_syntax_tree(operator->next);
-	free_tokens(&operator);
+	root->left = create_syntax_tree(start->next, curr);
 	return (root);
+}
+
+t_node	*create_syntax_tree(t_token *start, t_token *end)
+{
+	t_node	*root;
+	t_token	*operand;
+
+	if (!start || start == end)
+		return (NULL);
+	operand = find_lowest_precedence(start, end);
+	if (operand && operand != end)
+	{
+		root = create_node(operand, N_OPERATOR);
+		if (!root)
+			return (NULL);
+		root->left = create_syntax_tree(start, operand);
+		root->right = create_syntax_tree(operand->next, end);
+		return (root);
+	}
+	if (is_token_type(start->type, T_LPAREN))
+		return (create_subshell(start));
+	return (create_node(start, N_COMMAND));
 }

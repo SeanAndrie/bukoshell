@@ -79,3 +79,5 @@ The parser's job is to take the raw string of input and convert it to a structur
 - **Goal:** Take the list of classified tokens and build an Abstract Syntax Tree (AST) or a command table.
 - **What it does:** It checks if the sequence of tokens makes sense (syntax validation) and then structures them into commands, their arguments, and their redirections. The most common structure for a shell is a linked list of simple commands, connected by pipes.
 - **Output Data Structure**: Each node in the list represents a single commad in a pipeline.
+
+> Add implementation notes here ...

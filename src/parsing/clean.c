@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 16:02:57 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/10 01:38:50 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <parsing/tree.h>
+#include <parsing/clean.h>
 
 void	free_str_arr(char **str_arr, int n)
 {
@@ -47,6 +48,8 @@ void	free_tokens(t_token **head)
 {
 	t_token	*next;
 
+	if (!head && !*head)
+		return ;
 	while (*head)
 	{
 		next = (*head)->next;

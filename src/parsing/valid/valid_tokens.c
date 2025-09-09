@@ -3,24 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   valid_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/08 01:18:57 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/10 02:21:19 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <parsing/valid.h>
 
-static bool	is_valid_grouping(t_token *prev, t_token *curr, int *depth)
+static bool	is_valid_subshell(t_token *head)
+{
+	t_token	*curr;
+	t_token	*scan;
+	int		depth;
+
+	depth = 1;
+	curr = head->next;
+	scan = curr;
+	while (scan && depth > 0)
+	{
+		track_depth(scan, &depth);
+		scan = scan->next;
+	}
+	if (depth < 0)
+		return (false);
+	return (true);
+}
+
+bool	is_valid_grouping(t_token *prev, t_token *curr, int *depth)
 {
 	if (is_token_type(curr->type, TOKEN_GROUP_OPEN))
 	{
 		(*depth)++;
-        if (curr->next && is_token_type(curr->next->type, TOKEN_GROUP_CLOSE))
-            return (print_error(ERROR_SYNTAX, "empty subshell '()' not allowed\n"), false);
+		if (curr->next && is_token_type(curr->next->type, TOKEN_GROUP_CLOSE))
+			return (print_error(ERROR_SYNTAX,
+					"empty subshell '()' not allowed\n"), false);
 		if (!curr->next)
 			return (print_error(ERROR_SYNTAX, "nothing after '('\n"), false);
+		if (!is_valid_subshell(curr))
+			return (print_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
 	}
 	else if (is_token_type(curr->type, TOKEN_GROUP_CLOSE))
 	{
@@ -33,7 +55,7 @@ static bool	is_valid_grouping(t_token *prev, t_token *curr, int *depth)
 	return (true);
 }
 
-static bool	is_valid_operator(t_token *curr)
+bool	is_valid_operator(t_token *curr)
 {
 	if (is_token_type(curr->type, TOKEN_CTRL_OP))
 	{
@@ -47,7 +69,7 @@ static bool	is_valid_operator(t_token *curr)
 	return (true);
 }
 
-static bool	is_valid_redirect(t_token *curr)
+bool	is_valid_redirect(t_token *curr)
 {
 	if (is_token_type(curr->type, TOKEN_REDIR_OP))
 	{
@@ -61,7 +83,7 @@ static bool	is_valid_redirect(t_token *curr)
 	return (true);
 }
 
-static bool	is_valid_parameter(t_token *curr)
+bool	is_valid_parameter(t_token *curr)
 {
 	if (is_token_type(curr->type, TOKEN_PARAMETER))
 	{
@@ -71,29 +93,5 @@ static bool	is_valid_parameter(t_token *curr)
 			return (false);
 		}
 	}
-	return (true);
-}
-
-bool	are_valid_tokens(t_token *head)
-{
-	t_token	*prev;
-	t_token	*curr;
-	int		depth;
-
-	prev = NULL;
-	curr = head;
-	depth = 0;
-	while (curr)
-	{
-		if (!is_valid_grouping(prev, curr, &depth) || !is_valid_operator(curr)
-			|| !is_valid_redirect(curr) || !is_valid_parameter(curr))
-			return (false);
-		curr = curr->next;
-	}
-	if (depth != 0)
-    {
-        print_error(ERROR_SYNTAX, "unmatched '('\n");
-		return (false);
-    }
 	return (true);
 }

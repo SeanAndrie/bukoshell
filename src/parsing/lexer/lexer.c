@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 19:04:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:43:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <libft.h>
+#include <parsing/lexer.h>
 
 char	*process_operator(char **line_ptr, t_token_type *type)
 {
@@ -95,10 +96,10 @@ char	*process_parameter(char **line_ptr, t_token_type *type)
 		(*line_ptr)++;
 	else
 	{
-		while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_')) 
+		while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
 			(*line_ptr)++;
 	}
-	end = *line_ptr;	
+	end = *line_ptr;
 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
 	if (!lexeme)
 		return (NULL);
@@ -106,7 +107,7 @@ char	*process_parameter(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-char *process_word(char **line_ptr, t_token_type *type)
+char	*process_word(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
 	char	*start;
@@ -123,7 +124,7 @@ char *process_word(char **line_ptr, t_token_type *type)
 	else
 	{
 		*type = T_WORD;
-		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(GROUP_TOKENS,
+		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(METACHARS,
 				**line_ptr))
 			(*line_ptr)++;
 	}

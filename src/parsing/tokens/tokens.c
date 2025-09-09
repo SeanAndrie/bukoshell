@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 22:30:38 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/10 02:21:32 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <libft.h>
+#include <parsing/clean.h>
+#include <parsing/lexer.h>
+#include <parsing/tokens.h>
 
 bool	is_token_type(t_token_type type, unsigned int category_mask)
 {
 	return ((type & category_mask) == category_mask);
 }
 
-unsigned int create_prompt_mask(t_token *head)
+unsigned int	create_token_mask(t_token *head)
 {
-	unsigned int mask;
+	unsigned int	mask;
 
 	if (!head)
 		return (0);

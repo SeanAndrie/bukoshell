@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 01:28:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/10 01:43:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <parsing/tokens.h>
+#include <parsing/clean.h>
+#include <parsing/tree.h>
+#include <stdbool.h>
+#include <libft.h>
 
 static t_redirect	*create_redirect(t_token_type token_type, char *filename)
 {
@@ -46,7 +50,7 @@ static bool	append_redirect(t_redirect **head, t_redirect *node)
 	while (last->next)
 		last = last->next;
 	last->next = node;
-    return (true);
+	return (true);
 }
 
 t_redirect	*create_redirections(t_token *head)
@@ -68,7 +72,7 @@ t_redirect	*create_redirections(t_token *head)
 			if (!redir_node)
 				return (free_redirects(&redir_head), NULL);
 			if (!append_redirect(&redir_head, redir_node))
-                return (free(redir_node), free_redirects(&redir_head), NULL);
+				return (free(redir_node), free_redirects(&redir_head), NULL);
 			token_curr = token_next->next;
 			continue ;
 		}
@@ -76,5 +80,3 @@ t_redirect	*create_redirections(t_token *head)
 	}
 	return (redir_head);
 }
-
-

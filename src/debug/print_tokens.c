@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   print_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/07 14:43:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/10 02:22:08 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <debug.h>
 
 static void	print_token_operator(t_token_type type)
 {
@@ -42,10 +42,6 @@ static void	print_token_group(t_token_type type)
 		ft_printf("LPAREN");
 	else if (type == T_RPAREN)
 		ft_printf("RPAREN");
-	// else if (type == T_LBRACE)
-	// 	ft_printf("LBRACE");
-	// else if (type == T_RBRACE)
-	// 	ft_printf("RBRACE");
 }
 
 static void	print_token_word(t_token_type type)
@@ -88,5 +84,5 @@ void	print_tokens(t_token *head, bool show_whitespace)
 			ft_printf(" -> ");
 		head = head->next;
 	}
-	ft_printf("\n");
+	ft_printf("\n\n");
 }
