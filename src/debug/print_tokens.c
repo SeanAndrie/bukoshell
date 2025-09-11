@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:22:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:38:51 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static void	print_token_group(t_token_type type)
 
 static void	print_token_word(t_token_type type)
 {
-	if (type == T_WORD_SQUOTE)
-		ft_printf("WORD_SQUOTE");
-	else if (type == T_WORD_DQUOTE)
-		ft_printf("WORD_DQUOTE");
+	if (type == T_SQUOTE)
+		ft_printf("SQUOTE");
+	else if (type == T_DQUOTE)
+		ft_printf("DQUOTE");
 	else if (type == T_WORD)
 		ft_printf("WORD");
 	else if (type == T_PARAMETER)

@@ -3,68 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 22:35:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:18:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:30:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 
-bool	has_unbalanced_quotes(const char *str)
+static bool	incomplete_prompt(t_lexer_ctx *ctx)
 {
-	t_quote_state	state;
-
-	state = (t_quote_state){false, false};
-	while (*str)
-	{
-		if (*str == '\'' && !(state.in_double))
-			state.in_single = !(state.in_single);
-		else if (*str == '"' && !(state.in_single))
-			state.in_double = !(state.in_double);
-		str++;
-	}
-	return (state.in_single || state.in_double);
+	return (ctx->subsh_depth > 0 || ctx->quote_state.in_single 
+			|| ctx->quote_state.in_double || ctx->dangling_op);
 }
 
-static void	update_quote_state(char *str, t_quote_state *state)
+void	append_newline(t_token *head)
 {
-	while (*str)
+	t_token *curr;
+	char	*temp;
+
+	curr = head;
+	while (curr)
 	{
-		if (*str == '\'' && !(state->in_double))
-			state->in_single = !(state->in_single);
-		else if (*str == '"' && !(state->in_single))
-			state->in_double = !(state->in_double);
-		str++;
+		if (is_token_type(curr->type, TOKEN_WORD))
+		{
+			temp = ft_strjoin("\n", curr->lexeme);
+			free(curr->lexeme);
+			curr->lexeme = temp;
+		}
+		curr = curr->next;
 	}
 }
 
-char	*handle_unclosed_prompt(char *prompt)
+bool	handle_prompt_continuation(t_token **head, t_lexer_ctx *ctx)
 {
-	t_quote_state	state;
-	char			*line;
-	char			*temp;
-	char			*combined;
+	t_token	*new;
+	char	*line;
+	char	*token_str;
 
-	state = (t_quote_state){false, false};
-	combined = ft_strdup(prompt);
-	if (!combined)
-		return (free(prompt), NULL);
-	free(prompt);
-	update_quote_state(combined, &state);
-	while (state.in_single || state.in_double)
+	get_lexer_context(ctx, *head, true);
+	while (incomplete_prompt(ctx))
 	{
-		line = readline(PS2);
+		line = readline(PS2); 
 		if (!line)
-			return (free(combined), NULL);
-		update_quote_state(line, &state);
-		temp = ft_vstrjoin(2, "\n", combined, line);
+			return (false);
+		new = create_tokens(line);
 		free(line);
-		if (!temp)
-			return (free(combined), NULL);
-		free(combined);
-		combined = temp;
+		if (!new)
+			return (false);
+		if (ctx->quote_state.in_single || ctx->quote_state.in_double)
+			append_newline(new);
+		if (!append_token_list(head, new))
+			return (free_tokens(&new), false);
+		get_lexer_context(ctx, new, false);
+		token_str = tokens_to_str(*head);
+		add_history(token_str);
 	}
-	return (combined);
+	return (true);
 }

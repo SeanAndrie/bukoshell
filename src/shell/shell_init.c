@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:19:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:09:17 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,61 @@ t_shell	*init_shell(void)
 	shell->head = NULL;
 	shell->root = NULL;
 	shell->prompt_mask = 0;
+	ft_memset(&shell->lexer_ctx, 0, sizeof(t_lexer_ctx));
 	return (shell);
+}
+
+void	get_lexer_context(t_lexer_ctx *ctx, t_token *head, bool reset)
+{	
+	t_token 		*curr;
+	t_quote_state	*state;
+
+	if (reset)
+		ft_memset(ctx, 0, sizeof(*ctx));
+	curr = head;
+	state = &ctx->quote_state;
+	while (curr)
+	{
+		if (is_token_type(curr->type, T_LPAREN))
+			ctx->subsh_depth++;
+		else if (is_token_type(curr->type, T_RPAREN))
+			ctx->subsh_depth--;
+		if (is_token_type(curr->type, T_SQUOTE) && !state->in_double)
+			state->in_single ^= 1;
+		else if (is_token_type(curr->type, T_DQUOTE) && !state->in_single)
+			state->in_double ^= 1;
+		if (is_token_type(curr->type, TOKEN_CTRL_OP) && !curr->next)
+			ctx->dangling_op = true;
+		else
+			ctx->dangling_op = false;
+		curr = curr->next;
+	}
 }
 
 bool	parse_prompt(t_shell *shell)
 {
-	char	*line;
-
-	if (has_unbalanced_quotes(shell->line))
-	{
-		line = handle_unclosed_prompt(shell->line);
-		free(shell->line);
-		if (!line)
-			return (false);
-		shell->line = line;
-	}
 	shell->head = create_tokens(shell->line);
 	if (!shell->head)
 		return (false);
+	if (!handle_prompt_continuation(&shell->head, &shell->lexer_ctx))
+		return (false);
+	remove_tokens(&shell->head, TOKEN_QUOTE);
+	if (!handle_concatenation(&shell->head))
+		return (false);
+	remove_tokens(&shell->head, TOKEN_WHITESPACE);
 	if (DEBUG_MODE)
 		print_tokens(shell->head, true);
-	if (!are_valid_tokens(shell->head))
-		return (false);
-	shell->root = create_syntax_tree(shell->head, NULL);
-	if (!shell->root)
-		return (false);
-	if (DEBUG_MODE)
-		print_syntax_tree(shell->root);
+
+	/*
+	**  Revise token validation to account for 
+	** 	continuation-exclusive cases
+	*/
+	
+	// shell->root = create_syntax_tree(shell->head, NULL);
+	// if (!shell->root)
+	// 	return (false);
+	// if (DEBUG_MODE)
+	// 	print_syntax_tree(shell->root);
 	return (true);
 }
 

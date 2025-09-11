@@ -35,3 +35,15 @@ S2: echo -> done : N_COMMAND
             ||
             right (S2)
 
+---
+
+Lexer Context:
+    - Structural Context: 
+        + Parentheses:  
+        + Quotes
+    
+    - Procedural Context:
+        + Command-dependent: ||, &&, |
+        + FD-dependent: <, <<, >>, > 
+
+

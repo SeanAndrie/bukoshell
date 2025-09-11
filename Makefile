@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/10 02:15:00 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/11 15:41:29 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

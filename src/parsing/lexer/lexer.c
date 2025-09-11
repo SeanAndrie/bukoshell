@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/09 20:43:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:29:43 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,41 +40,58 @@ char	*process_operator(char **line_ptr, t_token_type *type)
 	return (lexeme);
 }
 
-char	*process_quotes(char **line_ptr, t_token_type *type)
-{
-	char	*lexeme;
-	char	quote;
-	char	*start;
-	char	*end;
+// char	*process_quotes(char **line_ptr, t_token_type *type, )
+// {
+// 	char	*lexeme;
+// 	char	quote;
+// 	char	*start;
+// 	char	*end;
 
-	quote = **line_ptr;
-	*type = T_WORD_DQUOTE;
-	if (quote == '\'')
-		*type = T_WORD_SQUOTE;
-	start = ++(*line_ptr);
-	while (**line_ptr && **line_ptr != quote)
-		(*line_ptr)++;
-	if (**line_ptr != quote)
-		return (NULL);
-	end = *line_ptr;
-	lexeme = ft_calloc((end - start) + 1, sizeof(char));
-	if (!lexeme)
-		return (NULL);
-	ft_strlcpy(lexeme, start, (end - start) + 1);
-	(*line_ptr)++;
-	return (lexeme);
-}
+// 	quote = **line_ptr;
+// 	*type = T_WORD_DQUOTE;
+// 	if (quote == '\'')
+// 		*type = T_WORD_SQUOTE;
+// 	start = ++(*line_ptr);
+// 	while (**line_ptr && **line_ptr != quote)
+// 		(*line_ptr)++;
+// 	if (**line_ptr != quote)
+// 		return (NULL); // PS2 Init.
+// 	end = *line_ptr;
+// 	lexeme = ft_calloc((end - start) + 1, sizeof(char));
+// 	if (!lexeme)
+// 		return (NULL);
+// 	ft_strlcpy(lexeme, start, (end - start) + 1);
+// 	(*line_ptr)++;
+// 	return (lexeme);
+// }
+
+// char	*process_quotes(char **line_ptr, t_token_type *type)
+// {
+// 	char	*lexeme;
+	
+// 	*type = T_WORD_SQUOTE;
+// 	if (**line_ptr == '"')
+// 		*type = T_WORD_DQUOTE;
+// 	lexeme = ft_calloc(2, sizeof(char));
+// 	if (!lexeme)
+// 		return (NULL);
+// 	lexeme[0] = **line_ptr;
+// 	(*line_ptr)++;
+// 	return (lexeme);
+// }
 
 char	*process_grouping(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
 
-	if (**line_ptr == '\'' || **line_ptr == '\"')
-		return (process_quotes(line_ptr, type));
 	if (**line_ptr == '(')
 		*type = T_LPAREN;
 	else if (**line_ptr == ')')
 		*type = T_RPAREN;
+	else if (**line_ptr == '\'')
+		*type = T_SQUOTE;
+	else if (**line_ptr == '"')
+		*type = T_DQUOTE;
 	lexeme = ft_calloc(2, sizeof(char));
 	if (!lexeme)
 		return (NULL);
