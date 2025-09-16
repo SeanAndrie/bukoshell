@@ -6,16 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 20:16:28 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 23:15:08 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <bukoshell.h>
 #include <debug.h>
+#include <bukoshell.h>
 
 char	*set_cwd_prompt(t_shell *shell)
 {
 	size_t	i;
+	char	*temp;
 	char	*prompt;
 	char 	**cwd_split;
 	char	**base_split;
@@ -31,7 +32,9 @@ char	*set_cwd_prompt(t_shell *shell)
 	base_split = ft_split(PS1, ' ');
 	if (!base_split)
 		return (free_str_arr(cwd_split, -1), NULL);
-	prompt = ft_vstrjoin(4, " ", base_split[0], cwd_split[i - 1], base_split[1], " ");
+	temp = ft_vstrjoin(3, " ", base_split[0], cwd_split[i - 1], base_split[1]);
+	prompt = ft_strjoin(temp, " ");
+	free(temp);
 	free_str_arr(cwd_split, i);
 	free_str_arr(base_split, 2);
 	if (!prompt)
