@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:20:02 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/11 17:42:10 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 14:24:37 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@ typedef struct s_quote_state
     bool                    in_single;
     bool                    in_double;
 }                           t_quote_state;
-
-typedef struct s_lexer_ctx
-{
-    bool                    dangling_op;
-    int                     subsh_depth;
-    struct s_quote_state    quote_state;
-}                           t_lexer_ctx;
-
 
 char			*process_word(char **line_ptr, t_token_type *type);
 char			*process_parameter(char **line_ptr, t_token_type *type);

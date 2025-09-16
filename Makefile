@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/11 15:41:29 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/16 15:59:32 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ PARSING_MODULES := \
 DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_error.c print_tokens.c print_tree.c)
 PARSING_SRCS := $(addprefix $(PARSING_DIR)/,$(PARSING_MODULES))
 SIGNALS_SRCS := $(SIGNALS_DIR)/signals.c
-MAIN_SRCS := $(addprefix $(SHELL_DIR)/,shell.c shell_init.c shell_utils.c)
+MAIN_SRCS := $(addprefix $(SHELL_DIR)/,shell.c shell_init.c)
 
 SRCS := $(addprefix $(SRCS_DIR)/,$(MAIN_SRCS) $(SIGNALS_SRCS) $(PARSING_SRCS) $(DEBUG_SRCS))
 OBJS := $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)

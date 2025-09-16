@@ -27,5 +27,6 @@ typedef enum e_error_type
 void	print_syntax_tree(t_node *node);
 void	print_tokens(t_token *head, bool show_whitespace);
 void	print_error(t_error_type type, const char *format, ...);
+void	print_error_conditional(t_error_type type, const char *format, bool *condition, ...);
 
 #endif
