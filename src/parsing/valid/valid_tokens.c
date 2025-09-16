@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 17:04:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:13:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ bool	parse_command_list(t_token **curr)
 		op = *curr;
 		consume(curr);
 		if (!parse_command(curr))
-			return (print_error(ERROR_SYNTAX, "near unexexpected token '%s'\n",
+			return (print_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
 					op->lexeme), false);
 	}
 	return (true);

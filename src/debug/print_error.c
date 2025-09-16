@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 23:02:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 16:58:43 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:14:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	print_error(t_error_type type, const char *format, ...)
 	va_start(args, format);
 	ft_dprintf(STDERR_FILENO, "bukoshell: ");
 	if (type == ERROR_SYNTAX)
-		ft_dprintf(STDERR_FILENO, "syntax error: ");
+		ft_dprintf(STDERR_FILENO, "syntax error ");
 	else
-		ft_dprintf(STDERR_FILENO, "runtime error: ");
+		ft_dprintf(STDERR_FILENO, "runtime error ");
 	ft_vdprintf(STDERR_FILENO, format, args);
 	va_end(args);
 }
