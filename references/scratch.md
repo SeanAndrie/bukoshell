@@ -46,4 +46,14 @@ Lexer Context:
         + Command-dependent: ||, &&, |
         + FD-dependent: <, <<, >>, > 
 
+Recursive Descent for Parsing (?)
 
+Simple Commands: [CMD] [ARGS] [REDIR_OP] [FILENAME]
+Compound Commands: [LPAREN] (SIMPLE COMMAND) [RPAREN]
+
+A command would often be structured as something like:
+
+(SIMPLE COMMAND) (CTRL_OP) (SIMPLE_COMMAND)
+
+- We parse initial simple command separately
+- We consume ctrl op then try to parse the following commands recursively
