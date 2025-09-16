@@ -3,35 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:21:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:04:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing/valid.h>
+#include <stdarg.h>
 
-bool	are_valid_tokens(t_token *head)
+bool	is_valid_metachar(t_token *token)
 {
-	t_token	*prev;
-	t_token	*curr;
-	int		depth;
+	if (!is_token_type(token->type, TOKEN_METACHAR))
+		return (true);
+	if (!token->next)
+		return (print_error(ERROR_SYNTAX, "near unexpected token 'newline'\n"),
+			false);
+	if (is_token_type(token->type, TOKEN_REDIR_OP))
+	{
+		if (!is_token_type(token->next->type, TOKEN_WORD))
+			return (print_error(ERROR_SYNTAX, "near unexpected token '%s'",
+					token->next->lexeme), false);
+	}
+	if (is_token_type(token->type, T_PIPE))
+	{
+		if (!is_token_type(token->next->type, TOKEN_WORD)
+			&& !is_token_type(token->next->type, TOKEN_GROUP_OPEN))
+			return (print_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
+					token->next->lexeme), false);
+	}
+	return (true);
+}
 
-	prev = NULL;
+bool	validate_tokens(t_token *head)
+{
+	t_token	*curr;
+
 	curr = head;
-	depth = 0;
-	while (curr)
-	{
-		if (!is_valid_grouping(prev, curr, &depth) || !is_valid_operator(curr)
-			|| !is_valid_redirect(curr) || !is_valid_parameter(curr))
-			return (false);
-		curr = curr->next;
-	}
-	if (depth != 0)
-	{
-		print_error(ERROR_SYNTAX, "unmatched '('\n");
+	if (curr && is_token_type(curr->type, TOKEN_CTRL_OP))
+		return (print_error(ERROR_SYNTAX, "unexpected operator '%s'\n",
+				curr->lexeme), false);
+	if (!parse_command_list(&curr))
 		return (false);
-	}
+	if (curr != NULL)
+		return (print_error(ERROR_SYNTAX, "unexpected token '%s'\n",
+				curr->lexeme), false);
 	return (true);
 }

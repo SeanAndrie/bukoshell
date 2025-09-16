@@ -3,95 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   valid_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:21:19 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:04:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing/valid.h>
 
-static bool	is_valid_subshell(t_token *head)
-{
-	t_token	*curr;
-	t_token	*scan;
-	int		depth;
+bool				parse_command_list(t_token **curr);
+static bool			parse_command(t_token **curr);
+static bool			parse_compound_command(t_token **curr);
 
-	depth = 1;
-	curr = head->next;
-	scan = curr;
-	while (scan && depth > 0)
-	{
-		track_depth(scan, &depth);
-		scan = scan->next;
-	}
-	if (depth < 0)
+static inline void	consume(t_token **curr)
+{
+	if (*curr)
+		*curr = (*curr)->next;
+}
+
+static bool	parse_simple_command(t_token **curr)
+{
+	if (!*curr || !is_token_type((*curr)->type, T_WORD))
 		return (false);
-	return (true);
-}
-
-bool	is_valid_grouping(t_token *prev, t_token *curr, int *depth)
-{
-	if (is_token_type(curr->type, TOKEN_GROUP_OPEN))
+	while (*curr && is_token_type((*curr)->type, T_WORD))
+		consume(curr);
+	while (*curr && is_token_type((*curr)->type, TOKEN_REDIR_OP))
 	{
-		(*depth)++;
-		if (curr->next && is_token_type(curr->next->type, TOKEN_GROUP_CLOSE))
-			return (print_error(ERROR_SYNTAX,
-					"empty subshell '()' not allowed\n"), false);
-		if (!curr->next)
-			return (print_error(ERROR_SYNTAX, "nothing after '('\n"), false);
-		if (!is_valid_subshell(curr))
-			return (print_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
-	}
-	else if (is_token_type(curr->type, TOKEN_GROUP_CLOSE))
-	{
-		(*depth)--;
-		if (*depth < 0)
-			return (print_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
-		if (prev && is_token_type(prev->type, TOKEN_CTRL_OP))
-			return (print_error(ERROR_SYNTAX, "operator before ')'\n"), false);
-	}
-	return (true);
-}
-
-bool	is_valid_operator(t_token *curr)
-{
-	if (is_token_type(curr->type, TOKEN_CTRL_OP))
-	{
-		if (!curr->next || is_token_type(curr->next->type, TOKEN_CTRL_OP))
-		{
-			print_error(ERROR_SYNTAX, "unexpected operator '%s'\n",
-				curr->lexeme);
+		if (!is_valid_metachar(*curr))
 			return (false);
-		}
+		consume(curr);
+		if (!*curr || !is_token_type((*curr)->type, T_WORD))
+			return (print_error(ERROR_SYNTAX, "redirection: missing target\n"),
+				false);
+		consume(curr);
 	}
 	return (true);
 }
 
-bool	is_valid_redirect(t_token *curr)
+static bool	parse_compound_command(t_token **curr)
 {
-	if (is_token_type(curr->type, TOKEN_REDIR_OP))
-	{
-		if (!curr->next || !is_token_type(curr->next->type, TOKEN_WORD))
-		{
-			print_error(ERROR_SYNTAX, "redirection '%s' missing target\n",
-				curr->lexeme);
-			return (false);
-		}
-	}
+	if (!*curr || !is_token_type((*curr)->type, TOKEN_GROUP_OPEN))
+		return (false);
+	consume(curr);
+	if (!*curr)
+		return (print_error(ERROR_SYNTAX, "nothing after '('\n"), false);
+	if (is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
+		return (print_error(ERROR_SYNTAX, "empty subshell '()' not allowed\n"),
+			false);
+	if (!parse_command_list(curr))
+		return (false);
+	if (!*curr || is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
+		return (print_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
+	consume(curr);
 	return (true);
 }
 
-bool	is_valid_parameter(t_token *curr)
+static bool	parse_command(t_token **curr)
 {
-	if (is_token_type(curr->type, TOKEN_PARAMETER))
+	if (!*curr)
+		return (false);
+	if (is_token_type((*curr)->type, TOKEN_GROUP_OPEN))
+		return (parse_compound_command(curr));
+	else
+		return (parse_simple_command(curr));
+	return (true);
+}
+
+bool	parse_command_list(t_token **curr)
+{
+	t_token	*op;
+
+	if (!parse_command(curr))
+		return (false);
+	while (*curr && is_token_type((*curr)->type, TOKEN_CTRL_OP))
 	{
-		if (!curr->lexeme || !curr->lexeme[1])
-		{
-			print_error(ERROR_SYNTAX, "invalid parameter '%s'\n", curr->lexeme);
-			return (false);
-		}
+		op = *curr;
+		consume(curr);
+		if (!parse_command(curr))
+			return (print_error(ERROR_SYNTAX, "near unexexpected token '%s'\n",
+					op->lexeme), false);
 	}
 	return (true);
 }
