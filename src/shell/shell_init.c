@@ -6,12 +6,38 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 16:21:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:16:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 #include <debug.h>
+
+char	*set_cwd_prompt(t_shell *shell)
+{
+	size_t	i;
+	char	*prompt;
+	char 	**cwd_split;
+	char	**base_split;
+
+	if (!getcwd(shell->cwd, sizeof(shell->cwd)))
+		return (NULL);
+	cwd_split = ft_split(shell->cwd, '/');
+	if (!cwd_split)
+		return (NULL);
+	i = 0;
+	while (cwd_split[i])
+		i++;	
+	base_split = ft_split(PS1, ' ');
+	if (!base_split)
+		return (free_str_arr(cwd_split, -1), NULL);
+	prompt = ft_vstrjoin(4, " ", base_split[0], cwd_split[i - 1], base_split[1], " ");
+	free_str_arr(cwd_split, i);
+	free_str_arr(base_split, 2);
+	if (!prompt)
+		return (NULL);
+	return (prompt);
+}
 
 t_shell	*init_shell(void)
 {
@@ -25,10 +51,11 @@ t_shell	*init_shell(void)
 	shell->line = NULL;
 	shell->head = NULL;
 	shell->root = NULL;
+	ft_memset(shell->cwd, 0, sizeof(shell->cwd));
 	return (shell);
 }
 
-bool	parse_prompt(t_shell *shell)
+static bool	parse_prompt(t_shell *shell)
 {
 	shell->head = create_tokens(shell->line);
 	if (!shell->head)

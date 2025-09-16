@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/09 22:38:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:22:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,18 @@ void	free_shell(t_shell *shell, bool full_free)
 	}
 }
 
-int	main(void)
+static int	shell_loop(t_shell *shell)
 {
-	int		status;
-	t_shell	*shell;
+	char	*prompt;
 
-	shell = init_shell();
-	if (!shell)
-		return (EXIT_FAILURE);
 	while (true)
 	{
-		shell->line = readline(PS1);
+		prompt = set_cwd_prompt(shell);
+		if (!prompt)
+			prompt = ft_strdup(PS1); 
+		if (!prompt)
+			return (1);
+		shell->line = readline(prompt);
 		if (!shell->line)
 		{
 			ft_printf("exit\n");
@@ -49,8 +50,19 @@ int	main(void)
 			break ;
 		add_history(shell->line);
 		shell->status = start_shell(shell);
-	}
-	status = shell->status;
+	}	
+	return (shell->status);
+}
+
+int	main(void)
+{
+	int		status;
+	t_shell	*shell;
+
+	shell = init_shell();
+	if (!shell)
+		return (EXIT_FAILURE);
+	status = shell_loop(shell);
 	free_shell(shell, true);
 	return (status);
 }
