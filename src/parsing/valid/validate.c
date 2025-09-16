@@ -6,12 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 17:04:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/16 21:46:17 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing/valid.h>
-#include <stdarg.h>
 
 bool	is_valid_metachar(t_token *token)
 {
