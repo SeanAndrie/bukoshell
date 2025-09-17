@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 12:58:42 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:39:00 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	free_shell(t_shell *shell, bool full_free)
 		free_syntax_tree(&shell->root);
 	if (full_free)
 	{
+		if (shell->envp)
+			free_str_arr(shell->envp, -1);
 		if (shell->map)
 			free_map(shell->map);
 		free(shell);
@@ -68,8 +70,9 @@ int	main(int argc, char **argv, char **envp)
 	shell = init_shell(envp);
 	if (!shell)
 		return (EXIT_FAILURE);
-	// if (DEBUG_MODE)
-	// 	print_env(shell->map->order);
+	init_environ(shell->map, shell->envp);
+	if (DEBUG_MODE)
+		print_env(shell->map->order);
 	status = shell_loop(shell);
 	free_shell(shell, true);
 	return (status);

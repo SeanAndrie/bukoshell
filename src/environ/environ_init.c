@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:55:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 10:02:33 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:40:06 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

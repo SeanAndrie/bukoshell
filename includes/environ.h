@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 10:12:25 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:55:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <libft.h>
 # include <stdbool.h>
+
+# define LOAD_THRESHOLD 0.75
 
 typedef struct s_environ
 {
@@ -34,7 +36,7 @@ typedef struct s_map
 
 size_t					hash_djb2(char *key);
 size_t					environ_size(char **envp);
-t_map					*init_environ(char **envp);
+void					init_environ(t_map *map, char **envp);
 
 t_map					*create_map(size_t size);
 t_environ				*create_entry(char *key, char *value);
