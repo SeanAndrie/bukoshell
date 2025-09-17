@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 10:46:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 12:58:42 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,12 @@ static int	shell_loop(t_shell *shell)
 	char	*prompt;
 	char	*identifier;
 
+	identifier = create_identifier(shell->map);
 	while (true)
 	{
-		identifier = create_identifier(shell->map);
-		prompt = set_cwd_prompt(shell, (identifier) ? identifier : "unknown");
-		free(identifier);
+		prompt = set_cwd_prompt(shell, identifier);
 		if (!prompt)
 			prompt = PS1;
-		if (!prompt)
-			return (1);
 		shell->line = readline(prompt);
 		if (!shell->line)
 		{
@@ -57,6 +54,7 @@ static int	shell_loop(t_shell *shell)
 		shell->status = start_shell(shell);
 	}
 	free(prompt);
+	free(identifier);
 	return (shell->status);
 }
 
