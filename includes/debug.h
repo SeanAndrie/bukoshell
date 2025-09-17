@@ -17,6 +17,7 @@
 # include <tree.h>
 # include <libft.h>
 # include <tokens.h>
+# include <environ.h>
 
 typedef enum e_error_type
 {
@@ -24,8 +25,12 @@ typedef enum e_error_type
 	ERROR_RUNTIME
 }		t_error_type;
 
+void    print_env(t_environ *head);
+void    print_entry_info(t_environ *entry);
+
 void	print_syntax_tree(t_node *node);
 void	print_tokens(t_token *head, bool show_whitespace);
+
 void	print_error(t_error_type type, const char *format, ...);
 void	print_error_conditional(t_error_type type, const char *format, bool *condition, ...);
 

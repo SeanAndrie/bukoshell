@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 01:38:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 01:38:15 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

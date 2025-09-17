@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 20:21:20 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 10:36:20 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BUKOSHELL_H
 
 # include <libft.h>
+# include <environ.h>
 # include <signals.h>
 # include <parsing.h>
 
@@ -25,6 +26,7 @@
 
 typedef struct s_shell
 {
+	struct s_map			*map;
 	char					*line;
 	struct s_token			*head;
 	struct s_node			*root;
@@ -32,9 +34,10 @@ typedef struct s_shell
 	char					cwd[PATH_MAX];
 }							t_shell;
 
-t_shell				*init_shell(void);
+t_shell				*init_shell(char **envp);
 int					start_shell(t_shell *shell);
 void				free_shell(t_shell *shell, bool full_free);
-char				*set_cwd_prompt(t_shell *shell);
+char				*set_cwd_prompt(t_shell *shell, char *identifier);
+char				*create_identifier(t_map *map);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/16 15:59:32 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/17 09:57:25 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,9 @@ endif
 SRCS_DIR := src
 OBJS_DIR := obj
 
-
 PARSING_DIR := parsing
 SIGNALS_DIR := signals
+ENVIRON_DIR := environ
 DEBUG_DIR := debug
 SHELL_DIR := shell
 
@@ -50,12 +50,13 @@ PARSING_MODULES := \
 	tree/tree.c tree/tree_utils.c tree/redir_utils.c \
 	valid/validate.c valid/valid_tokens.c
 
-DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_error.c print_tokens.c print_tree.c)
+DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_error.c print_tokens.c print_tree.c print_env.c)
 PARSING_SRCS := $(addprefix $(PARSING_DIR)/,$(PARSING_MODULES))
 SIGNALS_SRCS := $(SIGNALS_DIR)/signals.c
+ENVIRON_SRCS := $(addprefix $(ENVIRON_DIR)/, environ.c environ_init.c environ_utils.c) 
 MAIN_SRCS := $(addprefix $(SHELL_DIR)/,shell.c shell_init.c)
 
-SRCS := $(addprefix $(SRCS_DIR)/,$(MAIN_SRCS) $(SIGNALS_SRCS) $(PARSING_SRCS) $(DEBUG_SRCS))
+SRCS := $(addprefix $(SRCS_DIR)/, $(MAIN_SRCS) $(SIGNALS_SRCS) $(PARSING_SRCS) $(DEBUG_SRCS) $(ENVIRON_SRCS))
 OBJS := $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 all: libft $(NAME)
