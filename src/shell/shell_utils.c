@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 18:00:43 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:25:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ char	*set_cwd_prompt(t_shell *shell, char *identifier)
 	cwd_split = ft_split(shell->cwd, '/');
 	if (!cwd_split)
 		return (NULL);
-	i = -1;
-	while (cwd_split[++i])
-		base_split = ft_split(PS1, ' ');
+	i = 0;
+	while (cwd_split[i])
+		i++;
+	base_split = ft_split(PS1, ' ');
 	if (!base_split)
 		return (free_str_arr(cwd_split, -1), NULL);
 	temp = ft_vstrjoin(4, " ", base_split[0], identifier, cwd_split[i - 1],

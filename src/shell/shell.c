@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 18:39:00 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:26:01 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	shell_loop(t_shell *shell)
 		}
 		if (ft_strncmp(shell->line, "exit", 4) == 0)
 			break ;
+		free(prompt);
 		add_history(shell->line);
 		shell->status = start_shell(shell);
 	}
@@ -71,8 +72,8 @@ int	main(int argc, char **argv, char **envp)
 	if (!shell)
 		return (EXIT_FAILURE);
 	init_environ(shell->map, shell->envp);
-	if (DEBUG_MODE)
-		print_env(shell->map->order);
+	// if (DEBUG_MODE)
+	// 	print_env(shell->map->order);
 	status = shell_loop(shell);
 	free_shell(shell, true);
 	return (status);
