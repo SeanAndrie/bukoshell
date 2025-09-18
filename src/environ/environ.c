@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 17:55:23 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/18 13:38:56 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	init_environ(t_map *map, char **envp)
 		if (!pair)
 			break ;
 		value = pair[1];
+		if (!value)
+			value = "";
 		if (!insert_entry(map, pair[0], value))
 		{
 			free_str_arr(pair, -1);

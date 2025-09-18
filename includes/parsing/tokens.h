@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/11 18:28:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/18 12:23:22 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,4 @@ bool					is_token_type(t_token_type type,
 */
 unsigned int			create_token_mask(t_token *head);
 
-bool					append_token_list(t_token **head, t_token *new_tokens);
-char					*tokens_to_str(t_token *head);
 #endif

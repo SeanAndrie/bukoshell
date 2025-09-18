@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:15:10 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 17:07:29 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/18 12:20:04 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef enum e_token_type
 	T_HEREDOC = TOKEN_REDIR_OP | TOKEN_METACHAR | 0x100000,
 	T_LPAREN = TOKEN_GROUP | TOKEN_GROUP_OPEN | TOKEN_METACHAR | 0x200000,
 	T_RPAREN = TOKEN_GROUP | TOKEN_GROUP_CLOSE | TOKEN_METACHAR | 0x400000,
-	T_PARAMETER = TOKEN_PARAMETER | 0x800000
+	T_PARAMETER = TOKEN_WORD | TOKEN_PARAMETER | 0x800000
 }	t_token_type;
 
 #endif

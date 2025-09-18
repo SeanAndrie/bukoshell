@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 22:25:28 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/18 17:51:21 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ char	*create_identifier(t_map *map)
 		return (NULL);
 	username = search_entry(map, "USER");
 	if (!username)
-		return (NULL);
-	hostname = search_entry(map, "HOSTNAME");
+	{
+		username = search_entry(map, "LOGNAME");
+		if (!username)
+			return (NULL);
+	}
+	hostname = search_entry(map, "NAME");
 	if (!hostname)
 		return (ft_strdup(username->value));
 	identifier = ft_vstrjoin(2, "@", username->value, hostname->value);
@@ -51,8 +55,8 @@ char	*set_cwd_prompt(t_shell *shell, char *identifier)
 	base_split = ft_split(PS1, ' ');
 	if (!base_split)
 		return (free_str_arr(cwd_split, -1), NULL);
-	temp = ft_vstrjoin(4, " ", base_split[0], identifier, cwd_split[i - 1],
-			base_split[1]);
+	temp = ft_vstrjoin(6, " ", base_split[0], "[", identifier, cwd_split[i - 1],
+			"]", base_split[1]);
 	prompt = ft_strjoin(temp, " ");
 	free(temp);
 	free_str_arr(cwd_split, i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bukoshell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 18:39:23 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/18 13:00:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_shell
 	struct s_node			*root;
 	int						status;
 	char					**envp;
+	unsigned int			token_mask;
 	char					cwd[PATH_MAX];
 }							t_shell;
 
@@ -40,8 +41,8 @@ int					start_shell(t_shell *shell);
 
 char    			**copy_envp(char **envp);
 char				*create_identifier(t_map *map);
-char				*set_cwd_prompt(t_shell *shell, char *identifier);
 t_map				*realloc_map(t_map *map, char **envp);
+char				*set_cwd_prompt(t_shell *shell, char *identifier);
 
 void				free_shell(t_shell *shell, bool full_free);
 

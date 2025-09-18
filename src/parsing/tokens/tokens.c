@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 14:25:43 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/18 12:23:17 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,18 @@ bool	is_token_type(t_token_type type, unsigned int category_mask)
 	return ((type & category_mask) == category_mask);
 }
 
-bool	append_token_list(t_token **head, t_token *new_tokens)
+unsigned int create_token_mask(t_token *head)
 {
-	t_token *curr;
+	unsigned int mask;
 
-	if (!new_tokens)
-		return (false);
-	if (!*head)
+	mask = 0;
+	while (head)
 	{
-		*head = new_tokens;
-		return (true);
+		mask |= head->type;
+		head = head->next;
 	}
-	curr = *head;
-	while (curr->next)
-		curr = curr->next;
-	curr->next = new_tokens;
-	return (true);
+	return (mask);
 }
-
 
 t_token	*create_tokens(char *line)
 {
