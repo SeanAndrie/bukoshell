@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:40:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:42:42 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 22:38:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_redirects(t_redirect *head, int level)
 		else if (curr->type == T_REDIR_APPEND)
 			ft_printf("(STDOUT >> %s)", curr->fname);
 		else if (curr->type == T_HEREDOC)
-			ft_printf("(STDIN << %s, content=\"%s\")", curr->delim,
+			ft_printf("(STDIN << %s, content=\"%s\")", curr->delim->lexeme,
 				curr->heredoc);
 		ft_printf("\n");
 		curr = curr->next;
