@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:58:28 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 23:53:17 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 char	*create_identifier(t_map *map)
 {
-	t_environ	*username;
-	t_environ	*hostname;
+	t_environ	*user;
+	t_environ	*host;
 	char		*identifier;
 
 	if (!map)
 		return (NULL);
-	username = search_entry(map, "USER");
-	if (!username)
+	user = search_entry(map, "USER");
+	if (!user)
 	{
-		username = search_entry(map, "LOGNAME");
-		if (!username)
+		user = search_entry(map, "LOGNAME");
+		if (!user)
 			return (NULL);
 	}
-	hostname = search_entry(map, "NAME");
-	if (!hostname)
-		return (ft_strdup(username->value));
-	identifier = ft_vstrjoin(2, "@", username->value, hostname->value);
+	host = search_entry(map, "NAME");
+	if (!host)
+		return (ft_strdup(user->value));
+	identifier = ft_vstrjoin(2, "@", user->value, host->value);
 	if (!identifier)
 		return (NULL);
 	return (identifier);
