@@ -6,25 +6,25 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:46:38 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 21:55:53 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 22:36:50 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <expand.h>
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <expand.h>
-#include <parsing/tree.h>
 #include <parsing/clean.h>
+#include <parsing/tree.h>
 #include <readline/readline.h>
 
-static void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
+static void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
 {
-	t_token *tokens;
-	t_token *concat;
+	t_token	*tokens;
+	t_token	*concat;
 
 	if (is_token_type(delim_type, T_WORD_SQUOTE))
-		return ;		
+		return ;
 	tokens = create_tokens(*join);
 	if (!tokens)
 		return ;

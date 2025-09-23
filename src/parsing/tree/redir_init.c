@@ -6,12 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 21:41:57 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 22:36:38 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <stdbool.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/tree.h>
@@ -32,7 +31,7 @@ static t_redirect	*create_redirect(t_token *token)
 	else if (token->next && is_token_type(token->type, T_HEREDOC))
 	{
 		redir->fd = 0;
-		redir->delim = token->next; 
+		redir->delim = token->next;
 		if (!redir->delim)
 			return (free(redir), NULL);
 		redir->heredoc = NULL;
