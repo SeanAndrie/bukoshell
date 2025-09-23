@@ -20,9 +20,9 @@ bool	is_token_type(t_token_type type, unsigned int category_mask)
 	return ((type & category_mask) == category_mask);
 }
 
-unsigned int create_token_mask(t_token *head)
+unsigned int	create_token_mask(t_token *head)
 {
-	unsigned int mask;
+	unsigned int	mask;
 
 	mask = 0;
 	while (head)
@@ -55,6 +55,6 @@ t_token	*create_tokens(char *line)
 		if (!append_token(&head, lexeme, type))
 			return (free(lexeme), free_tokens(&head), NULL);
 		free(lexeme);
-	}	
+	}
 	return (head);
 }

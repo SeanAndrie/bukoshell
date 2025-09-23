@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   clean.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:23:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:05:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:33:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLEAN_H
 # define CLEAN_H
 
-# include <tree.h>
 # include <stdlib.h>
 # include <tokens.h>
+# include <tree.h>
 
 void	free_tokens(t_token **head);
 void	free_syntax_tree(t_node **root);

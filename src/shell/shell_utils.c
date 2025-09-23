@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 17:51:21 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:58:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*create_identifier(t_map *map)
 	return (identifier);
 }
 
-char	*set_cwd_prompt(t_shell *shell, char *identifier)
+char	*set_prompt(t_shell *shell, char *identifier)
 {
 	size_t	i;
 	char	*temp;
@@ -88,7 +88,7 @@ char	**copy_envp(char **envp)
 
 t_map	*realloc_map(t_map *map, char **envp)
 {
-	t_map *copy;
+	t_map	*copy;
 
 	if (!envp)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:15:10 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 12:20:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 19:57:06 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef enum e_token_type
 {
 	T_NONE = TOKEN_NONE,
 	T_WORD = TOKEN_WORD,
-	T_WHITESPACE = TOKEN_WHITESPACE,
+	T_WHITESPACE = TOKEN_WORD | TOKEN_WHITESPACE,
 	T_WORD_SQUOTE = TOKEN_WORD | TOKEN_QUOTE | 0x800,
 	T_WORD_DQUOTE = TOKEN_WORD | TOKEN_QUOTE | 0x1000,
 	T_PIPE = TOKEN_CTRL_OP | TOKEN_METACHAR | 0x2000,

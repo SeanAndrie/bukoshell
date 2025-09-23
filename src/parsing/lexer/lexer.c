@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <debug.h>
 #include <libft.h>
-#include <debug.h> 
 #include <parsing/lexer.h>
 
 char	*process_operator(char **line_ptr, t_token_type *type)
@@ -128,7 +128,7 @@ char	*process_word(char **line_ptr, t_token_type *type)
 	{
 		*type = T_WORD;
 		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(METACHARS,
-				**line_ptr) && **line_ptr != '$') 
+				**line_ptr) && **line_ptr != '$')
 			(*line_ptr)++;
 	}
 	end = *line_ptr;

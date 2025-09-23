@@ -13,6 +13,6 @@
 #ifndef EXPAND_H
 # define EXPAND_H
 
-void    parameter_expansion(t_map *map, t_token *head);
+void	parameter_expansion(t_map *map, t_token *head);
 
 #endif

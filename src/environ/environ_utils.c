@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 12:35:57 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/21 13:05:53 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_environ	*search_entry(t_map *map, char *key)
 	size_t		index;
 	t_environ	*entry;
 	size_t		key_len;
-	
+
 	if (!map || !key)
 		return (NULL);
 	key_len = ft_strlen(key);
@@ -50,8 +50,6 @@ t_environ	*search_entry(t_map *map, char *key)
 	entry = map->entries[index];
 	if (!entry)
 		return (NULL);
-	if (ft_strncmp(entry->key, key, key_len) == 0)
-		return (entry);
 	while (entry)
 	{
 		if (ft_strncmp(entry->key, key, key_len) == 0)

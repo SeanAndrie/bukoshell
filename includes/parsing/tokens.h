@@ -6,27 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 12:23:22 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:48:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
 
-#include <stdbool.h>
-#include <token_types.h>
+# include <token_types.h>
 
-/*
-** Represents a single token in the lexical analysis phase.
-**
-** Each token corresponds to a meaningful unit in the command line input.
-** Tokens are produced by the lexer and later consumed by the parser to
-** build the syntax tree.
-**
-** @field lexeme  The actual string value of the token (e.g., "echo", "&&").
-** @field type    The token type (word, operator, redirection, etc.).
-** @field next    Pointer to the next token in the linked list.
-*/
 typedef struct s_token
 {
 	enum e_token_type	type;
@@ -93,7 +81,6 @@ bool					append_token(t_token **head, char *lexeme,
 */
 void					remove_tokens(t_token **head,
 							t_token_type type_to_remove);
-
 
 /*
 ** Checks if a given token type matches one or more categories based

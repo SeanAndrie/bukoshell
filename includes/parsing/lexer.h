@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:20:02 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 14:24:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:30:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 # define LEXER_H
 
 # include <tokens.h>
-
-typedef struct s_quote_state
-{
-    bool                    in_single;
-    bool                    in_double;
-}                           t_quote_state;
 
 char			*process_word(char **line_ptr, t_token_type *type);
 char			*process_parameter(char **line_ptr, t_token_type *type);

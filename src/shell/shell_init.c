@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 17:43:03 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:28:03 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,16 @@ static bool	parse_prompt(t_shell *shell)
 	if (!validate_tokens(shell->head))
 		return (false);
 	shell->token_mask = create_token_mask(shell->head);
-	if ((shell->token_mask & TOKEN_WORD)) 
+	if ((shell->token_mask & TOKEN_WORD))
 		parameter_expansion(shell->map, shell->head);
 	if (DEBUG_MODE)
 		print_tokens(shell->head, true);
-	// shell->root = create_syntax_tree(shell->head, NULL);
-	// if (!shell->root)
-	// 	return (false);
-	// if (DEBUG_MODE)
-	// 	print_syntax_tree(shell->root);
+	shell->root = create_syntax_tree(shell->head, NULL);
+	if (!shell->root)
+		return (false);
+	collect_heredocs(shell->root->redirect);
+	if (DEBUG_MODE)
+		print_syntax_tree(shell->root);
 	return (true);
 }
 

@@ -43,7 +43,7 @@ t_environ				*create_entry(char *key, char *value);
 void					append_entry(t_environ **head, t_environ *node);
 
 bool					delete_entry(t_map *map, char *key);
-t_environ	            *search_entry(t_map *map, char *key);
+t_environ				*search_entry(t_map *map, char *key);
 bool					insert_entry(t_map *map, char *key, char *value);
 
 void					free_map(t_map *map);

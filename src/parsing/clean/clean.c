@@ -6,11 +6,10 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 01:38:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:33:35 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing/tree.h>
 #include <parsing/clean.h>
 
 void	free_str_arr(char **str_arr, int n)
@@ -37,7 +36,12 @@ void	free_redirects(t_redirect **head)
 	while (*head)
 	{
 		next = (*head)->next;
-		free((*head)->fname);
+		if ((*head)->fname)
+			free((*head)->fname);
+		if ((*head)->heredoc)
+			free((*head)->heredoc);
+		if ((*head)->delim)
+			free((*head)->delim);
 		free(*head);
 		*head = next;
 	}

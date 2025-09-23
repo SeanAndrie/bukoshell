@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/18 12:27:19 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/23 17:39:13 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,10 @@ DEBUG_DIR := debug
 SHELL_DIR := shell
 
 PARSING_MODULES := \
-	clean.c \
+	clean/clean.c \
 	lexer/lexer.c lexer/lexer_utils.c \
 	tokens/tokens.c tokens/token_utils.c \
-	tree/tree.c tree/tree_utils.c tree/redir_utils.c \
+	tree/tree.c tree/tree_utils.c tree/redir_init.c tree/redir_utils.c \
 	valid/validate.c valid/valid_tokens.c \
 	expand/expand.c
 
