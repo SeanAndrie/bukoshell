@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 01:49:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:27:03 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 23:45:02 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
-bool	handle_expansion(t_map *map, t_token *token)
+static bool	handle_expansion(t_map *map, t_token *token)
 {
 	char		*key;
 	char		*temp;
@@ -41,7 +41,7 @@ bool	handle_expansion(t_map *map, t_token *token)
 	return (true);
 }
 
-char	*create_expanded_lexeme(t_map *map, t_token *tokens)
+static char	*create_expanded_lexeme(t_map *map, t_token *tokens)
 {
 	t_token	*curr;
 	t_token	*concat;
