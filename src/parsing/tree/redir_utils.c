@@ -6,16 +6,37 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:46:38 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:41:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 21:55:53 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <parsing/tree.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <expand.h>
+#include <parsing/tree.h>
+#include <parsing/clean.h>
 #include <readline/readline.h>
+
+static void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
+{
+	t_token *tokens;
+	t_token *concat;
+
+	if (is_token_type(delim_type, T_WORD_SQUOTE))
+		return ;		
+	tokens = create_tokens(*join);
+	if (!tokens)
+		return ;
+	parameter_expansion(map, tokens);
+	concat = concat_tokens(tokens, TOKEN_NONE);
+	free_tokens(&tokens);
+	if (!concat)
+		return ;
+	free(*join);
+	*join = concat->lexeme;
+	free(concat);
+}
 
 static char	*heredoc_lexeme(char *line, char *new)
 {
@@ -34,7 +55,7 @@ static char	*heredoc_lexeme(char *line, char *new)
 	return (joined);
 }
 
-char	*handle_heredoc(char *delim)
+static char	*handle_heredoc(t_token *delim, t_map *map)
 {
 	char	*new;
 	char	*line;
@@ -48,7 +69,7 @@ char	*handle_heredoc(char *delim)
 		line = readline("> ");
 		if (!line)
 			return (free(new), NULL);
-		if (ft_strncmp(line, delim, ft_strlen(delim)) == 0)
+		if (ft_strncmp(line, delim->lexeme, ft_strlen(delim->lexeme)) == 0)
 		{
 			free(line);
 			return (new);
@@ -56,17 +77,18 @@ char	*handle_heredoc(char *delim)
 		joined = heredoc_lexeme(line, new);
 		if (!joined)
 			return (NULL);
+		heredoc_expansion(&joined, map, delim->type);
 		new = joined;
 	}
 	return (NULL);
 }
 
-void	collect_heredocs(t_redirect *head)
+void	collect_heredocs(t_redirect *head, t_map *map)
 {
 	while (head)
 	{
 		if (is_token_type(head->type, T_HEREDOC))
-			head->heredoc = handle_heredoc(head->delim);
+			head->heredoc = handle_heredoc(head->delim, map);
 		head = head->next;
 	}
 }

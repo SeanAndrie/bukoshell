@@ -6,15 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 15:21:57 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 21:41:57 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <stdbool.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/tree.h>
-#include <stdbool.h>
 
 static t_redirect	*create_redirect(t_token *token)
 {
@@ -32,7 +32,7 @@ static t_redirect	*create_redirect(t_token *token)
 	else if (token->next && is_token_type(token->type, T_HEREDOC))
 	{
 		redir->fd = 0;
-		redir->delim = ft_strdup(token->next->lexeme);
+		redir->delim = token->next; 
 		if (!redir->delim)
 			return (free(redir), NULL);
 		redir->heredoc = NULL;
@@ -45,10 +45,12 @@ static t_redirect	*create_redirect(t_token *token)
 	return (redir);
 }
 
-static bool	append_redirect(t_redirect **head, t_redirect *node)
+static bool	append_redirect(t_redirect **head, t_token *token)
 {
+	t_redirect	*node;
 	t_redirect	*last;
 
+	node = create_redirect(token);
 	if (!node)
 		return (false);
 	if (!*head)
@@ -67,7 +69,6 @@ t_redirect	*create_redirections(t_token *head)
 {
 	t_token		*token_curr;
 	t_token		*token_next;
-	t_redirect	*redir_node;
 	t_redirect	*redir_head;
 
 	token_curr = head;
@@ -78,11 +79,8 @@ t_redirect	*create_redirections(t_token *head)
 		if (token_next && is_token_type(token_curr->type, TOKEN_REDIR_OP)
 			&& is_token_type(token_next->type, TOKEN_WORD))
 		{
-			redir_node = create_redirect(token_curr);
-			if (!redir_node)
+			if (!append_redirect(&redir_head, token_curr))
 				return (free_redirects(&redir_head), NULL);
-			if (!append_redirect(&redir_head, redir_node))
-				return (free(redir_node), free_redirects(&redir_head), NULL);
 			token_curr = token_next->next;
 			continue ;
 		}

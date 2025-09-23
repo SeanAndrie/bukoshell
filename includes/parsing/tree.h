@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:29:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 21:41:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define TREE_H
 
 # include <tokens.h>
+# include <environ.h>
 
 typedef enum e_node_type
 {
@@ -25,9 +26,9 @@ typedef enum e_node_type
 typedef struct s_redirect
 {
 	int					fd;
-	unsigned int		type;
+	enum e_token_type	type;
 	char				*fname;
-	char				*delim;
+	struct s_token		*delim;
 	char				*heredoc;
 	struct s_redirect	*next;
 }						t_redirect;
@@ -139,7 +140,6 @@ void					track_depth(t_token *head, int *depth);
 */
 t_token					*find_lowest_precedence(t_token *start, t_token *end);
 
-char					*handle_heredoc(char *delim);
-void					collect_heredocs(t_redirect *redir_list);
+void					collect_heredocs(t_redirect *redir_list, t_map *map);
 
 #endif
