@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 22:36:38 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/25 01:51:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ t_redirect	*create_redirections(t_token *head)
 	while (token_curr)
 	{
 		token_next = token_curr->next;
+		if (is_token_type(token_curr->type, TOKEN_CTRL_OP))
+			break;
 		if (token_next && is_token_type(token_curr->type, TOKEN_REDIR_OP)
-			&& is_token_type(token_next->type, TOKEN_WORD))
+			&& is_token_type(token_next->type, TOKEN_WORD)) 
 		{
 			if (!append_redirect(&redir_head, token_curr))
 				return (free_redirects(&redir_head), NULL);
