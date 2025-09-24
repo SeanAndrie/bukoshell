@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 23:53:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/25 00:42:19 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 char	*create_identifier(t_map *map)
 {
 	t_environ	*user;
-	t_environ	*host;
-	char		*identifier;
 
 	if (!map)
 		return (NULL);
@@ -27,19 +25,29 @@ char	*create_identifier(t_map *map)
 		if (!user)
 			return (NULL);
 	}
-	host = search_entry(map, "NAME");
-	if (!host)
-		return (ft_strdup(user->value));
-	identifier = ft_vstrjoin(2, "@", user->value, host->value);
-	if (!identifier)
+	return (ft_strdup(user->value));
+}
+
+static char	*construct_prompt(char *base_name, char *base_indicator, char *cwd,
+		char *identifier)
+{
+	char	*temp;
+	char	*prompt;
+
+	temp = ft_vstrjoin(7, NULL, base_name, " [", identifier, " ", cwd, "] ",
+			base_indicator);
+	if (!temp)
 		return (NULL);
-	return (identifier);
+	prompt = ft_strjoin(temp, " ");
+	free(temp);
+	if (!prompt)
+		return (NULL);
+	return (prompt);
 }
 
 char	*set_prompt(t_shell *shell, char *identifier)
 {
 	size_t	i;
-	char	*temp;
 	char	*prompt;
 	char	**cwd_split;
 	char	**base_split;
@@ -55,12 +63,12 @@ char	*set_prompt(t_shell *shell, char *identifier)
 	base_split = ft_split(PS1, ' ');
 	if (!base_split)
 		return (free_str_arr(cwd_split, -1), NULL);
-	temp = ft_vstrjoin(6, " ", base_split[0], "[", identifier, cwd_split[i - 1],
-			"]", base_split[1]);
-	prompt = ft_strjoin(temp, " ");
-	free(temp);
+	prompt = construct_prompt(base_split[0], base_split[1], cwd_split[i - 1],
+			identifier);
 	free_str_arr(cwd_split, i);
 	free_str_arr(base_split, 2);
+	if (!prompt)
+		return (NULL);
 	return (prompt);
 }
 
