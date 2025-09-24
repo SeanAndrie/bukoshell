@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 21:41:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/24 21:00:08 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,6 @@ void					track_depth(t_token *head, int *depth);
 */
 t_token					*find_lowest_precedence(t_token *start, t_token *end);
 
-void					collect_heredocs(t_redirect *redir_list, t_map *map);
+void					collect_heredocs(t_node *node, t_map *map);
 
 #endif

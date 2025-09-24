@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 21:04:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/24 21:00:25 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static bool	parse_prompt(t_shell *shell)
 	shell->root = create_syntax_tree(shell->head, NULL);
 	if (!shell->root)
 		return (false);
-	collect_heredocs(shell->root->redirect, shell->map);
+	collect_heredocs(shell->root, shell->map);
 	if (DEBUG_MODE)
 		print_syntax_tree(shell->root);
 	return (true);

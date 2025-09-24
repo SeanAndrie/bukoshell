@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:46:38 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 22:36:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:59:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,19 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 	return (NULL);
 }
 
-void	collect_heredocs(t_redirect *head, t_map *map)
+void	collect_heredocs(t_node *node, t_map *map)
 {
+	t_redirect *head;
+
+	head = node->redirect;
 	while (head)
 	{
 		if (is_token_type(head->type, T_HEREDOC))
 			head->heredoc = handle_heredoc(head->delim, map);
 		head = head->next;
 	}
+	if (node->left)
+		collect_heredocs(node->left, map);
+	if (node->right)
+		collect_heredocs(node->right, map);
 }
