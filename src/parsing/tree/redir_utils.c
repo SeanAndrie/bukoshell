@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:46:38 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/24 20:59:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/25 01:20:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	collect_heredocs(t_node *node, t_map *map)
 {
 	t_redirect *head;
 
+	if (!node || !map)
+		return ;
 	head = node->redirect;
 	while (head)
 	{
