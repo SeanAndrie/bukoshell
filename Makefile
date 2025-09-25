@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/23 17:39:13 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/25 20:26:55 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ PARSING_MODULES := \
 	valid/validate.c valid/valid_tokens.c \
 	expand/expand.c
 
-DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_error.c print_tokens.c print_tree.c print_env.c)
+DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c print_env.c)
 PARSING_SRCS := $(addprefix $(PARSING_DIR)/,$(PARSING_MODULES))
 SIGNALS_SRCS := $(SIGNALS_DIR)/signals.c
 ENVIRON_SRCS := $(addprefix $(ENVIRON_DIR)/, environ.c environ_init.c environ_utils.c) 

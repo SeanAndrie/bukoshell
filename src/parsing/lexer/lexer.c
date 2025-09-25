@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 16:16:09 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/25 20:26:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*process_quotes(char **line_ptr, t_token_type *type)
 		(*line_ptr)++;
 	if (**line_ptr != quote)
 	{
-		print_error(ERROR_SYNTAX, "unclosed quote %c\n", quote);
+		log_error(ERROR_SYNTAX, "unclosed quote %c\n", quote);
 		return (NULL);
 	}
 	end = *line_ptr;

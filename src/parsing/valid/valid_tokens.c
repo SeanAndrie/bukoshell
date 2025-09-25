@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:32:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/25 20:26:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static bool	parse_simple_command(t_token **curr)
 			return (false);
 		consume(curr);
 		if (!*curr || !is_token_type((*curr)->type, T_WORD))
-			return (print_error(ERROR_SYNTAX, "redirection: missing target\n"),
+			return (log_error(ERROR_SYNTAX, "redirection: missing target\n"),
 				false);
 		consume(curr);
 	}
@@ -46,14 +46,14 @@ static bool	parse_compound_command(t_token **curr)
 		return (false);
 	consume(curr);
 	if (!*curr)
-		return (print_error(ERROR_SYNTAX, "nothing after '('\n"), false);
+		return (log_error(ERROR_SYNTAX, "nothing after '('\n"), false);
 	if (is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
-		return (print_error(ERROR_SYNTAX, "empty subshell '()' not allowed\n"),
+		return (log_error(ERROR_SYNTAX, "empty subshell '()' not allowed\n"),
 			false);
 	if (!parse_command_list(curr))
 		return (false);
 	if (!*curr || !is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
-		return (print_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
+		return (log_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
 	consume(curr);
 	return (true);
 }
@@ -79,7 +79,7 @@ bool	parse_command_list(t_token **curr)
 		op = *curr;
 		consume(curr);
 		if (!parse_command(curr))
-			return (print_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
+			return (log_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
 					op->lexeme), false);
 	}
 	return (true);
