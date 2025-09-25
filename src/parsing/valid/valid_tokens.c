@@ -6,11 +6,12 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 21:11:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:32:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing/valid.h>
+#include <stdbool.h>
 
 bool				parse_command_list(t_token **curr);
 static bool			parse_command(t_token **curr);
@@ -24,8 +25,6 @@ static inline void	consume(t_token **curr)
 
 static bool	parse_simple_command(t_token **curr)
 {
-	if (!*curr || !is_token_type((*curr)->type, T_WORD))
-		return (false);
 	while (*curr && is_token_type((*curr)->type, T_WORD))
 		consume(curr);
 	while (*curr && is_token_type((*curr)->type, TOKEN_REDIR_OP))

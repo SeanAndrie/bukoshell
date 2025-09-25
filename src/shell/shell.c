@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 20:22:30 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:28:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void	free_shell(t_shell *shell, bool full_free)
 		free_syntax_tree(&shell->root);
 	if (full_free)
 	{
+		if (shell->envp)
+			free_str_arr(shell->envp, -1);
+		if (shell->map)
+			free_map(shell->map);
 		free(shell);
 		clear_history();
 	}
@@ -32,14 +36,14 @@ void	free_shell(t_shell *shell, bool full_free)
 static int	shell_loop(t_shell *shell)
 {
 	char	*prompt;
+	char	*identifier;
 
+	identifier = create_identifier(shell->map);
 	while (true)
 	{
-		prompt = set_cwd_prompt(shell);
+		prompt = set_prompt(shell, identifier);
 		if (!prompt)
-			prompt = ft_strdup(PS1); 
-		if (!prompt)
-			return (1);
+			prompt = PS1;
 		shell->line = readline(prompt);
 		if (!shell->line)
 		{
@@ -48,20 +52,28 @@ static int	shell_loop(t_shell *shell)
 		}
 		if (ft_strncmp(shell->line, "exit", 4) == 0)
 			break ;
+		free(prompt);
 		add_history(shell->line);
 		shell->status = start_shell(shell);
-	}	
+	}
+	free(prompt);
+	free(identifier);
 	return (shell->status);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	int		status;
 	t_shell	*shell;
 
-	shell = init_shell();
+	(void)argc;
+	(void)argv;
+	shell = init_shell(envp);
 	if (!shell)
 		return (EXIT_FAILURE);
+	init_environ(shell->map, shell->envp);
+	// if (DEBUG_MODE)
+	// 	print_env(shell->map->order);
 	status = shell_loop(shell);
 	free_shell(shell, true);
 	return (status);

@@ -26,9 +26,10 @@ void	print_error(t_error_type type, const char *format, ...)
 	va_end(args);
 }
 
-void	print_error_conditional(t_error_type type, const char *format, bool *condition, ...)
+void	print_error_conditional(t_error_type type, const char *format,
+		bool *condition, ...)
 {
-	va_list args;
+	va_list	args;
 
 	if (*condition)
 		return ;

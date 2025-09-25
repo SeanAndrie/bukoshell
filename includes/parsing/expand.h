@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   expand.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 14:24:45 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/21 14:22:42 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/09/18 01:48:04 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/09/23 21:56:13 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef EXPAND_H
+# define EXPAND_H
 
-# include <clean.h>
-# include <expand.h>
-# include <lexer.h>
-# include <token_types.h>
-# include <tokens.h>
-# include <tree.h>
-# include <valid.h>
+# include <environ.h>
+# include <parsing/tokens.h>
+
+void	parameter_expansion(t_map *map, t_token *head);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/16 21:46:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:40:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ bool	is_valid_metachar(t_token *token)
 	if (!token->next)
 		return (print_error(ERROR_SYNTAX, "near unexpected token 'newline'\n"),
 			false);
-	if (is_token_type(token->type, TOKEN_REDIR_OP))
-	{
-		if (!is_token_type(token->next->type, TOKEN_WORD))
-			return (print_error(ERROR_SYNTAX, "near unexpected token '%s'",
-					token->next->lexeme), false);
-	}
 	if (is_token_type(token->type, T_PIPE))
 	{
 		if (!is_token_type(token->next->type, TOKEN_WORD)
@@ -45,8 +39,5 @@ bool	validate_tokens(t_token *head)
 				curr->lexeme), false);
 	if (!parse_command_list(&curr))
 		return (false);
-	if (curr != NULL)
-		return (print_error(ERROR_SYNTAX, "unexpected token '%s'\n",
-				curr->lexeme), false);
 	return (true);
 }

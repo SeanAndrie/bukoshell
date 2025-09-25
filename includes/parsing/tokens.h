@@ -3,30 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/11 18:28:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:16:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
 
-#include <stdbool.h>
-#include <token_types.h>
+# include <stdbool.h>
+# include <token_types.h>
 
-/*
-** Represents a single token in the lexical analysis phase.
-**
-** Each token corresponds to a meaningful unit in the command line input.
-** Tokens are produced by the lexer and later consumed by the parser to
-** build the syntax tree.
-**
-** @field lexeme  The actual string value of the token (e.g., "echo", "&&").
-** @field type    The token type (word, operator, redirection, etc.).
-** @field next    Pointer to the next token in the linked list.
-*/
 typedef struct s_token
 {
 	enum e_token_type	type;
@@ -94,7 +83,6 @@ bool					append_token(t_token **head, char *lexeme,
 void					remove_tokens(t_token **head,
 							t_token_type type_to_remove);
 
-
 /*
 ** Checks if a given token type matches one or more categories based
 ** on the provided bitmask. Returns true if all bits in the mask are
@@ -122,6 +110,4 @@ bool					is_token_type(t_token_type type,
 */
 unsigned int			create_token_mask(t_token *head);
 
-bool					append_token_list(t_token **head, t_token *new_tokens);
-char					*tokens_to_str(t_token *head);
 #endif

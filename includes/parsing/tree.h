@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/10 02:00:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/24 21:00:08 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,8 @@
 # define TREE_H
 
 # include <tokens.h>
+# include <environ.h>
 
-/*
-** Enum representing the different types of nodes in the syntax tree.
-**
-** @enum N_COMMAND   - A command node (e.g., "echo hello").
-** @enum N_OPERATOR  - An operator node (e.g., "&&", "||", "|").
-** @enum N_SUBSHELL  - A subshell node, representing grouped commands (e.g., "(cmd1 && cmd2)").
-*/
 typedef enum e_node_type
 {
 	N_COMMAND,
@@ -29,35 +23,16 @@ typedef enum e_node_type
 	N_SUBSHELL,
 }						t_node_type;
 
-/*
-** Represents a single I/O redirection in a command.
-**
-** Each node corresponds to a redirection operator (>, >>, <, <<) and
-** the associated file or descriptor.
-**
-** @field fd     - File descriptor associated with the redirection (e.g., 0 for stdin, 1 for stdout).
-** @field fname  - Target file name for the redirection.
-** @field next   - Pointer to the next redirection in the linked list.
-*/
 typedef struct s_redirect
 {
 	int					fd;
+	enum e_token_type	type;
 	char				*fname;
+	struct s_token		*delim;
+	char				*heredoc;
 	struct s_redirect	*next;
 }						t_redirect;
 
-/*
-** Represents a node in the abstract syntax tree (AST) used by the parser.
-**
-** Each node corresponds to either a command, an operator, or a subshell.
-**
-** @field type      - The type of node (command, operator, or subshell).
-** @field left      - Pointer to the left child node (used for binary operators).
-** @field right     - Pointer to the right child node.
-** @field argv      - Null-terminated array of strings representing command arguments.
-** @field operand   - The token/operator associated with this node (e.g., &&, ||, |).
-** @field redirect  - Linked list of I/O redirections for this command.
-*/
 typedef struct s_node
 {
 	enum e_node_type	type;
@@ -65,7 +40,7 @@ typedef struct s_node
 	struct s_node		*right;
 	char				**argv;
 	enum e_token_type	operand;
-	t_redirect			*redirect;
+	struct s_redirect	*redirect;
 }						t_node;
 
 /*
@@ -164,5 +139,7 @@ void					track_depth(t_token *head, int *depth);
 **               or NULL if none is found.
 */
 t_token					*find_lowest_precedence(t_token *start, t_token *end);
+
+void					collect_heredocs(t_node *node, t_map *map);
 
 #endif

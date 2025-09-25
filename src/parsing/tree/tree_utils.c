@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing/tokens.h>
-#include <parsing/clean.h>
-#include <parsing/tree.h>
 #include <libft.h>
+#include <parsing/clean.h>
+#include <parsing/tokens.h>
+#include <parsing/tree.h>
 
 static char	**alloc_argv(t_token *head, size_t n)
 {
