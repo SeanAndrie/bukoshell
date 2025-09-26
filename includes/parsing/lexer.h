@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:20:02 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:30:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/26 18:00:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char			*process_parameter(char **line_ptr, t_token_type *type);
 char			*process_grouping(char **line_ptr, t_token_type *type);
 char			*process_operator(char **line_ptr, t_token_type *type);
 
-bool			handle_concatenation(t_token **head);
+bool	        normalize_and_validate(t_token **head);
 t_token_type	categorize_ctrl_op(char c, bool is_double);
 t_token_type	categorize_redirection(char c, bool is_double);
 

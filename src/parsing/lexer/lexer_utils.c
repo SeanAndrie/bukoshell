@@ -6,17 +6,40 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 14:34:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:58:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <expand.h>
 #include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
+#include <parsing/valid.h>
 #include <stdbool.h>
 #include <stdio.h>
 
-bool	handle_concatenation(t_token **head)
+static bool	handle_arithmetic(t_token **head)
+{
+	t_token	**curr;
+
+	curr = head;
+	while (*curr)
+	{
+		if (is_token_type((*curr)->type, TOKEN_ARITH_CLOSE))
+		{
+			if (!(*curr)->next)
+				return (false);
+			(*curr)->type &= ~TOKEN_ARITH_CLOSE;
+			(*curr)->next->type |= TOKEN_ARITH_CLOSE;
+			curr = &(*curr)->next->next;
+		}
+		else
+			curr = &(*curr)->next;
+	}
+	return (true);
+}
+
+static bool	handle_concatenation(t_token **head)
 {
 	t_token	**curr;
 	t_token	*popped;
@@ -42,6 +65,27 @@ bool	handle_concatenation(t_token **head)
 		}
 		curr = &(*curr)->next;
 	}
+	return (true);
+}
+
+bool	normalize_and_validate(t_token **head, t_map *map)
+{
+	unsigned int token_mask;
+	
+	token_mask = 0;
+	if (!handle_concatenation(head))
+		return (false);
+	remove_tokens(head, TOKEN_WHITESPACE);
+	token_mask = create_token_mask(*head);
+	if (token_mask & TOKEN_WORD)
+		parameter_expansion(map, *head);
+	if (token_mask & TOKEN_ARITH)
+	{
+		if (!handle_arithmetic(head))
+			return (false);
+	}
+	if (!validate_tokens(*head))
+		return (false);
 	return (true);
 }
 

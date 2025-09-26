@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/18 12:23:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:56:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ unsigned int	create_token_mask(t_token *head)
 	return (mask);
 }
 
-t_token	*create_tokens(char *line)
+t_token	*create_tokens(char *line, t_map *map)
 {
 	t_token_type	type;
 	t_token			*head;
@@ -56,5 +56,7 @@ t_token	*create_tokens(char *line)
 			return (free(lexeme), free_tokens(&head), NULL);
 		free(lexeme);
 	}
+	if (!normalize_and_validate(&head, map))
+		return (free_tokens(&head), NULL);
 	return (head);
 }

@@ -36,7 +36,7 @@ bool	validate_tokens(t_token *head)
 	curr = head;
 	if (curr && is_token_type(curr->type, TOKEN_CTRL_OP))
 		return (log_error(ERROR_SYNTAX, "unexpected operator '%s'\n",
-			curr->lexeme), false);
+				curr->lexeme), false);
 	if (!parse_command_list(&curr))
 		return (false);
 	return (true);

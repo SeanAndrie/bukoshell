@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   valid_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/25 20:26:30 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/26 16:56:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing/valid.h>
 #include <stdbool.h>
+#include <parsing/valid.h>
 
 bool				parse_command_list(t_token **curr);
 static bool			parse_command(t_token **curr);
@@ -78,9 +78,11 @@ bool	parse_command_list(t_token **curr)
 	{
 		op = *curr;
 		consume(curr);
-		if (!parse_command(curr))
+		if (!*curr || is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 			return (log_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
 					op->lexeme), false);
+		if (!parse_command(curr))
+			return (false);
 	}
 	return (true);
 }

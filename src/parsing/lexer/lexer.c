@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/25 20:26:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/26 14:56:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,23 @@ char	*process_quotes(char **line_ptr, t_token_type *type)
 char	*process_grouping(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
+	char	paren;
 
 	if (**line_ptr == '\'' || **line_ptr == '"')
 		return (process_quotes(line_ptr, type));
-	if (**line_ptr == '(')
+	paren = **line_ptr;
+	if (paren == '(')
 		*type = T_LPAREN;
-	else if (**line_ptr == ')')
+	else if (paren == ')')
 		*type = T_RPAREN;
+	if (*(*line_ptr + 1) && *(*line_ptr + 1) == paren)
+	{
+		*type |= TOKEN_ARITH; 
+		if (*(*line_ptr) == '(')
+			*type |= TOKEN_ARITH_OPEN;
+		else
+			*type |= TOKEN_ARITH_CLOSE;
+	}
 	lexeme = ft_calloc(2, sizeof(char));
 	if (!lexeme)
 		return (NULL);
