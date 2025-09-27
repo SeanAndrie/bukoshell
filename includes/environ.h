@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 17:55:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:25:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define ENVIRON_H
 
 # include <libft.h>
-# include <stdbool.h>
+# include <boolean.h>
 
 # define LOAD_THRESHOLD 0.75
 
@@ -42,9 +42,9 @@ t_map					*create_map(size_t size);
 t_environ				*create_entry(char *key, char *value);
 void					append_entry(t_environ **head, t_environ *node);
 
-bool					delete_entry(t_map *map, char *key);
+t_bool					delete_entry(t_map *map, char *key);
 t_environ				*search_entry(t_map *map, char *key);
-bool					insert_entry(t_map *map, char *key, char *value);
+t_bool					insert_entry(t_map *map, char *key, char *value);
 
 void					free_map(t_map *map);
 #endif

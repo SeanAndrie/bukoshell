@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/25 01:51:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:37:04 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,24 @@ static t_redirect	*create_redirect(t_token *token)
 	return (redir);
 }
 
-static bool	append_redirect(t_redirect **head, t_token *token)
+static t_bool	append_redirect(t_redirect **head, t_token *token)
 {
 	t_redirect	*node;
 	t_redirect	*last;
 
 	node = create_redirect(token);
 	if (!node)
-		return (false);
+		return (FALSE);
 	if (!*head)
 	{
 		*head = node;
-		return (true);
+		return (TRUE);
 	}
 	last = *head;
 	while (last->next)
 		last = last->next;
 	last->next = node;
-	return (true);
+	return (TRUE);
 }
 
 t_redirect	*create_redirections(t_token *head)

@@ -6,83 +6,94 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 16:56:58 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:38:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
 #include <parsing/valid.h>
+#include <boolean.h>
 
-bool				parse_command_list(t_token **curr);
-static bool			parse_command(t_token **curr);
-static bool			parse_compound_command(t_token **curr);
+t_bool		parse_command_list(t_token **curr);
+static t_bool	parse_command(t_token **curr);
+static t_bool	parse_compound_command(t_token **curr);
 
-static inline void	consume(t_token **curr)
+t_bool	is_valid_metachar(t_token *token)
 {
-	if (*curr)
-		*curr = (*curr)->next;
+	if (!is_token_type(token->type, TOKEN_METACHAR))
+		return (TRUE);
+	if (!token->next)
+		return (log_error(ERROR_SYNTAX, "near unexpected token 'newline'\n"),
+			FALSE);
+	if (is_token_type(token->type, T_PIPE))
+	{
+		if (!is_token_type(token->next->type, TOKEN_WORD)
+			&& !is_token_type(token->next->type, TOKEN_GROUP_OPEN))
+			return (log_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
+					token->next->lexeme), FALSE);
+	}
+	return (TRUE);
 }
 
-static bool	parse_simple_command(t_token **curr)
+static t_bool	parse_simple_command(t_token **curr)
 {
 	while (*curr && is_token_type((*curr)->type, T_WORD))
 		consume(curr);
 	while (*curr && is_token_type((*curr)->type, TOKEN_REDIR_OP))
 	{
 		if (!is_valid_metachar(*curr))
-			return (false);
+			return (FALSE);
 		consume(curr);
 		if (!*curr || !is_token_type((*curr)->type, T_WORD))
 			return (log_error(ERROR_SYNTAX, "redirection: missing target\n"),
-				false);
+				FALSE);
 		consume(curr);
 	}
-	return (true);
+	return (TRUE);
 }
 
-static bool	parse_compound_command(t_token **curr)
+static t_bool	parse_compound_command(t_token **curr)
 {
 	if (!*curr || !is_token_type((*curr)->type, TOKEN_GROUP_OPEN))
-		return (false);
+		return (FALSE);
 	consume(curr);
 	if (!*curr)
-		return (log_error(ERROR_SYNTAX, "nothing after '('\n"), false);
+		return (log_error(ERROR_SYNTAX, "nothing after '('\n"), FALSE);
 	if (is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 		return (log_error(ERROR_SYNTAX, "empty subshell '()' not allowed\n"),
-			false);
+			FALSE);
 	if (!parse_command_list(curr))
-		return (false);
+		return (FALSE);
 	if (!*curr || !is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
-		return (log_error(ERROR_SYNTAX, "unmatched ')'\n"), false);
+		return (log_error(ERROR_SYNTAX, "unmatched ')'\n"), FALSE);
 	consume(curr);
-	return (true);
+	return (TRUE);
 }
 
-static bool	parse_command(t_token **curr)
+static t_bool	parse_command(t_token **curr)
 {
 	if (!*curr)
-		return (false);
+		return (FALSE);
 	if (is_token_type((*curr)->type, TOKEN_GROUP_OPEN))
 		return (parse_compound_command(curr));
 	else
 		return (parse_simple_command(curr));
 }
 
-bool	parse_command_list(t_token **curr)
+t_bool	parse_command_list(t_token **curr)
 {
 	t_token	*op;
 
 	if (!parse_command(curr))
-		return (false);
+		return (FALSE);
 	while (*curr && is_token_type((*curr)->type, TOKEN_CTRL_OP))
 	{
 		op = *curr;
 		consume(curr);
 		if (!*curr || is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 			return (log_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
-					op->lexeme), false);
+					op->lexeme), FALSE);
 		if (!parse_command(curr))
-			return (false);
+			return (FALSE);
 	}
-	return (true);
+	return (TRUE);
 }

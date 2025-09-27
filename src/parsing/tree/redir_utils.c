@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:46:38 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/25 01:20:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:37:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 
 	new = ft_strdup("");
 	if (!new)
-		return (false);
-	while (true)
+		return (NULL);
+	while (TRUE)
 	{
 		line = readline("> ");
 		if (!line)

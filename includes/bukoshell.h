@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 17:55:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:39:15 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # 	define PS1 "(\e[1mbukoshell\e[m) %"
 # endif
 
-# define DEBUG_MODE true
+# define DEBUG_MODE TRUE 
 
 typedef struct s_shell
 {
@@ -38,6 +38,7 @@ typedef struct s_shell
 	struct s_node	*root;
 	int				status;
 	char			**envp;
+	unsigned int	token_mask;
 	char			cwd[PATH_MAX];
 }					t_shell;
 
@@ -49,6 +50,6 @@ char				*create_identifier(t_map *map);
 t_map				*realloc_map(t_map *map, char **envp);
 char				*set_prompt(t_shell *shell, char *identifier);
 
-void				free_shell(t_shell *shell, bool full_free);
+void				free_shell(t_shell *shell, t_bool full_free);
 
 #endif

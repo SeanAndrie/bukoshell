@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/25 20:26:55 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/09/27 00:16:06 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ PARSING_MODULES := \
 	lexer/lexer.c lexer/lexer_utils.c \
 	tokens/tokens.c tokens/token_utils.c \
 	tree/tree.c tree/tree_utils.c tree/redir_init.c tree/redir_utils.c \
-	valid/validate.c valid/valid_tokens.c \
+	valid/validate.c valid/valid_tokens.c valid/valid_arith.c \
 	expand/expand.c
 
 DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c print_env.c)

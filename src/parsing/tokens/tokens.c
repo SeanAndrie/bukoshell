@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 17:56:18 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:41:11 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <parsing/lexer.h>
 #include <parsing/tokens.h>
 
-bool	is_token_type(t_token_type type, unsigned int category_mask)
+t_bool	is_token_type(t_token_type type, unsigned int category_mask)
 {
 	return ((type & category_mask) == category_mask);
 }
@@ -33,7 +33,23 @@ unsigned int	create_token_mask(t_token *head)
 	return (mask);
 }
 
-t_token	*create_tokens(char *line, t_map *map)
+t_token *copy_tokens(t_token *start, t_token *end)
+{
+	t_token *copy;
+	t_token *curr;
+
+	copy = NULL;
+	curr = start;
+	while (curr && curr != end)
+	{
+		if (!append_token(&copy, curr->lexeme, curr->type))
+			return (free_tokens(&copy), NULL);
+		curr = curr->next;
+	}
+	return (copy);
+}
+
+t_token	*create_tokens(char *line)
 {
 	t_token_type	type;
 	t_token			*head;
@@ -56,7 +72,5 @@ t_token	*create_tokens(char *line, t_map *map)
 			return (free(lexeme), free_tokens(&head), NULL);
 		free(lexeme);
 	}
-	if (!normalize_and_validate(&head, map))
-		return (free_tokens(&head), NULL);
 	return (head);
 }

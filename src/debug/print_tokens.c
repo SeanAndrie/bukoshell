@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 14:57:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 03:31:32 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,15 @@ static void	print_token_redirection(t_token_type type)
 
 static void print_token_group(t_token_type type)
 {
-	if (is_token_type(type, T_LPAREN))
-	{
-		ft_printf("LPAREN");
-		if (is_token_type(type, TOKEN_ARITH_OPEN))
-			ft_printf(" (ARITH START)");
-	}
-	else if (is_token_type(type, T_RPAREN))
-	{
-		ft_printf("RPAREN");
-		if (is_token_type(type, TOKEN_ARITH_CLOSE))
-			ft_printf(" (ARITH END)");
-	}
+    if (is_token_type(type, T_LPAREN))
+        ft_printf("LPAREN");
+    else if (is_token_type(type, T_RPAREN))
+        ft_printf("RPAREN");
+    if (is_token_type(type, TOKEN_ARITH))
+        ft_printf(" (ARITH BLOCK)");
+    else if (is_token_type(type, TOKEN_SUBSHELL))
+        ft_printf(" (SUBSHELL BLOCK)");
 }
-
 
 static void	print_token_word(t_token_type type)
 {
@@ -67,7 +62,7 @@ static void	print_token_word(t_token_type type)
 		ft_printf("WHITESPACE");
 }
 
-void	print_tokens(t_token *head, bool show_whitespace)
+void	print_tokens(t_token *head, t_bool show_whitespace)
 {
 	ft_printf("\nTokens:\n");
 	while (head)

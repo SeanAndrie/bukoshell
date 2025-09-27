@@ -6,13 +6,13 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 12:49:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:32:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <boolean.h>
 #include <parsing/tokens.h>
-#include <stdbool.h>
 
 static t_token	*create_token(char *lexeme, t_token_type type)
 {
@@ -32,24 +32,24 @@ static t_token	*create_token(char *lexeme, t_token_type type)
 	return (token);
 }
 
-bool	append_token(t_token **head, char *lexeme, t_token_type type)
+t_bool	append_token(t_token **head, char *lexeme, t_token_type type)
 {
 	t_token	*token;
 	t_token	*last_token;
 
 	token = create_token(lexeme, type);
 	if (!token)
-		return (false);
+		return (FALSE);
 	if (!*head)
 	{
 		*head = token;
-		return (true);
+		return (TRUE);
 	}
 	last_token = *head;
 	while (last_token->next)
 		last_token = last_token->next;
 	last_token->next = token;
-	return (true);
+	return (TRUE);
 }
 
 t_token	*concat_tokens(t_token *head, t_token_type concat_type)

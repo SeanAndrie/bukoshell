@@ -6,13 +6,13 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 17:41:54 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:35:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 
-void	free_shell(t_shell *shell, bool full_free)
+void	free_shell(t_shell *shell, t_bool full_free)
 {
 	if (!shell)
 		return ;
@@ -39,7 +39,7 @@ static int	shell_loop(t_shell *shell)
 	char	*identifier;
 
 	identifier = create_identifier(shell->map);
-	while (true)
+	while (TRUE)
 	{
 		prompt = set_prompt(shell, identifier);
 		if (!prompt)
@@ -75,6 +75,6 @@ int	main(int argc, char **argv, char **envp)
 	// if (DEBUG_MODE)
 	// 	print_env(shell->map->order);
 	status = shell_loop(shell);
-	free_shell(shell, true);
+	free_shell(shell, TRUE);
 	return (status);
 }

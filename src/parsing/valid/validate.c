@@ -3,41 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/25 20:27:18 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:31:20 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parsing/clean.h>
 #include <parsing/valid.h>
 
-bool	is_valid_metachar(t_token *token)
+void	consume(t_token **curr)
 {
-	if (!is_token_type(token->type, TOKEN_METACHAR))
-		return (true);
-	if (!token->next)
-		return (log_error(ERROR_SYNTAX, "near unexpected token 'newline'\n"),
-			false);
-	if (is_token_type(token->type, T_PIPE))
-	{
-		if (!is_token_type(token->next->type, TOKEN_WORD)
-			&& !is_token_type(token->next->type, TOKEN_GROUP_OPEN))
-			return (log_error(ERROR_SYNTAX, "near unexpected token '%s'\n",
-					token->next->lexeme), false);
-	}
-	return (true);
+	if (*curr)
+		*curr = (*curr)->next;
 }
 
-bool	validate_tokens(t_token *head)
+t_bool	validate_tokens(t_token *head)
 {
 	t_token	*curr;
 
 	curr = head;
 	if (curr && is_token_type(curr->type, TOKEN_CTRL_OP))
 		return (log_error(ERROR_SYNTAX, "unexpected operator '%s'\n",
-				curr->lexeme), false);
+				curr->lexeme), FALSE);
 	if (!parse_command_list(&curr))
-		return (false);
-	return (true);
+		return (FALSE);
+	return (TRUE);
 }

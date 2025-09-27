@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 14:56:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 03:02:35 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*process_operator(char **line_ptr, t_token_type *type)
 {
 	size_t	len;
 	char	*lexeme;
-	bool	is_double;
+	t_bool	is_double;
 
 	len = 1;
 	is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
@@ -72,23 +72,13 @@ char	*process_quotes(char **line_ptr, t_token_type *type)
 char	*process_grouping(char **line_ptr, t_token_type *type)
 {
 	char	*lexeme;
-	char	paren;
 
 	if (**line_ptr == '\'' || **line_ptr == '"')
 		return (process_quotes(line_ptr, type));
-	paren = **line_ptr;
-	if (paren == '(')
+	if (**line_ptr == '(')
 		*type = T_LPAREN;
-	else if (paren == ')')
+	else if (**line_ptr == ')')
 		*type = T_RPAREN;
-	if (*(*line_ptr + 1) && *(*line_ptr + 1) == paren)
-	{
-		*type |= TOKEN_ARITH; 
-		if (*(*line_ptr) == '(')
-			*type |= TOKEN_ARITH_OPEN;
-		else
-			*type |= TOKEN_ARITH_CLOSE;
-	}
 	lexeme = ft_calloc(2, sizeof(char));
 	if (!lexeme)
 		return (NULL);

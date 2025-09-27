@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.h                                            :+:      :+:    :+:   */
+/*   boolean.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 17:50:32 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:40:04 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/09/27 01:18:57 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/09/27 01:30:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEBUG_H
-# define DEBUG_H
+#ifndef BOOLEAN_H
+# define BOOLEAN_H
 
-# include <environ.h>
-# include <tokens.h>
-# include <libft.h>
-# include <tree.h>
-
-void	print_env(t_environ *head);
-void	print_entry_info(t_environ *entry);
-
-void	print_syntax_tree(t_node *node);
-void	print_tokens(t_token *head, t_bool show_whitespace);
+typedef enum e_bool
+{
+    FALSE = 0,
+    TRUE = 1
+}               t_bool;
 
 #endif

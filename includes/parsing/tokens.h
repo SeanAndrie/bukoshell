@@ -6,14 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/26 18:00:19 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:28:40 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
 
-# include <stdbool.h>
+// # include <stdt_bool.h>
+# include <boolean.h>
 # include <token_types.h>
 
 typedef struct s_token
@@ -68,7 +69,7 @@ t_token					*pop_token_type(t_token **head, t_token_type type);
 ** @return         true if the token was successfully created and appended,
 **                 false if memory allocation for the token fails.
 */
-bool					append_token(t_token **head, char *lexeme,
+t_bool					append_token(t_token **head, char *lexeme,
 							t_token_type type);
 
 /*
@@ -93,7 +94,7 @@ void					remove_tokens(t_token **head,
 ** @return                true if the token type matches the category mask,
 **                        false otherwise.
 */
-bool					is_token_type(t_token_type type,
+t_bool					is_token_type(t_token_type type,
 							unsigned int category_mask);
 
 /*
@@ -109,5 +110,7 @@ bool					is_token_type(t_token_type type,
 **              or 0 if the list is empty.
 */
 unsigned int			create_token_mask(t_token *head);
+
+t_token 				*copy_tokens(t_token *start, t_token *end);
 
 #endif

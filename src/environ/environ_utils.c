@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/21 13:05:53 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 01:33:03 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,42 +59,42 @@ t_environ	*search_entry(t_map *map, char *key)
 	return (NULL);
 }
 
-bool	insert_entry(t_map *map, char *key, char *value)
+t_bool	insert_entry(t_map *map, char *key, char *value)
 {
 	size_t		index;
 	t_environ	*entry;
 	t_environ	*order_entry;
 
 	if (!map || !map->entries || !key)
-		return (false);
+		return (FALSE);
 	entry = create_entry(key, value);
 	if (!entry)
-		return (false);
+		return (FALSE);
 	order_entry = create_entry(entry->key, entry->value);
 	if (!order_entry)
-		return (free(entry), false);
+		return (free(entry), FALSE);
 	index = hash_djb2(key) % map->capacity;
 	append_entry(&map->entries[index], entry);
 	append_entry(&map->order, order_entry);
 	map->size++;
 	map->load_factor = (double)map->size / (double)map->capacity;
-	return (true);
+	return (TRUE);
 }
 
-bool	delete_entry(t_map *map, char *key)
+t_bool	delete_entry(t_map *map, char *key)
 {
 	size_t		index;
 	t_environ	*entry;
 
 	if (!map || !map->entries || !key)
-		return (false);
+		return (FALSE);
 	index = hash_djb2(key) % map->capacity;
 	entry = map->entries[index];
 	if (!entry)
-		return (false);
+		return (FALSE);
 	clear_entry(&map->entries[index], key);
 	clear_entry(&map->order, key);
 	map->size--;
 	map->load_factor = (double)map->size / (double)map->capacity;
-	return (true);
+	return (TRUE);
 }
