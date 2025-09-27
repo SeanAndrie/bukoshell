@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 03:54:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/27 05:36:25 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ static t_bool	parse_prompt(t_shell *shell)
 		return (FALSE);
 	shell->token_mask = create_token_mask(shell->head);
 	handle_arithmetic(&shell->head);
-	if (!validate_arithmetic(shell->head, NULL))
-		return (FALSE);
+	if (shell->token_mask & TOKEN_ARITH)
+	{
+		if (!validate_arithmetic(shell->head, NULL))
+			return (FALSE);
+	}
 	if (DEBUG_MODE)
 		print_tokens(shell->head, TRUE);
 	shell->root = create_syntax_tree(shell->head, NULL);
