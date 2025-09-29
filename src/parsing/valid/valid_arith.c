@@ -22,7 +22,7 @@ t_bool	is_valid_arithmetic(t_token *start, t_token *end)
 	if (!trim)
 		return (FALSE);
 	remove_tokens(&trim, TOKEN_ARITH);
-	print_tokens(trim, FALSE); 
+	print_tokens(trim, FALSE);
 	mask = create_token_mask(trim);
 	if (!(mask & TOKEN_CTRL_OP))
 		return (free_tokens(&trim), FALSE);
