@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 05:36:25 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/30 00:54:06 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,13 @@ static t_bool	parse_prompt(t_shell *shell)
 	shell->head = create_tokens(shell->line);
 	if (!shell->head)
 		return (FALSE);
-	parameter_expansion(shell->map, shell->head);
-	if (!handle_concatenation(&shell->head))
+	if (!normalize_tokens(shell->map, shell->head))
 		return (FALSE);
-	remove_tokens(&shell->head, TOKEN_WHITESPACE);
-	if (!validate_tokens(shell->head))
-		return (FALSE);
-	shell->token_mask = create_token_mask(shell->head);
 	handle_arithmetic(&shell->head);
-	if (shell->token_mask & TOKEN_ARITH)
-	{
-		if (!validate_arithmetic(shell->head, NULL))
-			return (FALSE);
-	}
+	shell->token_mask = create_token_mask(shell->head);
+	if (is_arithmetic(shell->head))
+		return (log_error(ERROR_SYNTAX, ERR_BASE,
+				"arithmetic expressions are not supported.\n"), FALSE);
 	if (DEBUG_MODE)
 		print_tokens(shell->head, TRUE);
 	shell->root = create_syntax_tree(shell->head, NULL);
@@ -70,6 +64,7 @@ int	start_shell(t_shell *shell)
 		free_shell(shell, FALSE);
 		return (2);
 	}
+	shell->token_mask = 0;
 	free_shell(shell, FALSE);
 	return (shell->status);
 }
