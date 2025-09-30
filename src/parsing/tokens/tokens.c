@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:41:11 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:43:03 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ t_token	*copy_tokens(t_token *start, t_token *end)
 t_bool	normalize_tokens(t_map *map, t_token *head)
 {
 	parameter_expansion(map, head);
-	if (!handle_concatenation(&head, TOKEN_WORD, TOKEN_WORD))
+	if (!handle_concatenation(&head, TOKEN_WORD))
 		return (FALSE);
 	remove_tokens(&head, TOKEN_WHITESPACE);
+	handle_arithmetic(&head);
 	if (!validate_tokens(head))
 		return (FALSE);
 	return (TRUE);

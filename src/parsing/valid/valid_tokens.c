@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   valid_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/29 13:48:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:15:23 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <boolean.h>
 #include <parsing/valid.h>
 
-t_bool			parse_command_list(t_token **curr, t_bool in_group);
-static t_bool	parse_command(t_token **curr, t_bool in_group);
-static t_bool	parse_compound_command(t_token **curr, t_bool in_group);
+static t_bool	parse_command(t_token **curr, int *depth);
+t_bool			parse_command_list(t_token **curr, int *depth);
+static t_bool	parse_compound_command(t_token **curr, int *depth);
 
 t_bool	is_valid_metachar(t_token *token)
 {
@@ -35,7 +35,7 @@ t_bool	is_valid_metachar(t_token *token)
 	return (TRUE);
 }
 
-static t_bool	parse_simple_command(t_token **curr, t_bool in_group)
+static t_bool	parse_simple_command(t_token **curr)
 {
 	while (*curr && is_token_type((*curr)->type, T_WORD))
 		consume(curr);
@@ -49,13 +49,10 @@ static t_bool	parse_simple_command(t_token **curr, t_bool in_group)
 					"redirection: missing target\n"), FALSE);
 		consume(curr);
 	}
-	if (*curr && !in_group && is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
-		return (log_error(ERROR_SYNTAX, ERR_BASE,
-				"near unexpected token '%s'\n", (*curr)->lexeme), FALSE);
 	return (TRUE);
 }
 
-static t_bool	parse_compound_command(t_token **curr, t_bool in_group)
+static t_bool	parse_compound_command(t_token **curr, int *depth)
 {
 	if (!*curr || !is_token_type((*curr)->type, TOKEN_GROUP_OPEN))
 		return (FALSE);
@@ -66,32 +63,33 @@ static t_bool	parse_compound_command(t_token **curr, t_bool in_group)
 	if (is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 		return (log_error(ERROR_SYNTAX, ERR_BASE,
 				"empty subshell '()' not allowed\n"), FALSE);
-	if (!parse_command_list(curr, in_group))
+	if (!parse_command_list(curr, depth))
 		return (FALSE);
 	if (!*curr || !is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 		return (log_error(ERROR_SYNTAX, ERR_BASE, "unmatched ')'\n"), FALSE);
 	consume(curr);
+	(*depth)--;
 	return (TRUE);
 }
 
-static t_bool	parse_command(t_token **curr, t_bool in_group)
+static t_bool	parse_command(t_token **curr, int *depth)
 {
 	if (!*curr)
 		return (FALSE);
 	if (is_token_type((*curr)->type, TOKEN_GROUP_OPEN))
 	{
-		in_group = TRUE;
-		return (parse_compound_command(curr, in_group));
+		(*depth)++;
+		return (parse_compound_command(curr, depth));
 	}
 	else
-		return (parse_simple_command(curr, in_group));
+		return (parse_simple_command(curr));
 }
 
-t_bool	parse_command_list(t_token **curr, t_bool in_group)
+t_bool	parse_command_list(t_token **curr, int *depth)
 {
 	t_token	*op;
 
-	if (!parse_command(curr, in_group))
+	if (!parse_command(curr, depth))
 		return (FALSE);
 	while (*curr && is_token_type((*curr)->type, TOKEN_CTRL_OP))
 	{
@@ -100,7 +98,7 @@ t_bool	parse_command_list(t_token **curr, t_bool in_group)
 		if (!*curr || is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 			return (log_error(ERROR_SYNTAX, ERR_BASE,
 					"near unexpected token '%s'\n", op->lexeme), FALSE);
-		if (!parse_command(curr, in_group))
+		if (!parse_command(curr, depth))
 			return (FALSE);
 	}
 	return (TRUE);

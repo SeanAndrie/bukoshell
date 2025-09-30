@@ -36,16 +36,16 @@ static void	print_token_redirection(t_token_type type)
 		ft_printf("HEREDOC");
 }
 
-static void print_token_group(t_token_type type)
+static void	print_token_group(t_token_type type)
 {
-    if (is_token_type(type, T_LPAREN))
-        ft_printf("LPAREN");
-    else if (is_token_type(type, T_RPAREN))
-        ft_printf("RPAREN");
-    if (is_token_type(type, TOKEN_ARITH))
-        ft_printf(" (ARITH BLOCK)");
-    else if (is_token_type(type, TOKEN_SUBSHELL))
-        ft_printf(" (SUBSHELL BLOCK)");
+	if (is_token_type(type, T_LPAREN))
+		ft_printf("LPAREN");
+	else if (is_token_type(type, T_RPAREN))
+		ft_printf("RPAREN");
+	if (is_token_type(type, TOKEN_ARITH))
+		ft_printf(" (ARITH BLOCK)");
+	else if (is_token_type(type, TOKEN_SUBSHELL))
+		ft_printf(" (SUBSHELL BLOCK)");
 }
 
 static void	print_token_word(t_token_type type)

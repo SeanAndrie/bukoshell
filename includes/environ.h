@@ -13,8 +13,8 @@
 #ifndef ENVIRON_H
 # define ENVIRON_H
 
-# include <libft.h>
 # include <boolean.h>
+# include <libft.h>
 
 # define LOAD_THRESHOLD 0.75
 

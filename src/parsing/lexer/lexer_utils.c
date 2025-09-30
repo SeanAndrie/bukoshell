@@ -6,40 +6,41 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/30 00:51:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:41:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <stdio.h>
-#include <expand.h>
 #include <boolean.h>
+#include <expand.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/valid.h>
+#include <stdio.h>
 
-void handle_arithmetic(t_token **head)
+void	handle_arithmetic(t_token **head)
 {
-    t_token *curr;
-	
+	t_token	*curr;
+
 	curr = *head;
-	while (curr)	
+	while (curr)
 	{
-		if (curr->next && is_token_type(curr->type, TOKEN_GROUP) &&
-			is_token_type(curr->next->type, TOKEN_GROUP))
+		if (curr->next && is_token_type(curr->type, TOKEN_GROUP)
+			&& is_token_type(curr->next->type, TOKEN_GROUP))
 		{
 			curr->type |= TOKEN_ARITH;
 			curr->next->type |= TOKEN_ARITH;
 			curr = curr->next->next;
-			continue;
-		}	
-		if (is_token_type(curr->type, TOKEN_GROUP) && !is_token_type(curr->type, TOKEN_ARITH))
+			continue ;
+		}
+		if (is_token_type(curr->type, TOKEN_GROUP) && !is_token_type(curr->type,
+				TOKEN_ARITH))
 			curr->type |= TOKEN_SUBSHELL;
 		curr = curr->next;
 	}
 }
 
-t_bool	handle_concatenation(t_token **head, t_token_type type_to_concat, t_token_type concat_type)
+t_bool	handle_concatenation(t_token **head, t_token_type concat_type)
 {
 	t_token	**curr;
 	t_token	*popped;
@@ -48,19 +49,19 @@ t_bool	handle_concatenation(t_token **head, t_token_type type_to_concat, t_token
 	curr = head;
 	while (*curr)
 	{
-		if (is_token_type((*curr)->type, type_to_concat))
+		if ((*curr)->next && is_token_type((*curr)->type, concat_type))
 		{
-			if ((*curr)->next && is_token_type((*curr)->next->type, type_to_concat))
+			if (is_token_type((*curr)->next->type, concat_type))
 			{
-				popped = pop_token_type(curr, type_to_concat);
+				popped = pop_token_type(curr, concat_type);
 				if (!popped)
 					return (FALSE);
 				concat = concat_tokens(popped, concat_type);
 				free_tokens(&popped);
-				if (!concat) 
-                    return (FALSE); 
-                concat->next = *curr;
-                *curr = concat;
+				if (!concat)
+					return (FALSE);
+				concat->next = *curr;
+				*curr = concat;
 			}
 		}
 		curr = &(*curr)->next;

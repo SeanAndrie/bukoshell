@@ -13,9 +13,9 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-#include <signal.h>
+# include <signal.h>
 
-void    rl_replace_line(const char *text, int clear_undo);
+void	rl_replace_line(const char *text, int clear_undo);
 void	handle_signals(void);
 
 #endif

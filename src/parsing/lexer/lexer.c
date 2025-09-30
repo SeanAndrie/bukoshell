@@ -77,7 +77,7 @@ char	*process_grouping(char **line_ptr, t_token_type *type)
 		return (process_quotes(line_ptr, type));
 	if (**line_ptr == '(')
 		*type = T_LPAREN;
-    else if (**line_ptr == ')')
+	else if (**line_ptr == ')')
 		*type = T_RPAREN;
 	lexeme = ft_calloc(2, sizeof(char));
 	if (!lexeme)

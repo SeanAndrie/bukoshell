@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/30 01:04:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:51:29 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ typedef struct s_token
 ** @param map   A mapping structure (e.g., environment variables) used
 **              during normalization.
 ** @param head  Pointer to the head of the token list to normalize.
-** @return      true if normalization succeeds, false on memory or processing errors.
+** @return      true if normalization succeeds,
+	false on memory or processing errors.
 */
-t_bool          normalize_tokens(t_map *map, t_token *head);
+t_bool					normalize_tokens(t_map *map, t_token *head);
 
 /*
 ** Creates a single token with the specified lexeme and type.
@@ -42,9 +43,10 @@ t_bool          normalize_tokens(t_map *map, t_token *head);
 **
 ** @param lexeme  The string content for the token.
 ** @param type    The type of the token (WORD, OPERATOR, LPAREN, etc.).
-** @return        Pointer to the newly created token, or NULL if allocation fails.
+** @return        Pointer to the newly created token,
+	or NULL if allocation fails.
 */
-t_token         *create_token(char *lexeme, t_token_type type);
+t_token					*create_token(char *lexeme, t_token_type type);
 
 /*
 ** Tokenizes a given command line string into a linked list of tokens.
@@ -144,6 +146,6 @@ unsigned int			create_token_mask(t_token *head);
 ** @return       Pointer to the head of the newly copied token list,
 **               or NULL if memory allocation fails.
 */
-t_token 				*copy_tokens(t_token *start, t_token *end);
+t_token					*copy_tokens(t_token *start, t_token *end);
 
 #endif

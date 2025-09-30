@@ -13,8 +13,8 @@
 #ifndef TREE_H
 # define TREE_H
 
-# include <tokens.h>
 # include <environ.h>
+# include <tokens.h>
 
 typedef enum e_node_type
 {
@@ -116,7 +116,8 @@ void					skip_grouping(t_token **head);
 ** @param depth   Pointer to an integer tracking the current depth.
 ** @return       None.
 */
-void					track_depth(t_token *head, int *depth, t_token_type group_category);
+void					track_depth(t_token *head, int *depth,
+							t_token_type group_category);
 
 /*
 ** Finds the lowest-precedence operator in a given token range.

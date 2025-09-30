@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/30 16:43:34 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:26:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static t_bool	parse_prompt(t_shell *shell)
 		return (FALSE);
 	if (!normalize_tokens(shell->map, shell->head))
 		return (FALSE);
-	handle_arithmetic(&shell->head);
 	shell->token_mask = create_token_mask(shell->head);
 	if (shell->token_mask & TOKEN_ARITH)
 	{
@@ -47,6 +46,8 @@ static t_bool	parse_prompt(t_shell *shell)
 			return (log_error(ERROR_SYNTAX, ERR_BASE,
 					"arithmetic expressions are not supported.\n"), FALSE);
 	}
+	if (!validate_tokens(shell->head))
+		return (FALSE);
 	if (DEBUG_MODE)
 		print_tokens(shell->head, TRUE);
 	shell->root = create_syntax_tree(shell->head, NULL);

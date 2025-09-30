@@ -6,26 +6,26 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:39:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:52:00 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUKOSHELL_H
 # define BUKOSHELL_H
 
-# include <stdio.h>
 # include <libft.h>
+# include <stdio.h>
 # include <signals.h>
 # include <environ.h>
 # include <parsing/parsing.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# if defined(__linux__) 
-# 	define PS1 "\e[1mbukoshell\e[m 🞂"
-# 	define PATH_MAX 4096
+# if defined(__linux__)
+#  define PS1 "\e[1mbukoshell\e[m 🞂"
+#  define PATH_MAX 4096
 # elif defined(__APPLE__)
-# 	define PS1 "\e[1mbukoshell\e[m %"
+#  define PS1 "\e[1mbukoshell\e[m %"
 # endif
 
 # define DEBUG_MODE TRUE
@@ -38,7 +38,7 @@ typedef struct s_shell
 	struct s_node	*root;
 	int				status;
 	char			**envp;
-    unsigned int    token_mask;
+	unsigned int	token_mask;
 	char			cwd[PATH_MAX];
 }					t_shell;
 

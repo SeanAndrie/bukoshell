@@ -56,11 +56,11 @@ char	**tokens_to_argv(t_token *head)
 
 void	track_depth(t_token *head, int *depth, t_token_type group_category)
 {
-	if (is_token_type(head->type, group_category) &&
-		is_token_type(head->type, TOKEN_GROUP_OPEN))
+	if (is_token_type(head->type, group_category) && is_token_type(head->type,
+			TOKEN_GROUP_OPEN))
 		(*depth)++;
-	else if (is_token_type(head->type, group_category) &&
-	         is_token_type(head->type, TOKEN_GROUP_CLOSE))
+	else if (is_token_type(head->type, group_category)
+		&& is_token_type(head->type, TOKEN_GROUP_CLOSE))
 		(*depth)--;
 }
 
