@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/30 00:54:06 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:43:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,12 @@ static t_bool	parse_prompt(t_shell *shell)
 		return (FALSE);
 	handle_arithmetic(&shell->head);
 	shell->token_mask = create_token_mask(shell->head);
-	if (is_arithmetic(shell->head))
-		return (log_error(ERROR_SYNTAX, ERR_BASE,
-				"arithmetic expressions are not supported.\n"), FALSE);
+	if (shell->token_mask & TOKEN_ARITH)
+	{
+		if (is_arithmetic(shell->head))
+			return (log_error(ERROR_SYNTAX, ERR_BASE,
+					"arithmetic expressions are not supported.\n"), FALSE);
+	}
 	if (DEBUG_MODE)
 		print_tokens(shell->head, TRUE);
 	shell->root = create_syntax_tree(shell->head, NULL);
