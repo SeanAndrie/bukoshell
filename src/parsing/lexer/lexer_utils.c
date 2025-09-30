@@ -6,17 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 03:51:00 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/30 00:51:37 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <boolean.h>
-#include <expand.h>
 #include <libft.h>
+#include <stdio.h>
+#include <expand.h>
+#include <boolean.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/valid.h>
-#include <stdio.h>
 
 void handle_arithmetic(t_token **head)
 {
@@ -39,7 +39,7 @@ void handle_arithmetic(t_token **head)
 	}
 }
 
-t_bool	handle_concatenation(t_token **head)
+t_bool	handle_concatenation(t_token **head, t_token_type type_to_concat, t_token_type concat_type)
 {
 	t_token	**curr;
 	t_token	*popped;
@@ -48,19 +48,19 @@ t_bool	handle_concatenation(t_token **head)
 	curr = head;
 	while (*curr)
 	{
-		if (is_token_type((*curr)->type, TOKEN_WORD))
+		if (is_token_type((*curr)->type, type_to_concat))
 		{
-			if ((*curr)->next && is_token_type((*curr)->next->type, TOKEN_WORD))
+			if ((*curr)->next && is_token_type((*curr)->next->type, type_to_concat))
 			{
-				popped = pop_token_type(curr, TOKEN_WORD);
+				popped = pop_token_type(curr, type_to_concat);
 				if (!popped)
 					return (FALSE);
-				concat = concat_tokens(popped, TOKEN_WORD);
+				concat = concat_tokens(popped, concat_type);
 				free_tokens(&popped);
-				if (!concat)
-					return (FALSE);
-				concat->next = *curr;
-				*curr = concat;
+				if (!concat) 
+                    return (FALSE); 
+                concat->next = *curr;
+                *curr = concat;
 			}
 		}
 		curr = &(*curr)->next;

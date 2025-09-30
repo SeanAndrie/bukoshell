@@ -20,9 +20,10 @@ char			*process_parameter(char **line_ptr, t_token_type *type);
 char			*process_grouping(char **line_ptr, t_token_type *type);
 char			*process_operator(char **line_ptr, t_token_type *type);
 
-t_bool	        handle_concatenation(t_token **head);
 void            handle_arithmetic(t_token **head);
 t_token_type	categorize_ctrl_op(char c, t_bool is_double);
 t_token_type	categorize_redirection(char c, t_bool is_double);
+t_bool	        handle_concatenation(t_token **head, t_token_type type_to_concat, t_token_type concat_type);
 
 #endif
+

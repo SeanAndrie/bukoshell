@@ -57,7 +57,7 @@ char	*process_quotes(char **line_ptr, t_token_type *type)
 		(*line_ptr)++;
 	if (**line_ptr != quote)
 	{
-		log_error(ERROR_SYNTAX, "unclosed quote %c\n", quote);
+		log_error(ERROR_SYNTAX, ERR_BASE, "unclosed quote %c\n", quote);
 		return (NULL);
 	}
 	end = *line_ptr;
@@ -77,7 +77,7 @@ char	*process_grouping(char **line_ptr, t_token_type *type)
 		return (process_quotes(line_ptr, type));
 	if (**line_ptr == '(')
 		*type = T_LPAREN;
-	else if (**line_ptr == ')')
+    else if (**line_ptr == ')')
 		*type = T_RPAREN;
 	lexeme = ft_calloc(2, sizeof(char));
 	if (!lexeme)
