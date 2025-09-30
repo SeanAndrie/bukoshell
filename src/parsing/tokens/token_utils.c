@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:32:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:43:14 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	remove_tokens(t_token **head, t_token_type type_to_remove)
 		if (is_token_type((*curr)->type, type_to_remove))
 		{
 			temp = *curr;
-			temp->next = NULL;
+			*curr = (*curr)->next;
 			free(temp->lexeme);
 			free(temp);
 		}
