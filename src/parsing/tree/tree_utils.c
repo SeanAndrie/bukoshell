@@ -54,15 +54,17 @@ char	**tokens_to_argv(t_token *head)
 	return (alloc_argv(head, n));
 }
 
-void	track_depth(t_token *head, int *depth)
+void	track_depth(t_token *head, int *depth, t_token_type group_category)
 {
-	if (is_token_type(head->type, T_LPAREN))
+	if (is_token_type(head->type, group_category) &&
+		is_token_type(head->type, TOKEN_GROUP_OPEN))
 		(*depth)++;
-	else if (is_token_type(head->type, T_RPAREN))
+	else if (is_token_type(head->type, group_category) &&
+	         is_token_type(head->type, TOKEN_GROUP_CLOSE))
 		(*depth)--;
 }
 
-void	skip_parentheses(t_token **head)
+void	skip_grouping(t_token **head)
 {
 	int	depth;
 
@@ -70,7 +72,7 @@ void	skip_parentheses(t_token **head)
 	*head = (*head)->next;
 	while (*head && depth > 0)
 	{
-		track_depth(*head, &depth);
+		track_depth(*head, &depth, TOKEN_GROUP);
 		*head = (*head)->next;
 	}
 }
@@ -86,7 +88,7 @@ t_token	*find_lowest_precedence(t_token *start, t_token *end)
 	lowest_pipe = NULL;
 	while (start != end)
 	{
-		track_depth(start, &depth);
+		track_depth(start, &depth, TOKEN_GROUP);
 		if (depth == 0)
 		{
 			if (is_token_type(start->type, T_OR) || is_token_type(start->type,

@@ -103,20 +103,20 @@ char					**tokens_to_argv(t_token *head);
 ** @param head   Address of the current token pointer.
 ** @return      None.
 */
-void					skip_parentheses(t_token **head);
+void					skip_grouping(t_token **head);
 
 /*
-** Updates the current parentheses depth based on the given token.
+** Updates the current group token depth based on the given token.
 **
-** If the token is a left parenthesis '(', the depth counter is incremented.
-** If the token is a right parenthesis ')', the depth counter is decremented.
+** If the token is a left group token '(', the depth counter is incremented.
+** If the token is a right group token ')', the depth counter is decremented.
 ** Tokens that are not parentheses do not affect the depth.
 **
 ** @param head    Pointer to the current token.
 ** @param depth   Pointer to an integer tracking the current depth.
 ** @return       None.
 */
-void					track_depth(t_token *head, int *depth);
+void					track_depth(t_token *head, int *depth, t_token_type group_category);
 
 /*
 ** Finds the lowest-precedence operator in a given token range.
@@ -140,6 +140,14 @@ void					track_depth(t_token *head, int *depth);
 */
 t_token					*find_lowest_precedence(t_token *start, t_token *end);
 
+/*
+** Traverses the command syntax tree and collects all heredocs.
+** For each heredoc redirection, the content is read, expanded, and stored
+** in the corresponding redirect structure.
+**
+** @param node  Root node of the command syntax tree to traverse.
+** @param map   Environment variable mapping used for parameter expansion.
+*/
 void					collect_heredocs(t_node *node, t_map *map);
 
 #endif

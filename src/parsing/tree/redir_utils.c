@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <expand.h>
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <parsing/clean.h>
+#include <expand.h>
 #include <parsing/tree.h>
+#include <parsing/clean.h>
 #include <readline/readline.h>
 
 static void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
@@ -85,7 +85,7 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 
 void	collect_heredocs(t_node *node, t_map *map)
 {
-	t_redirect *head;
+	t_redirect	*head;
 
 	if (!node || !map)
 		return ;
