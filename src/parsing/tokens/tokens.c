@@ -10,10 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <expand.h>
 #include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/lexer.h>
 #include <parsing/tokens.h>
+#include <parsing/valid.h>
 
 t_bool	is_token_type(t_token_type type, unsigned int category_mask)
 {
@@ -33,10 +35,10 @@ unsigned int	create_token_mask(t_token *head)
 	return (mask);
 }
 
-t_token *copy_tokens(t_token *start, t_token *end)
+t_token	*copy_tokens(t_token *start, t_token *end)
 {
-	t_token *copy;
-	t_token *curr;
+	t_token	*copy;
+	t_token	*curr;
 
 	copy = NULL;
 	curr = start;
@@ -47,6 +49,17 @@ t_token *copy_tokens(t_token *start, t_token *end)
 		curr = curr->next;
 	}
 	return (copy);
+}
+
+t_bool	normalize_tokens(t_map *map, t_token *head)
+{
+	parameter_expansion(map, head);
+	if (!handle_concatenation(&head, TOKEN_WORD, TOKEN_WORD))
+		return (FALSE);
+	remove_tokens(&head, TOKEN_WHITESPACE);
+	if (!validate_tokens(head))
+		return (FALSE);
+	return (TRUE);
 }
 
 t_token	*create_tokens(char *line)

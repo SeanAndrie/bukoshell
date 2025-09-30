@@ -6,15 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:28:40 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/30 01:04:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
 
-// # include <stdt_bool.h>
 # include <boolean.h>
+# include <environ.h>
 # include <token_types.h>
 
 typedef struct s_token
@@ -23,6 +23,28 @@ typedef struct s_token
 	struct s_token		*next;
 	char				*lexeme;
 }						t_token;
+
+/*
+** Normalizes the linked list of tokens by applying transformations
+** such as merging adjacent words, resolving variable expansions,
+** and ensuring consistent token types for parsing.
+**
+** @param map   A mapping structure (e.g., environment variables) used
+**              during normalization.
+** @param head  Pointer to the head of the token list to normalize.
+** @return      true if normalization succeeds, false on memory or processing errors.
+*/
+t_bool          normalize_tokens(t_map *map, t_token *head);
+
+/*
+** Creates a single token with the specified lexeme and type.
+** Allocates memory for the token structure and copies the lexeme string.
+**
+** @param lexeme  The string content for the token.
+** @param type    The type of the token (WORD, OPERATOR, LPAREN, etc.).
+** @return        Pointer to the newly created token, or NULL if allocation fails.
+*/
+t_token         *create_token(char *lexeme, t_token_type type);
 
 /*
 ** Tokenizes a given command line string into a linked list of tokens.
@@ -111,6 +133,17 @@ t_bool					is_token_type(t_token_type type,
 */
 unsigned int			create_token_mask(t_token *head);
 
+/*
+** Copies a sequence of tokens from start up to (but not including) end
+** into a new linked list. Useful for validating or manipulating
+** token sublists without modifying the original.
+**
+** @param start  Pointer to the first token in the range to copy.
+** @param end    Pointer to the token immediately after the last token
+**               to copy (exclusive).
+** @return       Pointer to the head of the newly copied token list,
+**               or NULL if memory allocation fails.
+*/
 t_token 				*copy_tokens(t_token *start, t_token *end);
 
 #endif
