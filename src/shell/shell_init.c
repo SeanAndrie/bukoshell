@@ -20,7 +20,6 @@ t_shell	*init_shell(char **envp)
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (NULL);
-	handle_signals();
 	shell->status = 0;
 	shell->line = NULL;
 	shell->head = NULL;

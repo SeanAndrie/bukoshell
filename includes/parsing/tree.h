@@ -16,6 +16,8 @@
 # include <environ.h>
 # include <tokens.h>
 
+# define EOF_MSG "here-document delimited by end-of-file (wanted '%s')\n"
+
 typedef enum e_node_type
 {
 	N_COMMAND,
@@ -150,5 +152,4 @@ t_token					*find_lowest_precedence(t_token *start, t_token *end);
 ** @param map   Environment variable mapping used for parameter expansion.
 */
 void					collect_heredocs(t_node *node, t_map *map);
-
 #endif

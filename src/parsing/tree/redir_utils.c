@@ -6,17 +6,24 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:46:38 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:32:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/02 03:09:33 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <expand.h>
 #include <libft.h>
-#include <parsing/clean.h>
-#include <parsing/tree.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <signals.h>
+#include <parsing/parsing.h>
 #include <readline/readline.h>
+
+static void	restore_and_free(char *s)
+{
+	if (s)
+		free(s);
+	rl_event_hook = NULL;
+	set_signals_prompt();
+}
 
 static void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
 {
@@ -61,22 +68,23 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 	char	*line;
 	char	*joined;
 
+	set_signals_heredoc();
 	new = ft_strdup("");
 	if (!new)
 		return (NULL);
 	while (TRUE)
 	{
-		line = readline("> ");
+		line = readline(PS2);
+		if (g_signal > 128)
+			return (restore_and_free(new), NULL);
 		if (!line)
-			return (free(new), NULL);
-		if (ft_strncmp(line, delim->lexeme, ft_strlen(delim->lexeme)) == 0)
-		{
-			free(line);
-			return (new);
-		}
+			return (restore_and_free(new), log_error(ERROR_WARNING, "bukoshell",
+					EOF_MSG, delim->lexeme), NULL);
+		if (ft_strcmp(line, delim->lexeme) == 0)
+			return (restore_and_free(line), new);
 		joined = heredoc_lexeme(line, new);
 		if (!joined)
-			return (NULL);
+			return (restore_and_free(new), NULL);
 		heredoc_expansion(&joined, map, delim->type);
 		new = joined;
 	}

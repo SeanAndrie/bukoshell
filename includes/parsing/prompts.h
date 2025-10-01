@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   prompts.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 14:24:45 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/02 03:03:18 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/10/02 02:57:36 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/10/02 03:04:38 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef PROMPTS_H
+# define PROMPTS_H
 
-# include <tree.h>
-# include <lexer.h>
-# include <valid.h>
-# include <clean.h>
-# include <tokens.h>
-# include <expand.h>
-# include <prompts.h>
-# include <token_types.h>
+# if defined(__linux__)
+#  define PS1 "\e[1mbukoshell\e[m ❯"
+#  define PS2 "∙ "
+#  define PATH_MAX 4096
+# elif defined(__APPLE__)
+#  define PS1 "\e[1mbukoshell\e[m %"
+#  define PS2 "> "
+# endif
 
 #endif
+

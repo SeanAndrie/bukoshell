@@ -21,13 +21,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# if defined(__linux__)
-#  define PS1 "\e[1mbukoshell\e[m 🞂"
-#  define PATH_MAX 4096
-# elif defined(__APPLE__)
-#  define PS1 "\e[1mbukoshell\e[m %"
-# endif
-
 # define DEBUG_MODE TRUE
 
 typedef struct s_shell
