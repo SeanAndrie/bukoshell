@@ -25,6 +25,13 @@ static void	restore_and_free(char *s)
 	set_signals_prompt();
 }
 
+static void heredoc_interrupt(char *line, char *new)
+{
+   if (line)
+        free(line);
+    restore_and_free(new);
+}
+
 static void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
 {
 	t_token	*tokens;
@@ -62,7 +69,7 @@ static char	*heredoc_lexeme(char *line, char *new)
 	return (joined);
 }
 
-static char	*handle_heredoc(t_token *delim, t_map *map)
+char	*handle_heredoc(t_token *delim, t_map *map)
 {
 	char	*new;
 	char	*line;
@@ -76,7 +83,7 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 	{
 		line = readline(PS2);
 		if (g_signal > 128)
-			return (restore_and_free(new), NULL);
+			return (heredoc_interrupt(line, new), NULL);
 		if (!line)
 			return (restore_and_free(new), log_error(ERROR_WARNING, "bukoshell",
 					EOF_MSG, delim->lexeme), NULL);
@@ -91,21 +98,3 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 	return (NULL);
 }
 
-void	collect_heredocs(t_node *node, t_map *map)
-{
-	t_redirect	*head;
-
-	if (!node || !map)
-		return ;
-	head = node->redirect;
-	while (head)
-	{
-		if (is_token_type(head->type, T_HEREDOC))
-			head->heredoc = handle_heredoc(head->delim, map);
-		head = head->next;
-	}
-	if (node->left)
-		collect_heredocs(node->left, map);
-	if (node->right)
-		collect_heredocs(node->right, map);
-}

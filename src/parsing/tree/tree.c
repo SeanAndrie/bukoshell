@@ -74,3 +74,23 @@ t_node	*create_syntax_tree(t_token *start, t_token *end)
 		return (create_subshell(start));
 	return (create_node(start, N_COMMAND));
 }
+
+void	collect_heredocs(t_node *node, t_map *map)
+{
+	t_redirect	*head;
+
+	if (!node || !map)
+		return ;
+	head = node->redirect;
+	while (head)
+	{
+		if (is_token_type(head->type, T_HEREDOC))
+			head->heredoc = handle_heredoc(head->delim, map);
+		head = head->next;
+	}
+	if (node->left)
+		collect_heredocs(node->left, map);
+	if (node->right)
+		collect_heredocs(node->right, map);
+}
+

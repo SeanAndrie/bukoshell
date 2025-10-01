@@ -152,4 +152,6 @@ t_token					*find_lowest_precedence(t_token *start, t_token *end);
 ** @param map   Environment variable mapping used for parameter expansion.
 */
 void					collect_heredocs(t_node *node, t_map *map);
+char	                *handle_heredoc(t_token *delim, t_map *map);
 #endif
+
