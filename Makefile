@@ -20,10 +20,12 @@ ifeq ($(UNAME_S), Darwin)
 	HOMEBREW_PREFIX := $(shell which brew >/dev/null 2>&1 && brew --prefix || echo "")
 	ifneq ($(HOMEBREW_PREFIX),)
 		RDL_LIB := -L$(HOMEBREW_PREFIX)/opt/readline/lib
-		RDL_INC := -I$(HOMEBREW_PREFIX)/opt/readline/include
+		RDL_INC := -I$(HOMEBREW_PREFIX)/opt/readline/include \
+		           -I$(HOMEBREW_PREFIX)/opt/readline/include/readline
 	else
 		RDL_LIB := -L/usr/local/opt/readline/lib
-		RDL_INC := -I/usr/local/opt/readline/include
+		RDL_INC := -I/usr/local/opt/readline/include \
+		           -I/usr/local/opt/readline/include/readline
 	endif
 else ifeq ($(UNAME_S), Linux)
 	RDL_LIB := -L/opt/vagrant/embedded/lib/
@@ -68,7 +70,7 @@ libft:
 	@$(MAKE) -C libft
 
 $(NAME): $(OBJS) libft
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(RDL_LIB) $(RDL_INC) -Llibft -lft -lreadline -lncurses
+	$(CC) $(OBJS) -o $@ $(LIBS)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)
