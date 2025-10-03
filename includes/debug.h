@@ -6,17 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 17:50:32 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:40:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:34:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEBUG_H
 # define DEBUG_H
 
-# include <environ.h>
 # include <libft.h>
-# include <tokens.h>
-# include <tree.h>
+# include <environ.h>
+# include <parsing/tree.h>
+# include <parsing/tokens.h>
 
 # define ERR_BASE "bukoshell"
 

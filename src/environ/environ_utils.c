@@ -72,7 +72,10 @@ t_bool	insert_entry(t_map *map, char *key, char *value)
 		return (FALSE);
 	order_entry = create_entry(entry->key, entry->value);
 	if (!order_entry)
-		return (free(entry), FALSE);
+    {
+        free(entry);
+        return (FALSE);
+    }
 	index = hash_djb2(key) % map->capacity;
 	append_entry(&map->entries[index], entry);
 	append_entry(&map->order, order_entry);

@@ -16,125 +16,127 @@
 
 char	*process_operator(char **line_ptr, t_token_type *type)
 {
-	size_t	len;
-	char	*lexeme;
-	t_bool	is_double;
+    size_t	len;
+    char	*lexeme;
+    t_bool	is_double;
 
-	len = 1;
-	is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
-	if (**line_ptr == '|' || **line_ptr == '&')
-		*type = categorize_ctrl_op(**line_ptr, is_double);
-	else
-		*type = categorize_redirection(**line_ptr, is_double);
-	if (is_double)
-		len++;
-	lexeme = ft_calloc(len + 1, sizeof(char));
-	if (!lexeme)
-		return (NULL);
-	lexeme[0] = **line_ptr;
-	(*line_ptr)++;
-	if (is_double)
-	{
-		lexeme[1] = **line_ptr;
-		(*line_ptr)++;
-	}
-	return (lexeme);
+    len = 1;
+    is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
+    if (**line_ptr == '|' || **line_ptr == '&')
+        *type = categorize_ctrl_op(**line_ptr, is_double);
+    else
+        *type = categorize_redirection(**line_ptr, is_double);
+    if (is_double)
+        len++;
+    lexeme = ft_calloc(len + 1, sizeof(char));
+    if (!lexeme)
+        return (NULL);
+    lexeme[0] = **line_ptr;
+    (*line_ptr)++;
+    if (is_double)
+    {
+        lexeme[1] = **line_ptr;
+        (*line_ptr)++;
+    }
+    return (lexeme);
 }
 
-char	*process_quotes(char **line_ptr, t_token_type *type)
+char	*process_quotes(char **line_ptr, t_token_type *type,
+                     t_bool suppress_error)
 {
-	char	*lexeme;
-	char	quote;
-	char	*start;
-	char	*end;
+    char	*lexeme;
+    char	quote;
+    char	*start;
+    char	*end;
 
-	quote = **line_ptr;
-	*type = T_WORD_DQUOTE;
-	if (quote == '\'')
-		*type = T_WORD_SQUOTE;
-	start = ++(*line_ptr);
-	while (**line_ptr && **line_ptr != quote)
-		(*line_ptr)++;
-	if (**line_ptr != quote)
-	{
-		log_error(ERROR_SYNTAX, ERR_BASE, "unclosed quote %c\n", quote);
-		return (NULL);
-	}
-	end = *line_ptr;
-	lexeme = ft_calloc((end - start) + 1, sizeof(char));
-	if (!lexeme)
-		return (NULL);
-	ft_strlcpy(lexeme, start, (end - start) + 1);
-	(*line_ptr)++;
-	return (lexeme);
+    quote = **line_ptr;
+    *type = T_WORD_DQUOTE;
+    if (quote == '\'')
+        *type = T_WORD_SQUOTE;
+    start = ++(*line_ptr);
+    while (**line_ptr && **line_ptr != quote)
+        (*line_ptr)++;
+    if (**line_ptr != quote && !suppress_error)
+    {
+        log_error(ERROR_SYNTAX, ERR_BASE, "unclosed quote %c\n", quote);
+        return (NULL);
+    }
+    end = *line_ptr;
+    lexeme = ft_calloc((end - start) + 1, sizeof(char));
+    if (!lexeme)
+        return (NULL);
+    ft_strlcpy(lexeme, start, (end - start) + 1);
+    (*line_ptr)++;
+    return (lexeme);
 }
 
-char	*process_grouping(char **line_ptr, t_token_type *type)
+char	*process_grouping(char **line_ptr, t_token_type *type,
+                       t_bool suppress_error)
 {
-	char	*lexeme;
+    char	*lexeme;
 
-	if (**line_ptr == '\'' || **line_ptr == '"')
-		return (process_quotes(line_ptr, type));
-	if (**line_ptr == '(')
-		*type = T_LPAREN;
-	else if (**line_ptr == ')')
-		*type = T_RPAREN;
-	lexeme = ft_calloc(2, sizeof(char));
-	if (!lexeme)
-		return (NULL);
-	lexeme[0] = **line_ptr;
-	(*line_ptr)++;
-	return (lexeme);
+    if (**line_ptr == '\'' || **line_ptr == '"')
+        return (process_quotes(line_ptr, type, suppress_error));
+    if (**line_ptr == '(')
+        *type = T_LPAREN;
+    else if (**line_ptr == ')')
+        *type = T_RPAREN;
+    lexeme = ft_calloc(2, sizeof(char));
+    if (!lexeme)
+        return (NULL);
+    lexeme[0] = **line_ptr;
+    (*line_ptr)++;
+    return (lexeme);
 }
 
 char	*process_parameter(char **line_ptr, t_token_type *type)
 {
-	char	*lexeme;
-	char	*start;
-	char	*end;
+    char	*lexeme;
+    char	*start;
+    char	*end;
 
-	*type = T_PARAMETER;
-	start = *line_ptr;
-	(*line_ptr)++;
-	if (ft_strchr(SPECIAL_VARIABLES, **line_ptr) || ft_isdigit(**line_ptr))
-		(*line_ptr)++;
-	else
-	{
-		while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
-			(*line_ptr)++;
-	}
-	end = *line_ptr;
-	lexeme = ft_calloc((end - start) + 1, sizeof(char));
-	if (!lexeme)
-		return (NULL);
-	ft_strlcpy(lexeme, start, (end - start) + 1);
-	return (lexeme);
+    *type = T_PARAMETER;
+    start = *line_ptr;
+    (*line_ptr)++;
+    if (ft_strchr(SPECIAL_VARIABLES, **line_ptr) || ft_isdigit(**line_ptr))
+        (*line_ptr)++;
+    else
+    {
+        while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
+            (*line_ptr)++;
+    }
+    end = *line_ptr;
+    lexeme = ft_calloc((end - start) + 1, sizeof(char));
+    if (!lexeme)
+        return (NULL);
+    ft_strlcpy(lexeme, start, (end - start) + 1);
+    return (lexeme);
 }
 
 char	*process_word(char **line_ptr, t_token_type *type)
 {
-	char	*lexeme;
-	char	*start;
-	char	*end;
+    char	*lexeme;
+    char	*start;
+    char	*end;
 
-	start = *line_ptr;
-	if (ft_isspace(**line_ptr))
-	{
-		*type = T_WHITESPACE;
-		while (**line_ptr && ft_isspace(**line_ptr))
-			(*line_ptr)++;
-	}
-	else
-	{
-		*type = T_WORD;
-		while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(METACHARS,
-				**line_ptr) && **line_ptr != '$')
-			(*line_ptr)++;
-	}
-	end = *line_ptr;
-	lexeme = ft_calloc((end - start) + 1, sizeof(char));
-	if (!lexeme)
-		return (NULL);
-	ft_strlcpy(lexeme, start, (end - start) + 1);
-	return (lexeme);
+    start = *line_ptr;
+    if (ft_isspace(**line_ptr))
+    {
+        *type = T_WHITESPACE;
+        while (**line_ptr && ft_isspace(**line_ptr))
+            (*line_ptr)++;
+    }
+    else
+{
+        *type = T_WORD;
+        while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(METACHARS,
+                                                                   **line_ptr) && **line_ptr != '$')
+            (*line_ptr)++;
+    }
+    end = *line_ptr;
+    lexeme = ft_calloc((end - start) + 1, sizeof(char));
+    if (!lexeme)
+        return (NULL);
+    ft_strlcpy(lexeme, start, (end - start) + 1);
+    return (lexeme);
 }

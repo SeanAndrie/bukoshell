@@ -15,6 +15,7 @@
 
 # include <libft.h>
 # include <stdio.h>
+# include <debug.h>
 # include <signals.h>
 # include <environ.h>
 # include <parsing/parsing.h>

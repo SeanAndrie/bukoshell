@@ -69,12 +69,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell = init_shell(envp);
-    set_signals_prompt();
+	set_signals_prompt();
 	if (!shell)
 		return (EXIT_FAILURE);
 	init_environ(shell->map, shell->envp);
-	// if (DEBUG_MODE)
-	// 	print_env(shell->map->order);
+	if (DEBUG_MODE)
+		print_env(shell->map->order);
 	status = shell_loop(shell);
 	free_shell(shell, TRUE);
 	return (status);

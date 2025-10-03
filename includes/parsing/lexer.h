@@ -16,9 +16,9 @@
 # include <tokens.h>
 
 char			*process_word(char **line_ptr, t_token_type *type);
-char			*process_parameter(char **line_ptr, t_token_type *type);
-char			*process_grouping(char **line_ptr, t_token_type *type);
 char			*process_operator(char **line_ptr, t_token_type *type);
+char			*process_parameter(char **line_ptr, t_token_type *type);
+char			*process_grouping(char **line_ptr, t_token_type *type, t_bool suppress_error);
 
 void			handle_arithmetic(t_token **head);
 t_token_type	categorize_ctrl_op(char c, t_bool is_double);

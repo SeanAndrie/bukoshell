@@ -6,14 +6,13 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:24:24 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/30 23:49:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:31:03 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VALID_H
 # define VALID_H
 
-# include <debug.h>
 # include <tokens.h>
 
 void	consume(t_token **curr);

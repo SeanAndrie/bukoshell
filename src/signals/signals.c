@@ -20,7 +20,10 @@ volatile sig_atomic_t g_signal = 128;
 static int	heredoc_event_hook(void)
 {
 	if (g_signal > 128)
+    {
 		g_signal = 128;
+        rl_event_hook = NULL;
+    }
 	return (0);
 }
 

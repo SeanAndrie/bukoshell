@@ -13,6 +13,13 @@
 #include <environ.h>
 #include <parsing/clean.h>
 
+static void *free_helper(char **pair)
+{
+    if (pair)
+        free_str_arr(pair, -1);
+    return (NULL);
+}
+
 static void	free_entries(t_environ **entry)
 {
 	t_environ	*next;
@@ -63,12 +70,12 @@ static char	**get_pair(char *env)
 		end++;
 	pair[0] = ft_substr_range(env, start, end);
 	if (!pair[0])
-		return (free(pair), NULL);
+        return (free_helper(pair));
 	if (env[end] == '=')
 	{
 		pair[1] = ft_substr_range(env, end + 1, ft_strlen(env));
 		if (!pair[1])
-			return (free(pair[0]), free(pair), NULL);
+            return (free_helper(pair));
 	}
 	else
 		pair[1] = NULL;
@@ -104,3 +111,4 @@ void	init_environ(t_map *map, char **envp)
 		envp++;
 	}
 }
+

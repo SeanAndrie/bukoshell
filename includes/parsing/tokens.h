@@ -57,7 +57,7 @@ t_token					*create_token(char *lexeme, t_token_type type);
 ** @return      A pointer to the head of the token list,
 **              or NULL if memory allocation or token creation fails.
 */
-t_token					*create_tokens(char *line);
+t_token					*create_tokens(char *line, t_bool suppress_error);
 
 /*
 ** Concatenates the lexemes of a linked list of tokens into a single string

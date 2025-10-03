@@ -62,13 +62,14 @@ char	*set_prompt(t_shell *shell, char *identifier)
 		i++;
 	base_split = ft_split(PS1, ' ');
 	if (!base_split)
-		return (free_str_arr(cwd_split, -1), NULL);
+    {
+        free_str_arr(cwd_split, -1);
+        return (NULL);
+    }
 	prompt = construct_prompt(base_split[0], base_split[1], cwd_split[i - 1],
 			identifier);
 	free_str_arr(cwd_split, i);
 	free_str_arr(base_split, 2);
-	if (!prompt)
-		return (NULL);
 	return (prompt);
 }
 
@@ -87,7 +88,10 @@ char	**copy_envp(char **envp)
 	{
 		copy[i] = ft_strdup(envp[i]);
 		if (!copy[i])
-			return (free_str_arr(copy, i), NULL);
+        {
+            free_str_arr(copy, i);
+            return (NULL);
+        }
 		i++;
 	}
 	copy[i] = NULL;

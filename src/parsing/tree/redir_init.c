@@ -11,9 +11,15 @@
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <parsing/tree.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
-#include <parsing/tree.h>
+
+static void *free_helper(t_redirect *redir)
+{
+    free(redir);
+    return (NULL);
+}
 
 static t_redirect	*create_redirect(t_token *token)
 {
@@ -33,13 +39,13 @@ static t_redirect	*create_redirect(t_token *token)
 		redir->fd = 0;
 		redir->delim = token->next;
 		if (!redir->delim)
-			return (free(redir), NULL);
+			return (free_helper(redir));
 		redir->heredoc = NULL;
 		return (redir);
 	}
 	redir->fname = ft_strdup(token->next->lexeme);
 	if (!redir->fname)
-		return (free(redir), NULL);
+		return (free_helper(redir));
 	redir->next = NULL;
 	return (redir);
 }
@@ -81,7 +87,10 @@ t_redirect	*create_redirections(t_token *head)
 			&& is_token_type(token_next->type, TOKEN_WORD))
 		{
 			if (!append_redirect(&redir_head, token_curr))
-				return (free_redirects(&redir_head), NULL);
+            {
+                free_redirects(&redir_head);
+                return (NULL);
+            }
 			token_curr = token_next->next;
 			continue ;
 		}

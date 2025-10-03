@@ -6,17 +6,30 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:42:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:32:56 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <parsing/parsing.h>
+#include <debug.h>
+#include <parsing/tree.h>
+#include <parsing/clean.h>
+#include <parsing/lexer.h>
+#include <parsing/valid.h>
+#include <parsing/tokens.h>
 
 void	consume(t_token **curr)
 {
 	if (*curr)
 		*curr = (*curr)->next;
+}
+
+static void assign_group(t_token *token)
+{
+    if (token->lexeme[0] == '(')
+        token->type |= TOKEN_GROUP_OPEN;
+    else if (token->lexeme[0] == ')')
+        token->type |= TOKEN_GROUP_CLOSE;
 }
 
 t_bool	is_arithmetic(t_token *head)
@@ -29,15 +42,15 @@ t_bool	is_arithmetic(t_token *head)
 	if (!copy)
 		return (FALSE);
 	if (!handle_concatenation(&copy, TOKEN_ARITH))
-		return (free_tokens (&copy), FALSE);
+    {
+        free_tokens(&copy);
+        return (FALSE);
+    }
 	depth = 0;
 	curr = copy;
 	while (curr)
 	{
-		if (curr->lexeme[0] == '(')
-			curr->type |= TOKEN_GROUP_OPEN;
-		else if (curr->lexeme[0] == ')')
-			curr->type |= TOKEN_GROUP_CLOSE;
+        assign_group(curr);
 		track_depth(curr, &depth, TOKEN_ARITH);
 		curr = curr->next;
 	}
@@ -55,12 +68,16 @@ t_bool	validate_tokens(t_token *head)
 	depth = 0;
 	curr = head;
 	if (curr && is_token_type(curr->type, TOKEN_CTRL_OP))
-		return (log_error(ERROR_SYNTAX, ERR_BASE, "unexpected operator '%s'\n",
-				curr->lexeme), FALSE);
+    {
+        log_error(ERROR_SYNTAX, ERR_BASE, "unexpected operator '%s'\n", curr->lexeme);
+        return (FALSE);
+    }
 	if (!parse_command_list(&curr, &depth))
 		return (FALSE);
 	if (curr)
-		return (log_error(ERROR_SYNTAX, ERR_BASE,
-				"near unexpected token '%s'\n", curr->lexeme), FALSE);
+    {
+        log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token '%s'\n", curr->lexeme);
+        return (FALSE);
+    }
 	return (TRUE);
 }

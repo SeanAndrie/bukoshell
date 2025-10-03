@@ -31,20 +31,27 @@ t_shell	*init_shell(char **envp)
 	return (shell);
 }
 
+static t_bool	check_arithmetic(t_token *head, unsigned int mask)
+{
+	if ((mask & TOKEN_ARITH) && is_arithmetic(head))
+	{
+		log_error(ERROR_SYNTAX, ERR_BASE,
+			"arithmetic expressions are not supported\n");
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 static t_bool	parse_prompt(t_shell *shell)
 {
-	shell->head = create_tokens(shell->line);
+	shell->head = create_tokens(shell->line, FALSE);
 	if (!shell->head)
 		return (FALSE);
 	if (!normalize_tokens(shell->map, shell->head))
 		return (FALSE);
 	shell->token_mask = create_token_mask(shell->head);
-	if (shell->token_mask & TOKEN_ARITH)
-	{
-		if (is_arithmetic(shell->head))
-			return (log_error(ERROR_SYNTAX, ERR_BASE,
-					"arithmetic expressions are not supported.\n"), FALSE);
-	}
+	if (!check_arithmetic(shell->head, shell->token_mask))
+		return (FALSE);
 	if (!validate_tokens(shell->head))
 		return (FALSE);
 	if (DEBUG_MODE)

@@ -51,3 +51,4 @@ t_bool	append_token(t_token **head, char *lexeme, t_token_type type)
 	last_token->next = token;
 	return (TRUE);
 }
+

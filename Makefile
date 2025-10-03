@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/09/30 00:55:11 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/03 00:39:04 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,20 +15,8 @@ CC := cc
 CFLAGS := -Wall -Werror -Wextra -Iincludes -Iincludes/parsing -Ilibft/includes -g3
 UNAME_S := $(shell uname -s)
 
-ifeq ($(UNAME_S), Darwin)
-    BREW_PREFIX := $(shell brew --prefix readline 2>/dev/null)
-    ifneq ($(BREW_PREFIX),)
-        RDL_INC := -I$(BREW_PREFIX)/include -I$(BREW_PREFIX)/include/readline
-        RDL_LIB := -L$(BREW_PREFIX)/lib
-    else
-        $(error GNU Readline not found. Please run: brew install readline)
-    endif
-else ifeq ($(UNAME_S), Linux)
-    RDL_INC := -I/opt/vagrant/embedded/include/readline
-    RDL_LIB := -L/opt/vagrant/embedded/lib/
-else
-    $(error Unsupported OS: $(UNAME_S))
-endif
+RDL_INC := -I/opt/vagrant/embedded/include/readline
+RDL_LIB := -L/opt/vagrant/embedded/lib/
 
 CFLAGS += $(RDL_INC)
 
@@ -47,7 +35,7 @@ PARSING_MODULES := \
     clean/clean.c \
     lexer/lexer.c lexer/lexer_utils.c \
     tokens/tokens.c tokens/token_init.c tokens/token_utils.c \
-    tree/tree.c tree/tree_utils.c tree/redir_init.c tree/redir_utils.c \
+    tree/tree.c tree/tree_utils.c tree/redir_init.c tree/redir_heredoc.c tree/redir_heredoc_utils.c \
     valid/validate.c valid/valid_tokens.c \
     expand/expand.c
 

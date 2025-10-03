@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/24 21:00:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:39:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,11 @@ t_token					*find_lowest_precedence(t_token *start, t_token *end);
 ** @param map   Environment variable mapping used for parameter expansion.
 */
 void					collect_heredocs(t_node *node, t_map *map);
-char	                *handle_heredoc(t_token *delim, t_map *map);
+void	                heredoc_expansion(char **join, t_map *map, t_token_type delim_type);
+
+void	                *heredoc_eof(char *accum, char *delim);
+void	                *heredoc_interrupt(char *line, char *accum);
+char	                *heredoc_success(char *line, char *accum, t_map *map, t_token_type delim_type);
+
 #endif
 

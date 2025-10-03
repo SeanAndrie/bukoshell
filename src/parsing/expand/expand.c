@@ -17,6 +17,13 @@
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
+static t_bool free_helper(char *s)
+{
+    if (s)
+        free(s);
+    return (FALSE);
+}
+
 static t_bool	handle_expansion(t_map *map, t_token *token)
 {
 	char		*key;
@@ -28,11 +35,11 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 		return (FALSE);
 	key = ft_substr(token->lexeme, 1, ft_strlen(token->lexeme) - 1);
 	if (!key)
-		return (free(temp), FALSE);
+        return (free_helper(temp));
 	entry = search_entry(map, key);
 	free(key);
 	if (!entry)
-		return (free(temp), FALSE);
+        return (free_helper(temp));
 	free(token->lexeme);
 	token->lexeme = ft_strdup(entry->value);
 	if (!token->lexeme)
@@ -73,7 +80,7 @@ static void	apply_expansion(t_map *map, t_token *head)
 	stripped = ft_strtrim(head->lexeme, "\"");
 	if (!stripped)
 		return ;
-	tokens = create_tokens(stripped);
+	tokens = create_tokens(stripped, FALSE);
 	free(stripped);
 	if (!tokens)
 		return ;
