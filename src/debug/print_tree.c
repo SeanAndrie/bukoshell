@@ -6,10 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:40:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 22:38:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:49:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <debug.h>
 
 void	print_argv(char **argv)
