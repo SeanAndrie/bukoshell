@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/10/03 00:39:04 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/06 19:05:56 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,9 @@ PARSING_MODULES := \
     tokens/tokens.c tokens/token_init.c tokens/token_utils.c \
     tree/tree.c tree/tree_utils.c tree/redir_init.c tree/redir_heredoc.c tree/redir_heredoc_utils.c \
     valid/validate.c valid/valid_tokens.c \
-    expand/expand.c
+	expand/parameter.c expand/wildcard.c
 
-DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c print_env.c)
+DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c print_env.c print_dir_list.c)
 PARSING_SRCS := $(addprefix $(PARSING_DIR)/,$(PARSING_MODULES))
 SIGNALS_SRCS := $(SIGNALS_DIR)/signals.c
 ENVIRON_SRCS := $(addprefix $(ENVIRON_DIR)/, environ.c environ_init.c environ_utils.c)
