@@ -25,19 +25,6 @@ size_t	hash_djb2(char *key)
 	return (hash);
 }
 
-size_t	environ_size(char **envp)
-{
-	size_t	size;
-
-	size = 0;
-	while (*envp)
-	{
-		size++;
-		envp++;
-	}
-	return (size);
-}
-
 t_environ	*create_entry(char *key, char *value)
 {
 	t_environ	*entry;
@@ -79,6 +66,22 @@ void	append_entry(t_environ **head, t_environ *node)
 	while (last->next)
 		last = last->next;
 	last->next = node;
+}
+
+t_map	*realloc_map(t_map *map, char **envp)
+{
+	t_map	*copy;
+
+	if (!envp)
+		return (NULL);
+	copy = create_map(map->capacity);
+	if (!copy)
+		return (NULL);
+	init_environ(copy, envp);
+	free_map(map);
+	if (!copy)
+		return (NULL);
+	return (copy);
 }
 
 t_map	*create_map(size_t size)

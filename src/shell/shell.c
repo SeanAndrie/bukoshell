@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:32:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:49:51 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static int	shell_loop(t_shell *shell)
 	while (TRUE)
 	{
 		prompt = set_prompt(shell, identifier);
-		if (!prompt)
-			prompt = PS1;
 		shell->line = readline(prompt);
 		if (!shell->line)
 		{
@@ -72,9 +70,10 @@ int	main(int argc, char **argv, char **envp)
 	set_signals_prompt();
 	if (!shell)
 		return (EXIT_FAILURE);
-	init_environ(shell->map, shell->envp);
-	if (DEBUG_MODE)
-		print_env(shell->map->order);
+    if (shell->map && shell->envp)
+	    init_environ(shell->map, shell->envp);
+	// if (DEBUG_MODE)
+	// 	print_env(shell->map->order);
 	status = shell_loop(shell);
 	free_shell(shell, TRUE);
 	return (status);

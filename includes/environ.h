@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:25:59 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:49:25 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ size_t					environ_size(char **envp);
 void					init_environ(t_map *map, char **envp);
 
 t_map					*create_map(size_t size);
+t_map	                *realloc_map(t_map *map, char **envp);
 t_environ				*create_entry(char *key, char *value);
 void					append_entry(t_environ **head, t_environ *node);
 

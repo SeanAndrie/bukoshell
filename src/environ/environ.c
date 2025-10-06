@@ -28,7 +28,8 @@ static void	free_entries(t_environ **entry)
 	{
 		next = (*entry)->next;
 		free((*entry)->key);
-		free((*entry)->value);
+        if ((*entry)->value)
+		    free((*entry)->value);
 		free(*entry);
 		*entry = next;
 	}
@@ -87,27 +88,26 @@ void	init_environ(t_map *map, char **envp)
 {
 	char	**pair;
 
-	if (!envp || !map)
-		return ;
 	while (*envp)
 	{
-		if (!*envp || !**envp)
-		{
-			envp++;
-			continue ;
-		}
-		pair = get_pair(*envp);
-		if (!pair)
-		{
-			envp++;
-			continue ;
-		}
-		if (!insert_entry(map, pair[0], pair[1]))
-		{
-			free_str_arr(pair, -1);
-			return ;
-		}
-		free_str_arr(pair, -1);
+        if (**envp)
+        {
+            pair = get_pair(*envp);
+            if (pair)
+            {
+                if (ft_strcmp(pair[0], "OLDPWD") == 0)
+                {
+                    free(pair[1]);
+                    pair[1] = NULL;
+                }
+                if (!insert_entry(map, pair[0], pair[1]))
+                {
+                    free_str_arr(pair, -1);
+                    return ;
+                }
+                free_str_arr(pair, -1);
+            }
+        }
 		envp++;
 	}
 }

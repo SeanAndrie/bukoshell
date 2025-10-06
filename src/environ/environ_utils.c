@@ -6,11 +6,24 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:33:03 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:49:09 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <environ.h>
+
+size_t	environ_size(char **envp)
+{
+	size_t	size;
+
+	size = 0;
+	while (*envp)
+	{
+		size++;
+		envp++;
+	}
+	return (size);
+}
 
 static void	clear_entry(t_environ **head, char *key)
 {
@@ -41,18 +54,16 @@ t_environ	*search_entry(t_map *map, char *key)
 {
 	size_t		index;
 	t_environ	*entry;
-	size_t		key_len;
 
 	if (!map || !key)
 		return (NULL);
-	key_len = ft_strlen(key);
 	index = hash_djb2(key) % map->capacity;
 	entry = map->entries[index];
 	if (!entry)
 		return (NULL);
 	while (entry)
 	{
-		if (ft_strncmp(entry->key, key, key_len) == 0)
+		if (ft_strcmp(entry->key, key) == 0)
 			return (entry);
 		entry = entry->next;
 	}
