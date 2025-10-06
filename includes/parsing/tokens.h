@@ -29,13 +29,13 @@ typedef struct s_token
 ** such as merging adjacent words, resolving variable expansions,
 ** and ensuring consistent token types for parsing.
 **
+** @param head  Pointer to the head of the token list to normalize.
 ** @param map   A mapping structure (e.g., environment variables) used
 **              during normalization.
-** @param head  Pointer to the head of the token list to normalize.
 ** @return      true if normalization succeeds,
 	false on memory or processing errors.
 */
-t_bool					normalize_tokens(t_map *map, t_token *head);
+t_bool					normalize_tokens(t_token **head, t_map *map);
 
 /*
 ** Creates a single token with the specified lexeme and type.
@@ -83,18 +83,15 @@ t_token					*concat_tokens(t_token *head, t_token_type concat_type);
 t_token					*pop_token_type(t_token **head, t_token_type type);
 
 /*
-** Creates a new token from the given lexeme and type, then appends it
-** to the end of the linked list of tokens. If the list is empty, the
-** new token becomes the head.
+** Appends a new token at the of the linked list of tokens. If the list
+** is emtpy, the new token becommes the head.
 **
 ** @param head     Pointer to the head of the token list.
-** @param lexeme   The string value of the new token.
-** @param type     The type of the token being added.
+** @param token    Token to append.
 ** @return         true if the token was successfully created and appended,
 **                 false if memory allocation for the token fails.
 */
-t_bool					append_token(t_token **head, char *lexeme,
-							t_token_type type);
+void                    append_token(t_token **head, t_token *token);
 
 /*
 ** Removes all tokens of a specified type from a linked list and frees
@@ -147,5 +144,7 @@ unsigned int			create_token_mask(t_token *head);
 **               or NULL if memory allocation fails.
 */
 t_token					*copy_tokens(t_token *start, t_token *end);
+
+void                    apply_expansions(t_token **head, t_map *map);
 
 #endif

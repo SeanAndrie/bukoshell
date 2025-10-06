@@ -14,12 +14,38 @@
 #include <libft.h>
 #include <parsing/lexer.h>
 
+char	*process_parameter(char **line_ptr, t_token_type *type)
+{
+    char	*lexeme;
+    char	*start;
+    char	*end;
+
+    *type = T_PARAMETER;
+    start = *line_ptr;
+    (*line_ptr)++;
+    if (ft_strchr(SPECIAL_VARIABLES, **line_ptr))
+        (*line_ptr)++;
+    else
+    {
+        while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
+            (*line_ptr)++;
+    }
+    end = *line_ptr;
+    lexeme = ft_calloc((end - start) + 1, sizeof(char));
+    if (!lexeme)
+        return (NULL);
+    ft_strlcpy(lexeme, start, (end - start) + 1);
+    return (lexeme);
+}
+
 char	*process_operator(char **line_ptr, t_token_type *type)
 {
     size_t	len;
     char	*lexeme;
     t_bool	is_double;
 
+    if (**line_ptr == '$')
+        return (process_parameter(line_ptr, type));
     len = 1;
     is_double = (*(*line_ptr + 1) && *(*line_ptr + 1) == **line_ptr);
     if (**line_ptr == '|' || **line_ptr == '&')
@@ -89,30 +115,6 @@ char	*process_grouping(char **line_ptr, t_token_type *type,
     return (lexeme);
 }
 
-char	*process_parameter(char **line_ptr, t_token_type *type)
-{
-    char	*lexeme;
-    char	*start;
-    char	*end;
-
-    *type = T_PARAMETER;
-    start = *line_ptr;
-    (*line_ptr)++;
-    if (ft_strchr(SPECIAL_VARIABLES, **line_ptr) || ft_isdigit(**line_ptr))
-        (*line_ptr)++;
-    else
-    {
-        while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
-            (*line_ptr)++;
-    }
-    end = *line_ptr;
-    lexeme = ft_calloc((end - start) + 1, sizeof(char));
-    if (!lexeme)
-        return (NULL);
-    ft_strlcpy(lexeme, start, (end - start) + 1);
-    return (lexeme);
-}
-
 char	*process_word(char **line_ptr, t_token_type *type)
 {
     char	*lexeme;
@@ -127,10 +129,10 @@ char	*process_word(char **line_ptr, t_token_type *type)
             (*line_ptr)++;
     }
     else
-{
+    {
         *type = T_WORD;
         while (**line_ptr && !ft_isspace(**line_ptr) && !ft_strchr(METACHARS,
-                                                                   **line_ptr) && **line_ptr != '$')
+                **line_ptr) && **line_ptr != '$')
             (*line_ptr)++;
     }
     end = *line_ptr;

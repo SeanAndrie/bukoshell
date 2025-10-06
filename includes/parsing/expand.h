@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 01:48:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 21:56:13 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/05 22:04:10 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 # include <environ.h>
 # include <parsing/tokens.h>
 
-void	parameter_expansion(t_map *map, t_token *head);
+typedef struct s_glob
+{
+    char    *s;
+    char    *p;
+    char    *star;
+    char    *s_back;
+}               t_glob;
+
+void    apply_param_expansion(t_token *token, t_map *map);
+void    apply_wildcard_expansion(t_token **head, t_token *token);
 
 #endif

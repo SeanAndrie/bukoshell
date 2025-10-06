@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   parameter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/18 01:49:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:36:22 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/10/06 18:53:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
-static t_bool free_helper(char *s)
+static t_bool	free_helper(char *s)
 {
-    if (s)
-        free(s);
-    return (FALSE);
+	if (s)
+		free(s);
+	return (FALSE);
 }
 
 static t_bool	handle_expansion(t_map *map, t_token *token)
@@ -35,15 +35,18 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 		return (FALSE);
 	key = ft_substr(token->lexeme, 1, ft_strlen(token->lexeme) - 1);
 	if (!key)
-        return (free_helper(temp));
+		return (free_helper(temp));
 	entry = search_entry(map, key);
 	free(key);
 	if (!entry)
-        return (free_helper(temp));
+		return (free_helper(temp));
 	free(token->lexeme);
 	token->lexeme = ft_strdup(entry->value);
 	if (!token->lexeme)
-		return (token->lexeme = temp, FALSE);
+	{
+		token->lexeme = temp;
+		return (FALSE);
+	}
 	free(temp);
 	return (TRUE);
 }
@@ -70,34 +73,21 @@ static char	*create_expanded_lexeme(t_map *map, t_token *tokens)
 	return (lexeme);
 }
 
-static void	apply_expansion(t_map *map, t_token *head)
+void	apply_param_expansion(t_token *token, t_map *map)
 {
 	t_token	*tokens;
 	char	*stripped;
 
-	if (is_token_type(head->type, T_WORD_SQUOTE))
+	if (is_token_type(token->type, T_WORD_SQUOTE))
 		return ;
-	stripped = ft_strtrim(head->lexeme, "\"");
+	stripped = ft_strtrim(token->lexeme, "\"");
 	if (!stripped)
 		return ;
 	tokens = create_tokens(stripped, FALSE);
 	free(stripped);
 	if (!tokens)
 		return ;
-	free(head->lexeme);
-	head->lexeme = create_expanded_lexeme(map, tokens);
+	free(token->lexeme);
+	token->lexeme = create_expanded_lexeme(map, tokens);
 	free_tokens(&tokens);
-}
-
-void	parameter_expansion(t_map *map, t_token *head)
-{
-	t_token	*curr;
-
-	curr = head;
-	while (curr)
-	{
-		if (is_token_type(curr->type, TOKEN_WORD))
-			apply_expansion(map, curr);
-		curr = curr->next;
-	}
 }

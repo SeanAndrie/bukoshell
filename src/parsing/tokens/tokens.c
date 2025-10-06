@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <debug.h>
 #include <expand.h>
 #include <libft.h>
 #include <parsing/clean.h>
@@ -17,43 +18,62 @@
 #include <parsing/tokens.h>
 #include <parsing/valid.h>
 
-static void *free_helper(char *lexeme, t_token *head)
+static void	*free_helper(char *lexeme, t_token *head)
 {
-    if (lexeme)
-        free(lexeme);
-    if (head)
-        free_tokens(&head);
-    return (NULL);
+	if (lexeme)
+		free(lexeme);
+	if (head)
+		free_tokens(&head);
+	return (NULL);
 }
 
 t_token	*copy_tokens(t_token *start, t_token *end)
 {
 	t_token	*copy;
 	t_token	*curr;
+	t_token	*token;
 
 	copy = NULL;
 	curr = start;
 	while (curr && curr != end)
 	{
-		if (!append_token(&copy, curr->lexeme, curr->type))
-        {
-            free_tokens(&copy);
-            return (NULL);
-        }
+		token = create_token(curr->lexeme, curr->type);
+		if (!token)
+		{
+			free_tokens(&copy);
+			return (NULL);
+		}
+		append_token(&copy, token);
 		curr = curr->next;
 	}
 	return (copy);
 }
 
-t_bool	normalize_tokens(t_map *map, t_token *head)
+void	apply_expansions(t_token **head, t_map *map)
 {
-	parameter_expansion(map, head);
-	if (!handle_concatenation(&head, TOKEN_WORD))
+	t_token	*curr;
+	t_token	*next;
+
+	curr = *head;
+	while (curr)
+	{
+		next = curr->next;
+		if (is_token_type(curr->type, TOKEN_WORD) && ft_strchr(curr->lexeme,
+				'$'))
+			apply_param_expansion(curr, map);
+		if (ft_strchr(curr->lexeme, '*'))
+			apply_wildcard_expansion(head, curr);
+		curr = next;
+	}
+}
+
+t_bool	normalize_tokens(t_token **head, t_map *map)
+{
+	apply_expansions(head, map);
+	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
-	remove_tokens(&head, TOKEN_WHITESPACE);
-	handle_arithmetic(&head);
-	if (!validate_tokens(head))
-		return (FALSE);
+	remove_tokens(head, TOKEN_WHITESPACE);
+	handle_arithmetic(head);
 	return (TRUE);
 }
 
@@ -61,24 +81,27 @@ t_token	*create_tokens(char *line, t_bool suppress_error)
 {
 	t_token_type	type;
 	t_token			*head;
+	t_token			*token;
 	char			*lexeme;
 
+	if (!line)
+		return (NULL);
 	head = NULL;
 	while (*line)
 	{
-		if (*line == '$')
-			lexeme = process_parameter(&line, &type);
-		else if (ft_strchr(OPERATOR_TOKENS, *line))
+		if (*line == '$' || ft_strchr(OPERATOR_TOKENS, *line))
 			lexeme = process_operator(&line, &type);
 		else if (ft_strchr(GROUP_TOKENS, *line))
 			lexeme = process_grouping(&line, &type, suppress_error);
 		else
 			lexeme = process_word(&line, &type);
 		if (!lexeme)
-            return (free_helper(lexeme, head));
-		if (!append_token(&head, lexeme, type))
 			return (free_helper(lexeme, head));
-		free(lexeme);
+		token = create_token(lexeme, type);
+        if (!token)
+            return (free_helper(lexeme, head));
+		append_token(&head, token);
+        free(lexeme);
 	}
 	return (head);
 }

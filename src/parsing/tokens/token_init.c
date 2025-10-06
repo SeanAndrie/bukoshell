@@ -32,23 +32,20 @@ t_token	*create_token(char *lexeme, t_token_type type)
 	return (token);
 }
 
-t_bool	append_token(t_token **head, char *lexeme, t_token_type type)
+void    append_token(t_token **head, t_token *token)
 {
-	t_token	*token;
-	t_token	*last_token;
+	t_token	*last;
 
-	token = create_token(lexeme, type);
 	if (!token)
-		return (FALSE);
+		return ;
 	if (!*head)
 	{
 		*head = token;
-		return (TRUE);
+		return ;
 	}
-	last_token = *head;
-	while (last_token->next)
-		last_token = last_token->next;
-	last_token->next = token;
-	return (TRUE);
+	last = *head;
+	while (last->next)
+		last = last->next;
+	last->next = token;
 }
 
