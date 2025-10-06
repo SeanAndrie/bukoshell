@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <signals.h>
-#include <parsing/tree.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
+#include <signals.h>
 
 static t_node	*create_node(t_token *head, t_node_type type)
 {
@@ -31,10 +31,10 @@ static t_node	*create_node(t_token *head, t_node_type type)
 		node->operand = T_NONE;
 		node->argv = tokens_to_argv(head);
 		if (!node->argv)
-        {
-            free(node);
+		{
+			free(node);
 			return (NULL);
-        }
+		}
 		node->redirect = create_redirections(head);
 	}
 	node->left = NULL;
@@ -77,4 +77,3 @@ t_node	*create_syntax_tree(t_token *start, t_token *end)
 		return (create_subshell(start));
 	return (create_node(start, N_COMMAND));
 }
-

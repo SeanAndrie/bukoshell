@@ -30,10 +30,10 @@ static char	**alloc_argv(t_token *head, size_t n)
 			break ;
 		argv[i] = ft_strdup(head->lexeme);
 		if (!argv[i])
-        {
-            free_str_arr(argv, i);
-            return (NULL);
-        }
+		{
+			free_str_arr(argv, i);
+			return (NULL);
+		}
 		i++;
 		head = head->next;
 	}

@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <debug.h>
-#include <signals.h>
 #include <environ.h>
-#include <parsing/tree.h>
+#include <libft.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
+#include <signals.h>
 
 void	*heredoc_interrupt(char *line, char *accum)
 {
@@ -34,11 +34,12 @@ void	*heredoc_eof(char *accum, char *delim)
 	return (NULL);
 }
 
-char	*heredoc_success(char *line, char *accum, t_map *map, t_token_type delim_type)
+char	*heredoc_success(char *line, char *accum, t_map *map,
+		t_token_type delim_type)
 {
 	free(line);
 	set_signals_prompt();
-    heredoc_expansion(&accum, map, delim_type);
+	if (accum)
+        heredoc_expansion(&accum, map, delim_type);
 	return (accum);
 }
-

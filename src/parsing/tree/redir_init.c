@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <parsing/tree.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
-static void *free_helper(t_redirect *redir)
+static void	*free_helper(t_redirect *redir)
 {
-    free(redir);
-    return (NULL);
+	free(redir);
+	return (NULL);
 }
 
 static t_redirect	*create_redirect(t_token *token)
@@ -87,10 +87,10 @@ t_redirect	*create_redirections(t_token *head)
 			&& is_token_type(token_next->type, TOKEN_WORD))
 		{
 			if (!append_redirect(&redir_head, token_curr))
-            {
-                free_redirects(&redir_head);
-                return (NULL);
-            }
+			{
+				free_redirects(&redir_head);
+				return (NULL);
+			}
 			token_curr = token_next->next;
 			continue ;
 		}
