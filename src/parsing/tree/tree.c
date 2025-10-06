@@ -13,7 +13,6 @@
 #include <libft.h>
 #include <parsing/tokens.h>
 #include <parsing/tree.h>
-#include <signals.h>
 
 static t_node	*create_node(t_token *head, t_node_type type)
 {
