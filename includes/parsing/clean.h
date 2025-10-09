@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:23:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 17:33:58 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:33:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define CLEAN_H
 
 # include <stdlib.h>
-# include <tokens.h>
-# include <tree.h>
+# include <parsing/tokens.h>
+# include <parsing/tree.h>
 
 void	free_tokens(t_token **head);
 void	free_syntax_tree(t_node **root);

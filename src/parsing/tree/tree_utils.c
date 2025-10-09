@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 00:15:26 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/07 02:53:54 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:32:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/tree.h>
+
+static t_bool is_operator_or_group_token(t_token_type type)
+{
+	return  (is_token_type(type, TOKEN_CTRL_OP) || is_token_type(type, TOKEN_GROUP));
+}
 
 static char	**alloc_argv(t_token *head, size_t n)
 {
@@ -26,8 +31,8 @@ static char	**alloc_argv(t_token *head, size_t n)
 	i = -1;
 	while (head)
 	{
-        if (is_token_type(head->type, TOKEN_CTRL_OP))
-            break;
+		if (is_operator_or_group_token(head->type))
+			break ;
 		if (!is_token_type(head->type, TOKEN_REDIR_OP)
 			&& !is_token_type(head->type, TOKEN_AFTER_REDIR))
 		{
@@ -37,7 +42,7 @@ static char	**alloc_argv(t_token *head, size_t n)
 				free_str_arr(argv, i);
 				return (NULL);
 			}
-            head->type &= ~TOKEN_AFTER_REDIR;
+			head->type &= ~TOKEN_AFTER_REDIR;
 		}
 		head = head->next;
 	}
@@ -53,8 +58,8 @@ char	**tokens_to_argv(t_token *head)
 	curr = head;
 	while (curr)
 	{
-        if (is_token_type(head->type, TOKEN_CTRL_OP))
-            break;
+		if (is_operator_or_group_token(head->type))
+			break ;
 		if (!is_token_type(curr->type, TOKEN_REDIR_OP)
 			&& !is_token_type(curr->type, TOKEN_AFTER_REDIR))
 			n++;
