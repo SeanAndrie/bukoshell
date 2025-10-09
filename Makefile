@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/10/09 11:11:21 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/09 17:16:11 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,12 +48,12 @@ MAIN_SRCS := $(addprefix $(SHELL_DIR)/, shell.c shell_init.c shell_utils.c)
 SRCS := $(addprefix $(SRCS_DIR)/, $(MAIN_SRCS) $(SIGNALS_SRCS) $(PARSING_SRCS) $(DEBUG_SRCS) $(ENVIRON_SRCS))
 OBJS := $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
-all: libft $(NAME)
+all: libft/libft.a $(NAME)
 
-libft:
+libft/libft.a:
 	@$(MAKE) -C libft
 
-$(NAME): $(OBJS) libft
+$(NAME): $(OBJS) libft/libft.a
 	$(CC) $(OBJS) -o $@ $(LIBS)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
@@ -70,4 +70,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all re clean fclean libft
+.PHONY: all re clean fclean 
