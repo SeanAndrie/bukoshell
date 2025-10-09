@@ -10,35 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signals.h>
 #include <parsing/parsing.h>
 #include <readline/readline.h>
-
-// void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
-// {
-// 	t_token	*tokens;
-// 	t_token	*concat;
-//
-// 	if (is_token_type(delim_type, TOKEN_QUOTE))
-// 		return ;
-// 	tokens = create_tokens(*join, TRUE);
-// 	if (!tokens)
-// 		return ;
-//     ft_printf("%s\n", *join);
-//     apply_expansions(&tokens, map, TRUE);
-// 	concat = concat_tokens(tokens, TOKEN_NONE);
-// 	free_tokens(&tokens);
-// 	if (!concat)
-// 		return ;
-//     print_tokens(concat, FALSE)
-// 	free(*join);
-// 	*join = concat->lexeme;
-// 	free(concat);
-// }
 
 void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
 {
