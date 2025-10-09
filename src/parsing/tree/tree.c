@@ -6,13 +6,40 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:21:11 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/03 00:35:31 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/07 02:22:22 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <parsing/tokens.h>
 #include <parsing/tree.h>
+
+t_token	*find_lowest_precedence(t_token *start, t_token *end)
+{
+	int		depth;
+	t_token	*lowest_and_or;
+	t_token	*lowest_pipe;
+
+	depth = 0;
+	lowest_and_or = NULL;
+	lowest_pipe = NULL;
+	while (start != end)
+	{
+		track_depth(start, &depth, TOKEN_GROUP);
+		if (depth == 0)
+		{
+			if (is_token_type(start->type, T_OR) || is_token_type(start->type,
+					T_AND))
+				lowest_and_or = start;
+			else if (is_token_type(start->type, T_PIPE) && !lowest_pipe)
+				lowest_pipe = start;
+		}
+		start = start->next;
+	}
+	if (lowest_and_or)
+		return (lowest_and_or);
+	return (lowest_pipe);
+}
 
 static t_node	*create_node(t_token *head, t_node_type type)
 {
@@ -28,13 +55,14 @@ static t_node	*create_node(t_token *head, t_node_type type)
 	else if (node->type == N_COMMAND)
 	{
 		node->operand = T_NONE;
+		node->redirect = create_redirections(head);
 		node->argv = tokens_to_argv(head);
 		if (!node->argv)
 		{
+            ft_printf("tokens_to_argv failed\n");
 			free(node);
 			return (NULL);
 		}
-		node->redirect = create_redirections(head);
 	}
 	node->left = NULL;
 	node->right = NULL;

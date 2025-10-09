@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
 #include <libft.h>
+#include <debug.h>
 #include <parsing/lexer.h>
 
 char	*process_parameter(char **line_ptr, t_token_type *type)
@@ -23,6 +23,11 @@ char	*process_parameter(char **line_ptr, t_token_type *type)
     *type = T_PARAMETER;
     start = *line_ptr;
     (*line_ptr)++;
+    if (!**line_ptr || ft_strchr(METACHARS, **line_ptr) || ft_isspace(**line_ptr))
+    {
+        *type = T_WORD;
+        return (ft_strdup("$"));
+    }
     if (ft_strchr(SPECIAL_VARIABLES, **line_ptr))
         (*line_ptr)++;
     else
@@ -96,13 +101,16 @@ char	*process_quotes(char **line_ptr, t_token_type *type,
     return (lexeme);
 }
 
-char	*process_grouping(char **line_ptr, t_token_type *type,
-                       t_bool suppress_error)
+char	*process_grouping(char **line_ptr, t_token_type *type, t_bool suppress, t_bool heredoc)
 {
     char	*lexeme;
 
     if (**line_ptr == '\'' || **line_ptr == '"')
-        return (process_quotes(line_ptr, type, suppress_error));
+    {
+        if (heredoc)
+            return (process_quotes_heredoc(line_ptr, type));
+        return (process_quotes(line_ptr, type, suppress));
+    }
     if (**line_ptr == '(')
         *type = T_LPAREN;
     else if (**line_ptr == ')')

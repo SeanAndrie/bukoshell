@@ -13,16 +13,13 @@
 #include <libft.h>
 #include <parsing/tokens.h>
 
-t_bool	is_token_type(t_token_type type, unsigned int category_mask)
-{
-	return ((type & category_mask) == category_mask);
-}
-
 unsigned int	create_token_mask(t_token *head)
 {
 	unsigned int	mask;
 
 	mask = 0;
+	if (!head)
+		return (0);
 	while (head)
 	{
 		mask |= head->type;

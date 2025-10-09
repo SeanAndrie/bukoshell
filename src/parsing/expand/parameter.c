@@ -6,11 +6,10 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/06 18:53:59 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/07 15:10:46 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
 #include <environ.h>
 #include <expand.h>
 #include <libft.h>
@@ -73,17 +72,22 @@ static char	*create_expanded_lexeme(t_map *map, t_token *tokens)
 	return (lexeme);
 }
 
-void	apply_param_expansion(t_token *token, t_map *map)
+void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 {
 	t_token	*tokens;
 	char	*stripped;
 
 	if (is_token_type(token->type, T_WORD_SQUOTE))
 		return ;
-	stripped = ft_strtrim(token->lexeme, "\"");
+	if (!*token->lexeme)
+		return ;
+	if (heredoc)
+		stripped = ft_strdup(token->lexeme);
+	else
+		stripped = ft_strtrim(token->lexeme, "\"");
 	if (!stripped)
 		return ;
-	tokens = create_tokens(stripped, FALSE);
+	tokens = create_tokens(stripped, TRUE, FALSE);
 	free(stripped);
 	if (!tokens)
 		return ;

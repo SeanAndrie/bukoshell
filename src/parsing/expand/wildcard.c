@@ -6,67 +6,28 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 13:33:55 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/05 22:12:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 13:46:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <expand.h>
-#include <dirent.h>
+#include <debug.h>
 #include <boolean.h>
+#include <dirent.h>
+#include <expand.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
-static void backtrack(t_glob *g)
+static size_t count_matching_paths(char *pattern)
 {
-    g->p = g->star;
-    g->s_back++;
-    g->s = g->s_back;
-}
-
-static void advance(t_glob *g)
-{
-    g->p++;
-    g->s++;
-}
-
-static t_bool  is_matching_pattern(char *pattern, char *str)
-{
-    t_glob g;
-
-    if (*str == '.' && *pattern != '.')
-        return (FALSE);
-    g = (t_glob){str, pattern, NULL, NULL};
-    while (*g.s)
-    {
-        if (*g.p == '*')
-        {
-            while (*g.p == '*')
-                g.p++;
-            g.star = g.p;
-            g.s_back = g.s;
-        }
-        else if (*g.s == *g.p)
-            advance(&g);
-        else if (g.star)
-           backtrack(&g);
-        else
-            return (FALSE);
-    }
-    while (*g.p == '*')
-        g.p++;
-    return (*g.p == '\0');
-}
-
-static t_token *create_wildcard_tokens(DIR *dir, char *pattern) 
-{
-    char            *res;
-    char            *temp;
-    t_token         *head;
+    DIR             *dir;
+    size_t          size;
     struct dirent   *entry;
 
-    res = NULL;
-    entry = NULL;
+    dir = opendir(".");
+    if (!dir)
+        return (0);
+    size = 0;
     while (TRUE)
     {
         entry = readdir(dir);
@@ -74,42 +35,103 @@ static t_token *create_wildcard_tokens(DIR *dir, char *pattern)
             break;
         if (!is_matching_pattern(pattern, entry->d_name))
             continue;
-        temp = ft_vstrjoin(2, " ", res, entry->d_name);
-        if (!temp)
-        {
-            if (res)
-                free(res);
-            free_tokens(&head);
-            return (NULL);
-        }
-        res = temp;
+        size++;
     }
-    return (create_tokens(res, FALSE));
+    closedir(dir);
+    return (size);
 }
 
-void    apply_wildcard_expansion(t_token **head, t_token *token)
+static char **create_paths(DIR *dir, char *pattern, size_t size)
 {
-    DIR     *dir;
+    size_t          i;
+    struct dirent   *entry;
+    char            **paths;
+
+    paths = ft_calloc(size + 1, sizeof(char *));
+    if (!paths)
+        return (NULL);
+    i = 0;
+    while (TRUE)
+    {
+        entry = readdir(dir);
+        if (!entry)
+            break;
+        if (!is_matching_pattern(pattern, entry->d_name))
+            continue;
+        paths[i] = ft_strdup(entry->d_name);
+        if (!paths[i])
+        {
+            free_str_arr(paths, i);
+            return (NULL);
+        }
+        i++;
+    }
+    return (paths);
+}
+
+static t_token *create_path_tokens(char **paths)
+{
+    size_t  i;
+    char    *temp;
+    char    *concat;
+    t_token *tokens;
+
+    tokens = NULL;
+    concat = NULL;
+    i = 0;
+    while (paths[i])
+    {
+        temp = ft_vstrjoin(2, " ", concat, paths[i]);
+        if (!temp)
+        {
+            if (concat)
+                free(concat);
+            return (NULL);
+        }
+        concat = temp;
+        i++;
+    }
+    tokens = create_tokens(concat, TRUE, FALSE);
+    free(concat);
+    if (!tokens)
+        return (NULL);
+    return (tokens);
+}
+
+static void attach_path_head(t_token **head, t_token *path_tokens, t_token *wc_token)
+{
     t_token **curr;
     t_token *after;
-    t_token *wc_head;
+
+    curr = head;
+    while (*curr && *curr != wc_token)
+        curr = &(*curr)->next;
+    after = wc_token->next;
+    free((*curr)->lexeme);
+    free(*curr);
+    *curr = path_tokens;
+    append_token(&path_tokens, after);
+}
+
+void apply_wildcard_expansion(t_token **head, t_token *wc_token)
+{
+    DIR     *dir;
+    size_t  count;
+    char    **paths;
+    t_token *tokens;
 
     dir = opendir(".");
     if (!dir)
-        return ;
-    wc_head = create_wildcard_tokens(dir, token->lexeme);
+        return;
+    count = count_matching_paths(wc_token->lexeme);
+    paths = create_paths(dir, wc_token->lexeme, count);
     closedir(dir);
-    if (!wc_head)
+    if (!paths)
         return ;
-    curr = head;
-    while (*curr && (*curr) != token)
-        curr = &(*curr)->next;
-    if (!*curr)
+    quick_sort(paths, 0, count - 1);
+    tokens = create_path_tokens(paths);
+    free_str_arr(paths, count);
+    if (!tokens)
         return ;
-    after = token->next;
-    free(token->lexeme);
-    free(token);
-    *curr = wc_head;
-    append_token(&wc_head, after);
+    attach_path_head(head, tokens, wc_token);
 }
-

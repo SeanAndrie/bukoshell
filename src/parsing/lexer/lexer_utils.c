@@ -69,6 +69,24 @@ t_bool	handle_concatenation(t_token **head, t_token_type concat_type)
 	return (TRUE);
 }
 
+char *process_quotes_heredoc(char **line_ptr, t_token_type *type)
+{
+    char    quote;
+    char    *lexeme;
+
+    quote = **line_ptr;
+    if (quote == '\'')
+        *type = T_WORD_SQUOTE;
+    else
+        *type = T_WORD_DQUOTE;
+    lexeme = ft_calloc(2, sizeof(char));
+    if (!lexeme)
+        return NULL;
+    lexeme[0] = quote;
+    (*line_ptr)++;
+    return (lexeme);
+}
+
 t_token_type	categorize_ctrl_op(char c, t_bool is_double)
 {
 	if (c == '|')

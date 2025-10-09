@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 01:37:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/07 02:50:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,20 @@ static t_redirect	*create_redirect(t_token *token)
 	if (!redir)
 		return (NULL);
 	redir->type = token->type;
-	if (is_token_type(token->type, T_REDIR_IN))
-		redir->fd = 0;
-	else if (is_token_type(token->type, T_REDIR_OUT)
-		|| is_token_type(token->type, T_REDIR_APPEND))
-		redir->fd = 1;
-	else if (token->next && is_token_type(token->type, T_HEREDOC))
+    assign_fds(redir, token->type);
+	if (token->next && is_token_type(token->type, T_HEREDOC))
 	{
-		redir->fd = 0;
 		redir->delim = token->next;
+        redir->delim->type |= TOKEN_AFTER_REDIR;
 		if (!redir->delim)
-			return (free_helper(redir));
+            return (free_helper(redir));
 		redir->heredoc = NULL;
 		return (redir);
 	}
 	redir->fname = ft_strdup(token->next->lexeme);
 	if (!redir->fname)
-		return (free_helper(redir));
+        return (free_helper(redir));
+    token->next->type |= TOKEN_AFTER_REDIR;
 	redir->next = NULL;
 	return (redir);
 }
@@ -70,31 +67,37 @@ static t_bool	append_redirect(t_redirect **head, t_token *token)
 	return (TRUE);
 }
 
+static t_bool	is_valid_redir(t_token *curr, t_token *next)
+{
+	return (next && is_token_type(curr->type, TOKEN_REDIR_OP)
+		&& is_token_type(next->type, TOKEN_WORD));
+}
+
 t_redirect	*create_redirections(t_token *head)
 {
-	t_token		*token_curr;
-	t_token		*token_next;
+	t_token		*curr;
+	t_token		*next;
 	t_redirect	*redir_head;
 
-	token_curr = head;
+	curr = head;
 	redir_head = NULL;
-	while (token_curr)
+	while (curr)
 	{
-		token_next = token_curr->next;
-		if (is_token_type(token_curr->type, TOKEN_CTRL_OP))
-			break ;
-		if (token_next && is_token_type(token_curr->type, TOKEN_REDIR_OP)
-			&& is_token_type(token_next->type, TOKEN_WORD))
+		next = curr->next;
+		if (is_token_type(curr->type, TOKEN_REDIR_OP))
 		{
-			if (!append_redirect(&redir_head, token_curr))
+			if (next && is_valid_redir(curr, next))
 			{
-				free_redirects(&redir_head);
-				return (NULL);
+				if (!append_redirect(&redir_head, curr))
+				{
+					free_redirects(&redir_head);
+					return (NULL);
+				}
+				curr = next->next;
+				continue ;
 			}
-			token_curr = token_next->next;
-			continue ;
 		}
-		token_curr = token_curr->next;
+		curr = curr->next;
 	}
 	return (redir_head);
 }

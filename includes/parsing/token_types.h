@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:15:10 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 03:27:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/07 02:25:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@
 # define TOKEN_GROUP_CLOSE 0x400
 # define TOKEN_WHITESPACE 0x800
 # define TOKEN_PARAMETER 0x1000
-# define TOKEN_NONE 0x2000
+# define TOKEN_AFTER_REDIR 0x2000
+# define TOKEN_NONE 0x4000
 
 /*
 ** Enum defining specific token types.

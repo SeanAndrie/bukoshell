@@ -57,7 +57,7 @@ t_token					*create_token(char *lexeme, t_token_type type);
 ** @return      A pointer to the head of the token list,
 **              or NULL if memory allocation or token creation fails.
 */
-t_token					*create_tokens(char *line, t_bool suppress_error);
+t_token					*create_tokens(char *line, t_bool suppress_error, t_bool heredoc);
 
 /*
 ** Concatenates the lexemes of a linked list of tokens into a single string
@@ -145,6 +145,6 @@ unsigned int			create_token_mask(t_token *head);
 */
 t_token					*copy_tokens(t_token *start, t_token *end);
 
-void                    apply_expansions(t_token **head, t_map *map);
+void                    apply_expansions(t_token **head, t_map *map, t_bool heredoc_mode);
 
 #endif

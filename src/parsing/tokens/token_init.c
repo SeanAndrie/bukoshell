@@ -14,6 +14,11 @@
 #include <libft.h>
 #include <parsing/tokens.h>
 
+t_bool	is_token_type(t_token_type type, unsigned int category_mask)
+{
+	return ((type & category_mask) == category_mask);
+}
+
 t_token	*create_token(char *lexeme, t_token_type type)
 {
 	t_token	*token;

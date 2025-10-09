@@ -14,6 +14,8 @@
 
 void	free_str_arr(char **str_arr, int n)
 {
+	if (!str_arr)
+		return ;
 	if (n >= 0)
 	{
 		while (--n >= 0)
@@ -50,12 +52,13 @@ void	free_tokens(t_token **head)
 {
 	t_token	*next;
 
-	if (!head && !*head)
+	if (!head || !*head)
 		return ;
 	while (*head)
 	{
 		next = (*head)->next;
-		free((*head)->lexeme);
+		if ((*head)->lexeme)
+			free((*head)->lexeme);
 		free(*head);
 		*head = next;
 	}

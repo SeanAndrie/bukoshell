@@ -6,10 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:05:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/03 17:08:18 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/07 15:21:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <debug.h>
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,24 +18,46 @@
 #include <parsing/parsing.h>
 #include <readline/readline.h>
 
-void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
-{
-	t_token	*tokens;
-	t_token	*concat;
+// void	heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
+// {
+// 	t_token	*tokens;
+// 	t_token	*concat;
+//
+// 	if (is_token_type(delim_type, TOKEN_QUOTE))
+// 		return ;
+// 	tokens = create_tokens(*join, TRUE);
+// 	if (!tokens)
+// 		return ;
+//     ft_printf("%s\n", *join);
+//     apply_expansions(&tokens, map, TRUE);
+// 	concat = concat_tokens(tokens, TOKEN_NONE);
+// 	free_tokens(&tokens);
+// 	if (!concat)
+// 		return ;
+//     print_tokens(concat, FALSE)
+// 	free(*join);
+// 	*join = concat->lexeme;
+// 	free(concat);
+// }
 
-	if (is_token_type(delim_type, TOKEN_QUOTE))
-		return ;
-	tokens = create_tokens(*join, TRUE);
-	if (!tokens)
-		return ;
-    apply_expansions(&tokens, map);
-	concat = concat_tokens(tokens, TOKEN_NONE);
-	free_tokens(&tokens);
-	if (!concat)
-		return ;
-	free(*join);
-	*join = concat->lexeme;
-	free(concat);
+void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
+{
+    t_token *tokens;
+    t_token *concat;
+
+    if (is_token_type(delim_type, TOKEN_QUOTE))
+        return  ;
+    tokens = create_tokens(*join, TRUE, TRUE);
+    if (!tokens)
+        return ;
+    apply_expansions(&tokens, map, TRUE);
+    concat = concat_tokens(tokens, TOKEN_NONE);
+    free_tokens(&tokens);
+    if (!concat)
+        return ;
+    free(*join);
+    *join = concat->lexeme;
+    free(concat);
 }
 
 static char	*handle_heredoc(t_token *delim, t_map *map)

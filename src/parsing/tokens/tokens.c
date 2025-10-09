@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:43:03 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/07 15:08:06 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_token	*copy_tokens(t_token *start, t_token *end)
 	return (copy);
 }
 
-void	apply_expansions(t_token **head, t_map *map)
+void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 {
 	t_token	*curr;
 	t_token	*next;
@@ -60,8 +60,8 @@ void	apply_expansions(t_token **head, t_map *map)
 		next = curr->next;
 		if (is_token_type(curr->type, TOKEN_WORD) && ft_strchr(curr->lexeme,
 				'$'))
-			apply_param_expansion(curr, map);
-		if (ft_strchr(curr->lexeme, '*'))
+			apply_param_expansion(curr, map, heredoc);
+		if (ft_strchr(curr->lexeme, '*') && !heredoc)
 			apply_wildcard_expansion(head, curr);
 		curr = next;
 	}
@@ -69,7 +69,7 @@ void	apply_expansions(t_token **head, t_map *map)
 
 t_bool	normalize_tokens(t_token **head, t_map *map)
 {
-	apply_expansions(head, map);
+	apply_expansions(head, map, FALSE);
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
 	remove_tokens(head, TOKEN_WHITESPACE);
@@ -77,7 +77,7 @@ t_bool	normalize_tokens(t_token **head, t_map *map)
 	return (TRUE);
 }
 
-t_token	*create_tokens(char *line, t_bool suppress_error)
+t_token	*create_tokens(char *line, t_bool suppress, t_bool heredoc)
 {
 	t_token_type	type;
 	t_token			*head;
@@ -92,16 +92,16 @@ t_token	*create_tokens(char *line, t_bool suppress_error)
 		if (*line == '$' || ft_strchr(OPERATOR_TOKENS, *line))
 			lexeme = process_operator(&line, &type);
 		else if (ft_strchr(GROUP_TOKENS, *line))
-			lexeme = process_grouping(&line, &type, suppress_error);
+			lexeme = process_grouping(&line, &type, suppress, heredoc);
 		else
 			lexeme = process_word(&line, &type);
 		if (!lexeme)
 			return (free_helper(lexeme, head));
 		token = create_token(lexeme, type);
-        if (!token)
-            return (free_helper(lexeme, head));
+		if (!token)
+			return (free_helper(lexeme, head));
 		append_token(&head, token);
-        free(lexeme);
+		free(lexeme);
 	}
 	return (head);
 }
