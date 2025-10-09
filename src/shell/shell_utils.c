@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/03 19:49:30 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:21:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*create_cwd(char *cwd_buffer)
 	while (split[i + 1])
 		i++;
 	cwd = ft_strdup(split[i]);
-	free_str_arr(split, i);
+	free_str_arr(split, -1);
 	if (!cwd)
 		return (NULL);
 	return (cwd);

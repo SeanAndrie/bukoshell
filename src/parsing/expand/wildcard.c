@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 13:33:55 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 13:46:59 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:48:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ static t_token *create_path_tokens(char **paths)
         temp = ft_vstrjoin(2, " ", concat, paths[i]);
         if (!temp)
         {
-            if (concat)
-                free(concat);
+            free(concat);
             return (NULL);
         }
+        free(concat);
         concat = temp;
         i++;
     }

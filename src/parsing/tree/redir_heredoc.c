@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:05:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/07 15:21:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:46:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 		if (ft_strcmp(line, delim->lexeme) == 0)
 			return (heredoc_success(line, accum, map, delim->type));
 		joined = ft_vstrjoin(2, "\n", accum, line);
+		free(line);
+		line = NULL;
 		if (!joined)
-		{
-			set_signals_prompt();
-			return (NULL);
-		}
+			return (heredoc_interrupt(line, accum));
+		free(accum);
 		accum = joined;
 	}
 	return (NULL);

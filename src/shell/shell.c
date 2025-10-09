@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/03 19:49:51 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:49:49 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static int	shell_loop(t_shell *shell)
 	{
 		prompt = set_prompt(shell, identifier);
 		shell->line = readline(prompt);
+		free(prompt);
 		if (!shell->line)
 		{
 			ft_printf("exit\n");
@@ -50,11 +51,9 @@ static int	shell_loop(t_shell *shell)
 		}
 		if (ft_strcmp(shell->line, "exit") == 0)
 			break ;
-		free(prompt);
 		add_history(shell->line);
 		shell->status = start_shell(shell);
 	}
-	free(prompt);
 	free(identifier);
 	return (shell->status);
 }
