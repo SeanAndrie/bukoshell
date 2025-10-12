@@ -12,19 +12,6 @@
 
 #include <environ.h>
 
-size_t	environ_size(char **envp)
-{
-	size_t	size;
-
-	size = 0;
-	while (*envp)
-	{
-		size++;
-		envp++;
-	}
-	return (size);
-}
-
 static void	clear_entry(t_environ **head, char *key)
 {
 	t_environ	*temp;
@@ -95,6 +82,28 @@ t_bool	insert_entry(t_map *map, char *key, char *value)
 	return (TRUE);
 }
 
+t_bool  set_entry(t_map *map, char *key, char *value)
+{
+    t_environ   *target;
+
+    if (!map)
+        return (FALSE);
+    target = search_entry(map, key);
+    if (!target)
+    {
+        if (!insert_entry(map, key, value))
+            return (FALSE);
+        return (TRUE);
+    }
+    if (target->value)
+        free(target->value);
+    target->value = ft_strdup(value);
+    if (!target->value)
+        return (FALSE);
+    update_order(&map->order, target);
+    return (TRUE);
+}
+
 t_bool	delete_entry(t_map *map, char *key)
 {
 	size_t		index;
@@ -112,3 +121,4 @@ t_bool	delete_entry(t_map *map, char *key)
 	map->load_factor = (double)map->size / (double)map->capacity;
 	return (TRUE);
 }
+

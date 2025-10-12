@@ -75,20 +75,12 @@ static char	*create_expanded_lexeme(t_map *map, t_token *tokens)
 void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 {
 	t_token	*tokens;
-	char	*stripped;
 
 	if (is_token_type(token->type, T_WORD_SQUOTE))
 		return ;
 	if (!*token->lexeme)
 		return ;
-	if (heredoc)
-		stripped = ft_strdup(token->lexeme);
-	else
-		stripped = ft_strtrim(token->lexeme, "\"");
-	if (!stripped)
-		return ;
-	tokens = create_tokens(stripped, TRUE, FALSE);
-	free(stripped);
+	tokens = create_tokens(token->lexeme, TRUE, heredoc);
 	if (!tokens)
 		return ;
 	free(token->lexeme);

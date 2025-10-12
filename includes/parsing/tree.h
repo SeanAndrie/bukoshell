@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 17:46:53 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/10 22:43:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,6 @@ t_token					*find_lowest_precedence(t_token *start, t_token *end);
 */
 void					collect_heredocs(t_node *node, t_map *map);
 void	                heredoc_expansion(char **join, t_map *map, t_token_type delim_type);
-
-void                    assign_fds(t_redirect *redir, t_token_type token_type);
 
 void	                *heredoc_eof(char *accum, char *delim);
 void	                *heredoc_interrupt(char *line, char *accum);

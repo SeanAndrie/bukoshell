@@ -75,6 +75,22 @@ char	*set_prompt(t_shell *shell, char *identifier)
 	return (prompt);
 }
 
+t_map	*realloc_map(t_map *map, char **envp)
+{
+	t_map	*copy;
+
+	if (!envp)
+		return (NULL);
+	copy = create_map(map->capacity);
+	if (!copy)
+		return (NULL);
+	init_environ(copy, envp);
+	free_map(map);
+	if (!copy)
+		return (NULL);
+	return (copy);
+}
+
 char	**copy_envp(char **envp)
 {
 	size_t	i;

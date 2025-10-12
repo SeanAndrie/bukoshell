@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:52:00 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/12 16:48:50 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 # include <signals.h>
 # include <environ.h>
 # include <parsing/parsing.h>
+# include <execute/execute.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define DEBUG_MODE TRUE
+# define DEBUG_MODE FALSE
 
 typedef struct s_shell
 {
@@ -38,6 +39,7 @@ typedef struct s_shell
 
 t_shell				*init_shell(char **envp);
 int					start_shell(t_shell *shell);
+void	            init_environ(t_map *map, char **envp);
 
 char				**copy_envp(char **envp);
 char				*create_identifier(t_map *map);

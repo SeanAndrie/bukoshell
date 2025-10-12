@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.h                                            :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 14:23:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 17:40:12 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/10/11 11:49:40 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/10/12 21:12:57 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLEAN_H
-# define CLEAN_H
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-# include <boolean.h>
-# include <parsing/tokens.h>
 # include <parsing/tree.h>
 
-void	free_tokens(t_token **head);
-void	free_syntax_tree(t_node **root);
-void	free_str_arr(char **str_arr, int n);
-void	free_redirects(t_redirect **head, t_bool close_fds);
+int     builtin_pwd(void);
+int     builtin_echo(char **argv);
+int     builtin_exit(char **argv);
+int     builtin_cd(char **argv, t_map *map);
+int     builtin_export(char **argv, t_map *map);
+
+t_bool  is_builtin(t_node *node);
 
 #endif
+

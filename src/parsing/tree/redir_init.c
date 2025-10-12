@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/07 02:50:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/10 22:44:06 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_redirect	*create_redirect(t_token *token)
 	if (!redir)
 		return (NULL);
 	redir->type = token->type;
-    assign_fds(redir, token->type);
+    redir->fd = -1;
 	if (token->next && is_token_type(token->type, T_HEREDOC))
 	{
 		redir->delim = token->next;
@@ -90,7 +90,7 @@ t_redirect	*create_redirections(t_token *head)
 			{
 				if (!append_redirect(&redir_head, curr))
 				{
-					free_redirects(&redir_head);
+					free_redirects(&redir_head, FALSE);
 					return (NULL);
 				}
 				curr = next->next;

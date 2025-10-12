@@ -12,6 +12,19 @@
 
 #include <environ.h>
 
+size_t	environ_size(char **envp)
+{
+	size_t	size;
+
+	size = 0;
+	while (*envp)
+	{
+		size++;
+		envp++;
+	}
+	return (size);
+}
+
 size_t	hash_djb2(char *key)
 {
 	size_t	hash;
@@ -68,22 +81,6 @@ void	append_entry(t_environ **head, t_environ *node)
 	last->next = node;
 }
 
-t_map	*realloc_map(t_map *map, char **envp)
-{
-	t_map	*copy;
-
-	if (!envp)
-		return (NULL);
-	copy = create_map(map->capacity);
-	if (!copy)
-		return (NULL);
-	init_environ(copy, envp);
-	free_map(map);
-	if (!copy)
-		return (NULL);
-	return (copy);
-}
-
 t_map	*create_map(size_t size)
 {
 	t_map	*map;
@@ -103,3 +100,4 @@ t_map	*create_map(size_t size)
 	map->load_factor = 0.0;
 	return (map);
 }
+

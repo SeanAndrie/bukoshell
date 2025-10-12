@@ -54,6 +54,8 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 	t_token	*curr;
 	t_token	*next;
 
+	if (!head || !*head || !map)
+		return ;
 	curr = *head;
 	while (curr)
 	{

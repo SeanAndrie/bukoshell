@@ -28,7 +28,7 @@ void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
     if (!tokens)
         return ;
     apply_expansions(&tokens, map, TRUE);
-    concat = concat_tokens(tokens, TOKEN_NONE);
+    concat = concat_tokens(tokens, TOKEN_PARAMETER);
     free_tokens(&tokens);
     if (!concat)
         return ;

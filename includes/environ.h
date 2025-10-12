@@ -35,16 +35,17 @@ typedef struct s_map
 }						t_map;
 
 size_t					hash_djb2(char *key);
+char	                **get_pair(char *env);
 size_t					environ_size(char **envp);
-void					init_environ(t_map *map, char **envp);
+void                    update_order(t_environ **order, t_environ *entry);
 
 t_map					*create_map(size_t size);
-t_map	                *realloc_map(t_map *map, char **envp);
 t_environ				*create_entry(char *key, char *value);
 void					append_entry(t_environ **head, t_environ *node);
 
 t_bool					delete_entry(t_map *map, char *key);
 t_environ				*search_entry(t_map *map, char *key);
+t_bool                  set_entry(t_map *map, char *key, char *value);
 t_bool					insert_entry(t_map *map, char *key, char *value);
 
 void					free_map(t_map *map);

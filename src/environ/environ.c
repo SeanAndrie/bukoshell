@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include <environ.h>
+#include <execute/builtins.h>
 #include <parsing/clean.h>
 
-static void *free_helper(char **pair)
+static void	*free_helper(char **pair)
 {
-    if (pair)
-        free_str_arr(pair, -1);
-    return (NULL);
+	if (pair)
+		free_str_arr(pair, -1);
+	return (NULL);
 }
 
 static void	free_entries(t_environ **entry)
@@ -28,8 +29,8 @@ static void	free_entries(t_environ **entry)
 	{
 		next = (*entry)->next;
 		free((*entry)->key);
-        if ((*entry)->value)
-		    free((*entry)->value);
+		if ((*entry)->value)
+			free((*entry)->value);
 		free(*entry);
 		*entry = next;
 	}
@@ -56,7 +57,27 @@ void	free_map(t_map *map)
 	free(map);
 }
 
-static char	**get_pair(char *env)
+void update_order(t_environ **order, t_environ *entry)
+{
+    t_environ *curr;
+
+    if (!order || !entry)
+        return ;
+    curr = *order;
+    while (curr)
+    {
+        if (ft_strcmp(curr->key, entry->key) == 0)
+        {
+            if (curr->value)
+                free(curr->value);
+            curr->value = ft_strdup(entry->value);
+            return ;
+        }
+        curr = curr->next;
+    }
+}
+
+char	**get_pair(char *env)
 {
 	int		start;
 	int		end;
@@ -69,46 +90,17 @@ static char	**get_pair(char *env)
 	end = start;
 	while (env[end] && env[end] != '=')
 		end++;
-	pair[0] = ft_substr_range(env, start, end);
+	pair[0] = ft_substr(env, start, end);
 	if (!pair[0])
-        return (free_helper(pair));
+		return (free_helper(pair));
 	if (env[end] == '=')
 	{
-		pair[1] = ft_substr_range(env, end + 1, ft_strlen(env));
+		pair[1] = ft_substr(env, end + 1, ft_strlen(env));
 		if (!pair[1])
-            return (free_helper(pair));
+			return (free_helper(pair));
 	}
 	else
 		pair[1] = NULL;
 	pair[2] = NULL;
 	return (pair);
 }
-
-void	init_environ(t_map *map, char **envp)
-{
-	char	**pair;
-
-	while (*envp)
-	{
-        if (**envp)
-        {
-            pair = get_pair(*envp);
-            if (pair)
-            {
-                if (ft_strcmp(pair[0], "OLDPWD") == 0)
-                {
-                    free(pair[1]);
-                    pair[1] = NULL;
-                }
-                if (!insert_entry(map, pair[0], pair[1]))
-                {
-                    free_str_arr(pair, -1);
-                    return ;
-                }
-                free_str_arr(pair, -1);
-            }
-        }
-		envp++;
-	}
-}
-
