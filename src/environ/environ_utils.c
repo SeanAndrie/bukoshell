@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 12:28:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:16:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ static void	clear_entry(t_environ **head, char *key)
 {
 	t_environ	*temp;
 	t_environ	**curr;
-	size_t		key_len;
 
 	curr = head;
-	key_len = ft_strlen(key);
 	while (*curr)
 	{
-		if (ft_strncmp((*curr)->key, key, key_len) == 0)
+		if (ft_strcmp((*curr)->key, key) == 0)
 		{
 			temp = *curr;
 			*curr = (*curr)->next;
@@ -93,6 +91,7 @@ t_bool  set_entry(t_map *map, char *key, char *value)
     {
         if (!insert_entry(map, key, value))
             return (FALSE);
+		map->modified = TRUE;
         return (TRUE);
     }
     if (target->value)
@@ -101,6 +100,7 @@ t_bool  set_entry(t_map *map, char *key, char *value)
     if (!target->value)
         return (FALSE);
     update_order(&map->order, target);
+	map->modified = TRUE;
     return (TRUE);
 }
 

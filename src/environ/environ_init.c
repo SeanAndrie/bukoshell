@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:55:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/17 17:40:06 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:04:09 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ t_map	*create_map(size_t size)
 	map->order = NULL;
 	map->size = 0;
 	map->load_factor = 0.0;
+	map->modified = FALSE;
 	return (map);
 }
 

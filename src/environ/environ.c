@@ -49,11 +49,11 @@ void	free_map(t_map *map)
 	free(map);
 }
 
-void update_order(t_environ **order, t_environ *entry)
+void	update_order(t_environ **order, t_environ *entry)
 {
     t_environ *curr;
 
-    if (!order || !entry)
+    if (!order || !*order || !entry)
         return ;
     curr = *order;
     while (curr)
@@ -67,6 +67,7 @@ void update_order(t_environ **order, t_environ *entry)
         }
         curr = curr->next;
     }
+	return ; 
 }
 
 char	**get_pair(char *env)

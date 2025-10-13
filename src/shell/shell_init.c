@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 14:44:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:15:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,17 @@ static void	resolve_map_changes(t_shell *shell)
 {
 	char	**temp;
 
-	if (!shell || !shell->envp || !shell->map)
-		return ;
-	temp = shell->envp;
-	free_str_arr(shell->envp, -1);
-	shell->envp = map_to_envp(shell->map);
-	if (!shell->envp)
-		shell->envp = temp;
+	if (shell->map->modified)
+	{
+		temp = shell->envp;
+		free_str_arr(shell->envp, -1);
+		shell->envp = map_to_envp(shell->map);
+		if (!shell->envp)
+			shell->envp = temp;
+		shell->map->modified = FALSE;
+	}
+	if (shell->map->load_factor >= LOAD_THRESHOLD)
+		shell->map = realloc_map(shell->map, shell->envp);
 }
 
 int	start_shell(t_shell *shell)
@@ -82,14 +86,12 @@ int	start_shell(t_shell *shell)
 	int		status;
 
 	status = 0;
-	if (shell->map->load_factor >= LOAD_THRESHOLD)
-		shell->map = realloc_map(shell->map, shell->envp);
+	resolve_map_changes(shell);
 	if (!parse_prompt(shell))
 	{
 		free_shell(shell, FALSE);
 		return (2);
 	}
-	resolve_map_changes(shell);
 	status = exec_node(shell->root, shell->map, shell->envp);
 	shell->token_mask = 0;
 	free_shell(shell, FALSE);
