@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 21:03:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 21:16:46 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 12:30:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_bool is_valid_key(char *key)
         return (FALSE);
     if (!(ft_isalpha(*key) || *key == '_'))
     {
-        log_error(ERROR_NONE, ERR_BASE, "export: %s: not a valid identifier\n", key);
+        log_error(ERROR_NONE, ERR_BASE, "export: `%s`: not a valid identifier\n", key);
         return (FALSE);
     }
     i = 1;

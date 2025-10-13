@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:41:25 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 21:15:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 13:13:21 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void    exec_external(t_node *node, t_map *map, char **envp);
 
 void    restore_fds(int in, int out);
 t_bool  handle_redirections(t_redirect *head);
-char    *find_cmd_path(char *cmd, t_environ *path_var);
 
 #endif
 
