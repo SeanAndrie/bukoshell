@@ -6,20 +6,13 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 19:47:00 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/09/23 19:47:00by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <environ.h>
 #include <execute/builtins.h>
 #include <parsing/clean.h>
-
-static void	*free_helper(char **pair)
-{
-	if (pair)
-		free_str_arr(pair, -1);
-	return (NULL);
-}
 
 static void	free_entries(t_environ **entry)
 {
@@ -79,28 +72,51 @@ void update_order(t_environ **order, t_environ *entry)
 
 char	**get_pair(char *env)
 {
-	int		start;
-	int		end;
 	char	**pair;
+	char	*equal;
 
 	pair = malloc(sizeof(char *) * 3);
 	if (!pair)
 		return (NULL);
-	start = 0;
-	end = start;
-	while (env[end] && env[end] != '=')
-		end++;
-	pair[0] = ft_substr(env, start, end);
-	if (!pair[0])
-		return (free_helper(pair));
-	if (env[end] == '=')
+	equal = ft_strchr(env, '=');
+	if (equal)
 	{
-		pair[1] = ft_substr(env, end + 1, ft_strlen(env));
-		if (!pair[1])
-			return (free_helper(pair));
+		pair[0] = ft_substr(env, 0, equal - env);
+		pair[1] = ft_strdup(equal + 1);
 	}
 	else
-		pair[1] = NULL;
+	{
+		pair[0] = ft_strdup(env);
+		pair[1] = ft_strdup("");
+	}
+	if (!pair[0] && !pair[1])
+	{
+		free_str_arr(pair, 2);
+		return (NULL);
+	}
 	pair[2] = NULL;
 	return (pair);
+}
+
+void	init_environ(t_map *map, char **envp)
+{
+	char	    **pair;
+
+	while (*envp)
+	{
+		if (**envp)
+		{
+			pair = get_pair(*envp);
+			if (pair)
+			{
+				if (!insert_entry(map, pair[0], pair[1]))
+				{
+					free_str_arr(pair, -1);
+					return ;
+				}
+				free_str_arr(pair, -1);
+			}
+		}
+		envp++;
+	}
 }
