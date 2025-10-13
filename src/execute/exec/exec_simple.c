@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 14:54:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 13:13:10 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 21:05:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,14 @@ static int map_builtin(char **argv, t_map *map)
         return (builtin_exit(argv));
     else if (ft_strcmp(argv[0], "pwd") == 0)
         return (builtin_pwd());
-    else if (ft_strcmp(argv[0], "export") == 0)
-        return (builtin_export(argv, map));
     else if (ft_strcmp(argv[0], "cd") == 0)
         return (builtin_cd(argv, map));
+    else if (ft_strcmp(argv[0], "export") == 0)
+        return (builtin_export(argv, map));
+    else if (ft_strcmp(argv[0], "unset") == 0)
+        return (builtin_unset(argv, map));
+    else if (ft_strcmp(argv[0], "env") == 0)
+        return (builtin_env(map));
     return (0);
 }
 

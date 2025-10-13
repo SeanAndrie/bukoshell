@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/10/12 21:16:22 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/13 21:07:00 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ PARSING_MODULES := \
 EXECUTE_MODULES := \
 	exec/exec.c exec/exec_simple.c exec/exec_utils.c \
 	builtins/builtin_echo.c builtins/builtin_exit.c builtins/builtin_utils.c \
-	builtins/builtin_pwd.c builtins/builtin_export.c builtins/builtin_cd.c
+	builtins/builtin_pwd.c builtins/builtin_export.c builtins/builtin_cd.c \
+	builtins/builtin_unset.c builtins/builtin_env.c
 
 DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c print_env.c print_dir_list.c)
 PARSING_SRCS := $(addprefix $(PARSING_DIR)/, $(PARSING_MODULES))

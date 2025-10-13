@@ -6,10 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 15:15:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 20:30:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 20:31:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <debug.h>
 #include <libft.h>
 #include <execute/builtins.h>
 
@@ -32,5 +33,29 @@ t_bool  is_builtin(t_node *node)
     else if (ft_strcmp(node->argv[0], "pwd") == 0)
         return (TRUE);
     return (FALSE);
+}
+
+t_bool is_valid_identifier(char *key)
+{
+    size_t  i;
+
+    if (!key || !*key)
+        return (FALSE);
+    if (!(ft_isalpha(*key) || *key == '_'))
+    {
+        log_error(ERROR_NONE, ERR_BASE, "export: `%s`: not a valid identifier\n", key);
+        return (FALSE);
+    }
+    i = 1;
+    while (key[i])
+    {
+        if (!(ft_isalnum(key[i]) || key[i] == '_'))
+        {
+            log_error(ERROR_NONE, ERR_BASE, "export: `%s`: not a valid identifier\n", key);
+            return (FALSE);
+        }
+        i++;
+    }
+    return (TRUE);
 }
 
