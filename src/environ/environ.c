@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <environ.h>
-#include <execute/builtins.h>
 #include <parsing/clean.h>
 
 static void	free_entries(t_environ **entry)
