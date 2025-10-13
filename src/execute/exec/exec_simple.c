@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 14:54:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 21:14:49 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 13:13:10 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,36 @@
 #include <parsing/tree.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
+#include <parsing/prompts.h>
 #include <execute/execute.h>
+
+static char *find_cmd_path(char *cmd, t_environ *path_var)
+{
+    size_t      i;
+    char        **paths;
+    char        *cmd_path;
+
+    if (!cmd || !path_var || !path_var->value)
+        return (NULL);
+    paths = ft_split(path_var->value, ':');
+    if (!paths)
+        return (NULL);
+    i = -1;
+    while (paths[++i])
+    {
+        cmd_path = ft_vstrjoin(2, "/", paths[i], cmd);
+        if (!cmd_path)
+            break;
+        if (access(cmd_path, X_OK) == 0)
+        {
+            free_str_arr(paths, i);
+            return (cmd_path);
+        }
+        free(cmd_path);
+    }
+    free_str_arr(paths, i);
+    return (NULL);
+}
 
 static int map_builtin(char **argv, t_map *map)
 {
@@ -41,11 +70,11 @@ int exec_builtin(t_node *node, t_map *map)
     {
         save_in = dup(STDIN_FILENO);
         save_out = dup(STDOUT_FILENO);
-    }
-    if (node->redirect && !handle_redirections(node->redirect))
-    {
-        restore_fds(save_in, save_out);
-        return (1);
+        if (!handle_redirections(node->redirect))
+        {
+            restore_fds(save_in, save_out);
+            return (1);
+        }
     }
     status = map_builtin(node->argv, map);
     if (node->redirect)
@@ -57,6 +86,7 @@ void exec_external(t_node *node, t_map *map, char **envp)
 {
     t_environ   *path_var;
     char        *cmd_path;
+    char        buffer[PATH_MAX];
 
     if (node->redirect && !handle_redirections(node->redirect))
         exit(1);
@@ -74,9 +104,10 @@ void exec_external(t_node *node, t_map *map, char **envp)
         ft_dprintf(STDERR_FILENO, "%s: command not found\n", node->argv[0]);
         exit(127);
     }
-    execve(cmd_path, node->argv, envp);
-    perror(node->argv[0]);
+    ft_strlcpy(buffer, cmd_path, sizeof(buffer));
     free(cmd_path);
+    execve(buffer, node->argv, envp);
+    log_error(ERROR_NONE, ERR_BASE, "%s: command not found\n", node->argv[0]);
     exit(127);
 }
 

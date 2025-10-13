@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:23:11 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 16:30:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 12:56:29 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int exec_command(t_node *node, t_map *map, char **envp)
 int exec_subshell(t_node *node, t_map *map, char **envp)
 {
     pid_t   pid;
+    int     ret;
     int     status;
     
     pid = fork();
@@ -53,7 +54,8 @@ int exec_subshell(t_node *node, t_map *map, char **envp)
     {
         if (node->redirect && !handle_redirections(node->redirect))
             exit(1);
-        exit(exec_node(node, map, envp));
+        ret = exec_node(node->left, map, envp);
+        exit(ret);
     }
     else if (pid > 0)
         waitpid(pid, &status, 0);
