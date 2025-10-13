@@ -6,27 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 16:21:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:49:33 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
-
-char	*create_identifier(t_map *map)
-{
-	t_environ	*user;
-
-	if (!map)
-		return (NULL);
-	user = search_entry(map, "USER");
-	if (!user)
-	{
-		user = search_entry(map, "LOGNAME");
-		if (!user)
-			return (NULL);
-	}
-	return (ft_strdup(user->value));
-}
 
 static char	*create_cwd(char *cwd_buffer)
 {
@@ -55,6 +39,7 @@ static char	*create_cwd(char *cwd_buffer)
 char	*set_prompt(t_shell *shell, char *identifier)
 {
 	char	*cwd;
+	char	*join;
 	char	*prompt;
 	char	**base_split;
 
@@ -63,16 +48,45 @@ char	*set_prompt(t_shell *shell, char *identifier)
 	cwd = create_cwd(shell->cwd);
 	if (!cwd)
 		return (NULL);
+	join = ft_vstrjoin(2, " ", identifier, cwd);
 	base_split = ft_split(PS1, ' ');
 	if (!base_split)
 		return (NULL);
-	prompt = ft_vstrjoin(8, NULL, base_split[0], " [", identifier, " ", cwd, "] ",
+	prompt = ft_vstrjoin(6, NULL, base_split[0], " [", join, "] ",
 			base_split[1], " ");
 	free_str_arr(base_split, 2);
+	free(join);
 	free(cwd);
 	if (!prompt)
 		return (ft_strdup(PS1));
 	return (prompt);
+}
+
+char **map_to_envp(t_map *map)
+{
+	size_t		i;
+	t_environ	*curr;
+	char		**envp;
+
+	if (!map || !map->order)
+		return (NULL);
+	envp = ft_calloc(map->size + 1, sizeof(char *));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	curr = map->order;
+	while (curr)
+	{
+		envp[i] = ft_vstrjoin(2, "=", curr->key, curr->value);
+		if (!envp[i])
+		{
+			free_str_arr(envp, i);
+			return (NULL);
+		}
+		i++;
+		curr = curr->next;
+	}
+	return (envp);
 }
 
 t_map	*realloc_map(t_map *map, char **envp)

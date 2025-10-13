@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 17:28:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:46:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,39 @@ void	free_shell(t_shell *shell, t_bool full_free)
 		free(shell);
 		clear_history();
 	}
+}
+
+static void	init_shell_variables(t_map *map)
+{
+	t_environ	*shlvl;
+	char		*shlvl_value;
+
+	set_entry(map, "OLDPWD", "");
+	shlvl = search_entry(map , "SHLVL");
+	if (!shlvl)
+	{
+		set_entry(map, "SHLVL", "0");
+		shlvl = search_entry(map, "SHLVL");
+	}
+	shlvl_value = ft_itoa(ft_atoi(shlvl->value) + 1);
+	set_entry(map, "SHLVL", shlvl_value);
+	free(shlvl_value);
+}
+
+static char	*create_identifier(t_map *map)
+{
+	t_environ	*user;
+
+	if (!map)
+		return (NULL);
+	user = search_entry(map, "USER");
+	if (!user)
+	{
+		user = search_entry(map, "LOGNAME");
+		if (!user)
+			return (NULL);
+	}
+	return (ft_strdup(user->value));
 }
 
 static int	shell_loop(t_shell *shell)
@@ -68,7 +101,10 @@ int	main(int argc, char **argv, char **envp)
 	if (!shell)
 		return (EXIT_FAILURE);
     if (shell->map && shell->envp)
+	{
 	    init_environ(shell->map, shell->envp);
+		init_shell_variables(shell->map);
+	}
 	// if (DEBUG_MODE)
 	// 	print_env(shell->map->order, TRUE);
 	status = shell_loop(shell);

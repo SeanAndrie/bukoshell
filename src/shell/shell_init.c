@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 16:46:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:44:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,36 +64,22 @@ static t_bool	parse_prompt(t_shell *shell)
 	return (TRUE);
 }
 
-void	init_environ(t_map *map, char **envp)
+static void	resolve_map_changes(t_shell *shell)
 {
-	char	    **pair;
-    t_environ   *shlvl;
+	char	**temp;
 
-	while (*envp)
-	{
-		if (**envp)
-		{
-			pair = get_pair(*envp);
-			if (pair)
-			{
-				if (!insert_entry(map, pair[0], pair[1]))
-				{
-					free_str_arr(pair, -1);
-					return ;
-				}
-				free_str_arr(pair, -1);
-			}
-		}
-		envp++;
-	}
-    set_entry(map, "OLDPWD", "");
-    shlvl = search_entry(map, "SHLVL");
-    set_entry(map, "SHLVL", ft_itoa(ft_atoi(shlvl->value) + 1));
+	if (!shell || !shell->envp || !shell->map)
+		return ;
+	temp = shell->envp;
+	free_str_arr(shell->envp, -1);
+	shell->envp = map_to_envp(shell->map);
+	if (!shell->envp)
+		shell->envp = temp;
 }
 
 int	start_shell(t_shell *shell)
 {
-    int status;
+	int		status;
 
 	status = 0;
 	if (shell->map->load_factor >= LOAD_THRESHOLD)
@@ -103,9 +89,9 @@ int	start_shell(t_shell *shell)
 		free_shell(shell, FALSE);
 		return (2);
 	}
+	resolve_map_changes(shell);
 	status = exec_node(shell->root, shell->map, shell->envp);
 	shell->token_mask = 0;
 	free_shell(shell, FALSE);
 	return (status);
 }
-

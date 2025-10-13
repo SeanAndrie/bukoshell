@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 16:48:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:45:43 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,9 @@ typedef struct s_shell
 
 t_shell				*init_shell(char **envp);
 int					start_shell(t_shell *shell);
-void	            init_environ(t_map *map, char **envp);
 
 char				**copy_envp(char **envp);
-char				*create_identifier(t_map *map);
+char 				**map_to_envp(t_map *map);
 t_map				*realloc_map(t_map *map, char **envp);
 char				*set_prompt(t_shell *shell, char *identifier);
 
