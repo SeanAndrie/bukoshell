@@ -53,7 +53,7 @@ void	print_redirects(t_redirect *head, int level)
 		else if (curr->type == T_REDIR_APPEND)
 			ft_printf("(STDOUT >> %s)", curr->fname);
 		else if (curr->type == T_HEREDOC)
-			ft_printf("(STDIN << %s, content=%s", curr->delim->lexeme,
+			ft_printf("(STDIN << %s, content=%s)", curr->delim->lexeme,
 				curr->heredoc);
 		ft_printf("\n");
 		curr = curr->next;

@@ -58,7 +58,7 @@ char	**tokens_to_argv(t_token *head)
 	curr = head;
 	while (curr)
 	{
-		if (is_operator_or_group_token(head->type))
+		if (is_operator_or_group_token(curr->type))
 			break ;
 		if (!is_token_type(curr->type, TOKEN_REDIR_OP)
 			&& !is_token_type(curr->type, TOKEN_AFTER_REDIR))

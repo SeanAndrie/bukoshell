@@ -19,21 +19,38 @@
 
 int exec_node(t_node *node, t_map *map, char **envp);
 
+static void handle_missing_command(t_node *node)
+{
+    int save_in;
+    int save_out;
+
+    if (node->redirect)
+        return ;
+    save_in = dup(STDIN_FILENO);
+    save_out = dup(STDOUT_FILENO);
+    handle_redirections(node->redirect);
+    restore_fds(save_in, save_out);
+}
+
 int exec_command(t_node *node, t_map *map, char **envp)
 {
     pid_t   pid;
     int     status;
 
     status = 0;
+    if (!node->argv || !node->argv[0])
+    {
+        handle_missing_command(node);
+        return (0);
+    }
     if (is_builtin(node))
         return (exec_builtin(node, map));
     pid = fork();
     if (pid == 0)
     {
-        if (node->redirect && !handle_redirections(node->redirect))
-            exit(1);
         exec_external(node, map, envp);
-        perror(node->argv[0]);
+        if (node->argv)
+            perror(node->argv[0]);
         exit(127);
     }
     else if (pid > 0)
@@ -52,8 +69,6 @@ int exec_subshell(t_node *node, t_map *map, char **envp)
     pid = fork();
     if (pid == 0)
     {
-        if (node->redirect && !handle_redirections(node->redirect))
-            exit(1);
         ret = exec_node(node->left, map, envp);
         exit(ret);
     }

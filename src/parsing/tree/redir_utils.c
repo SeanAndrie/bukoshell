@@ -37,9 +37,15 @@ void	*heredoc_eof(char *accum, char *delim)
 char	*heredoc_success(char *line, char *accum, t_map *map,
 		t_token_type delim_type)
 {
+    char    *join;
+
 	free(line);
 	set_signals_prompt();
-	if (accum && ft_strchr(accum, '$'))
-        heredoc_expansion(&accum, map, delim_type);
-	return (accum);
+    if (!accum)
+        return(NULL);
+    join = ft_strjoin(accum, "\n");
+    free(accum);
+	if (join && ft_strchr(join, '$'))
+        heredoc_expansion(&join, map, delim_type);
+	return (join);
 }

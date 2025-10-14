@@ -11,10 +11,38 @@
 /* ************************************************************************** */
 
 #include <debug.h>
+#include <libft.h>
 #include <parsing/tree.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <execute/execute.h>
+
+t_bool redirect_heredoc(t_redirect *redir)
+{
+    int fds[2];
+
+    if (pipe(fds) != 0)
+    {
+        perror("pipe");
+        return (FALSE);
+    }
+    if (!redir->heredoc)
+    {
+        redir->heredoc = ft_strdup("");
+        if (!redir->heredoc)
+            return (FALSE);
+    }
+    ft_putstr_fd(redir->heredoc, fds[1]);
+    close(fds[1]);
+    if (dup2(fds[0], STDIN_FILENO) < 0)
+    {
+        perror("dup2");
+        close(fds[0]);
+        return (FALSE);
+    }
+    close(fds[0]);
+    return (TRUE);
+}
 
 void restore_fds(int in, int out)
 {
@@ -63,22 +91,22 @@ t_bool handle_redirections(t_redirect *head)
     t_redirect *curr;
 
     if (!head)
-        return (FALSE);
+        return (TRUE);
     curr = head;
     while (curr)
     {
-        if (!open_file(curr))
+        if (is_token_type(curr->type, T_HEREDOC))
         {
-            free_redirects(&head, TRUE);
-            return (FALSE);
+            if (!redirect_heredoc(curr))
+                return (FALSE);
         }
-        curr = curr->next;
-    }
-    curr = head;
-    while (curr)
-    {
-        redirect_fds(curr);
-        close(curr->fd);
+        else
+        {
+            if (!open_file(curr))
+                return (FALSE);
+            redirect_fds(curr);
+            close(curr->fd);
+        }
         curr = curr->next;
     }
     return (TRUE);

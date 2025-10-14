@@ -46,6 +46,7 @@ t_environ	*create_entry(char *key, char *value)
 	if (!entry)
 		return (NULL);
 	entry->key = ft_strdup(key);
+    entry->readonly = FALSE;
 	if (!entry->key)
 	{
 		free(entry);

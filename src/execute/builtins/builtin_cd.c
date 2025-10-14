@@ -61,9 +61,9 @@ int builtin_cd(char **argv, t_map *map)
         return (1);
     pwd = search_entry(map, "PWD");
     if (pwd)
-        set_entry(map, "OLDPWD", pwd->value);
+        set_entry(map, "OLDPWD", pwd->value, FALSE);
     if (getcwd(cwd, sizeof(cwd)))
-        set_entry(map, "PWD", cwd);
+        set_entry(map, "PWD", cwd, FALSE);
     return (0);
 }
 

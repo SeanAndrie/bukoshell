@@ -38,15 +38,16 @@ static void	init_shell_variables(t_map *map)
 	t_environ	*shlvl;
 	char		*shlvl_value;
 
-	set_entry(map, "OLDPWD", "");
+    set_entry(map, "?", "0", TRUE);
+	set_entry(map, "OLDPWD", "", FALSE);
 	shlvl = search_entry(map , "SHLVL");
 	if (!shlvl)
 	{
-		set_entry(map, "SHLVL", "0");
+		set_entry(map, "SHLVL", "0", FALSE);
 		shlvl = search_entry(map, "SHLVL");
 	}
 	shlvl_value = ft_itoa(ft_atoi(shlvl->value) + 1);
-	set_entry(map, "SHLVL", shlvl_value);
+	set_entry(map, "SHLVL", shlvl_value, FALSE);
 	free(shlvl_value);
 }
 
@@ -70,6 +71,7 @@ static int	shell_loop(t_shell *shell)
 {
 	char	*prompt;
 	char	*identifier;
+    char    *status_str;
 
 	identifier = create_identifier(shell->map);
 	while (TRUE)
@@ -84,6 +86,11 @@ static int	shell_loop(t_shell *shell)
 		}
 		add_history(shell->line);
 		shell->status = start_shell(shell);
+        status_str = ft_itoa(shell->status);
+        if (!status_str)
+            status_str = ft_strdup("0");
+        set_entry(shell->map, "?", status_str, TRUE);
+        free(status_str);
 	}
 	free(identifier);
 	return (shell->status);
@@ -105,8 +112,6 @@ int	main(int argc, char **argv, char **envp)
 	    init_environ(shell->map, shell->envp);
 		init_shell_variables(shell->map);
 	}
-	// if (DEBUG_MODE)
-	// 	print_env(shell->map->order, TRUE);
 	status = shell_loop(shell);
 	free_shell(shell, TRUE);
 	return (status);
