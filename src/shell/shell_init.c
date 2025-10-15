@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/15 13:28:32 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:11:14 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,6 @@ t_shell	*init_shell(char **envp)
 	return (shell);
 }
 
-void	init_shell_variables(t_map *map)
-{
-	t_environ	*shlvl;
-	char		*level;
-	t_environ	*status;
-
-	set_entry(map, "?", "0");
-	status = search_entry(map, "?");
-	if (status)
-		status->readonly = TRUE;
-	set_entry(map, "OLDPWD", "");
-	shlvl = search_entry(map, "SHLVL");
-	if (!shlvl)
-	{
-		set_entry(map, "SHLVL", "0");
-		shlvl = search_entry(map, "SHLVL");
-	}
-	level = ft_itoa(ft_atoi(shlvl->value) + 1);
-	set_entry(map, "SHLVL", level);
-	free(level);
-}
-
 static void	resolve_map_changes(t_shell *shell)
 {
 	char	**temp;
@@ -67,6 +45,21 @@ static void	resolve_map_changes(t_shell *shell)
 	}
 	if (shell->map->load_factor >= LOAD_THRESHOLD)
 		shell->map = realloc_map(shell->map, shell->envp);
+}
+
+static void update_status(t_shell *shell)
+{
+    char *status;
+
+    if (!shell || !shell->map)
+        return ;
+    shell->status = g_signal;
+    status = ft_itoa(shell->status);
+    if (!status)
+        status = ft_strdup("0");
+    set_entry(shell->map, "?", status);
+    free(status);
+    g_signal = 0;
 }
 
 static t_bool	start_parser(t_shell *shell)
@@ -105,4 +98,5 @@ void	start_shell(t_shell *shell)
 		g_signal = exec_node(shell->root, shell->map, shell->envp);
 	shell->token_mask = 0;
 	free_shell(shell, FALSE);
+    update_status(shell);
 }

@@ -6,14 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/23 19:47:00by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:26:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <environ.h>
 #include <parsing/clean.h>
 
-static void	free_entries(t_environ **entry)
+void	free_entries(t_environ **entry)
 {
 	t_environ	*next;
 
@@ -49,28 +49,6 @@ void	free_map(t_map *map)
 	free(map);
 }
 
-void	set_order(t_environ **order, t_environ *entry)
-{
-    t_environ *curr;
-
-    if (!order || !*order || !entry)
-        return ;
-    curr = *order;
-    while (curr)
-    {
-        if (ft_strcmp(curr->key, entry->key) == 0)
-        {
-            if (curr->value)
-                free(curr->value);
-            curr->value = ft_strdup(entry->value);
-            curr->readonly = entry->readonly;
-            return ;
-        }
-        curr = curr->next;
-    }
-	return ;
-}
-
 char	**get_pair(char *env)
 {
 	char	**pair;
@@ -99,9 +77,32 @@ char	**get_pair(char *env)
 	return (pair);
 }
 
+void	init_shell_variables(t_map *map)
+{
+	t_environ	*shlvl;
+	char		*level;
+	t_environ	*status;
+
+	set_entry(map, "?", "0");
+	status = search_entry(map, "?");
+	if (status)
+		status->readonly = TRUE;
+	set_order(&map->order, status);
+	set_entry(map, "OLDPWD", "");
+	shlvl = search_entry(map, "SHLVL");
+	if (!shlvl)
+	{
+		set_entry(map, "SHLVL", "0");
+		shlvl = search_entry(map, "SHLVL");
+	}
+	level = ft_itoa(ft_atoi(shlvl->value) + 1);
+	set_entry(map, "SHLVL", level);
+	free(level);
+}
+
 void	init_environ(t_map *map, char **envp)
 {
-	char	    **pair;
+	char	**pair;
 
 	while (*envp)
 	{

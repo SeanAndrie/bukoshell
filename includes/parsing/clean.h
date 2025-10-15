@@ -6,16 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:23:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 17:40:12 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:20:20 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLEAN_H
 # define CLEAN_H
 
-# include <boolean.h>
-# include <parsing/tokens.h>
 # include <parsing/tree.h>
+# include <parsing/tokens.h>
 
 void	free_tokens(t_token **head);
 void	free_syntax_tree(t_node **root);

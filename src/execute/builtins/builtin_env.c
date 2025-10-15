@@ -16,7 +16,7 @@
 
 int builtin_env(t_map *map)
 {
-    print_env(map->order, FALSE);
+    print_env(map, FALSE);
     return (0);
 }
 

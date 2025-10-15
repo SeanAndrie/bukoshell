@@ -6,14 +6,13 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/10/15 13:25:39 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/16 00:14:30 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := bukoshell
 CC := cc
 CFLAGS := -Wall -Werror -Wextra -Iincludes -Iincludes/parsing -Ilibft/includes -g3
-UNAME_S := $(shell uname -s)
 
 RDL_INC := -I/opt/vagrant/embedded/include/readline
 RDL_LIB := -L/opt/vagrant/embedded/lib/
@@ -50,8 +49,8 @@ DEBUG_SRCS := $(addprefix $(DEBUG_DIR)/, print_tokens.c print_tree.c print_env.c
 PARSING_SRCS := $(addprefix $(PARSING_DIR)/, $(PARSING_MODULES))
 EXECUTE_SRCS := $(addprefix $(EXECUTE_DIR)/, $(EXECUTE_MODULES))
 SIGNALS_SRCS := $(SIGNALS_DIR)/signals.c
-ENVIRON_SRCS := $(addprefix $(ENVIRON_DIR)/, environ.c environ_init.c environ_utils.c)
-MAIN_SRCS := $(addprefix $(SHELL_DIR)/, shell.c shell_init.c shell_utils.c shell_prompt.c)
+ENVIRON_SRCS := $(addprefix $(ENVIRON_DIR)/, environ.c environ_init.c environ_ext.c environ_utils.c)
+MAIN_SRCS := $(addprefix $(SHELL_DIR)/, shell.c shell_init.c shell_utils.c)
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(MAIN_SRCS) $(SIGNALS_SRCS) $(PARSING_SRCS) $(DEBUG_SRCS) $(ENVIRON_SRCS) $(EXECUTE_SRCS))
 OBJS := $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)

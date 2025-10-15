@@ -3,95 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/15 13:29:51 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/10/16 00:12:37 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 
-void    update_status(t_shell *shell)
-{
-    char *status;
-
-    if (!shell || !shell->map)
-        return ;
-    shell->status = g_signal;
-    status = ft_itoa(shell->status);
-    if (!status)
-        status = ft_strdup("0");
-    set_entry(shell->map, "?", status);
-    free(status);
-    g_signal = 0;
-}
-
-char **map_to_envp(t_map *map)
-{
-	size_t		i;
-	t_environ	*curr;
-	char		**envp;
-
-	if (!map || !map->order)
-		return (NULL);
-	envp = ft_calloc(map->size + 1, sizeof(char *));
-	if (!envp)
-		return (NULL);
-	i = 0;
-	curr = map->order;
-	while (curr)
-	{
-		envp[i] = ft_vstrjoin(2, "=", curr->key, curr->value);
-		if (!envp[i])
-		{
-			free_str_arr(envp, i);
-			return (NULL);
-		}
-		i++;
-		curr = curr->next;
-	}
-	return (envp);
-}
-
-t_map	*realloc_map(t_map *map, char **envp)
-{
-	t_map	*copy;
-
-	if (!envp)
-		return (NULL);
-	copy = create_map(map->capacity);
-	if (!copy)
-		return (NULL);
-	init_environ(copy, envp);
-	free_map(map);
-	if (!copy)
-		return (NULL);
-	return (copy);
-}
-
-char	**copy_envp(char **envp)
+static char	*create_cwd(t_shell *shell)
 {
 	size_t	i;
-	char	**copy;
+	char	*cwd;
+	char	**split;
 
-	if (!envp)
+	if (!getcwd(shell->cwd, sizeof(shell->cwd)))
 		return (NULL);
-	copy = malloc(sizeof(char *) * (environ_size(envp) + 1));
-	if (!copy)
+	split = ft_split(shell->cwd, '/');
+	if (!split)
 		return (NULL);
-	i = 0;
-	while (envp[i])
+	if (!split[0])
 	{
-		copy[i] = ft_strdup(envp[i]);
-		if (!copy[i])
-		{
-			free_str_arr(copy, i);
-			return (NULL);
-		}
-		i++;
+		free_str_arr(split, -1);
+		return (ft_strdup("/ "));
 	}
-	copy[i] = NULL;
-	return (copy);
+	i = 0;
+	while (split[i + 1])
+		i++;
+	cwd = ft_strdup(split[i]);
+	free_str_arr(split, -1);
+	if (!cwd)
+		return (NULL);
+	return (cwd);
 }
 
+char	*set_prompt(t_shell *shell, char *user)
+{
+	char	*cwd;
+	char	*join;
+	char	*prompt;
+	char	**base_split;
+
+	cwd = create_cwd(shell);
+	if (!cwd)
+		return (ft_strdup(PS1));
+    if (ft_strcmp(cwd, user) == 0)
+    {
+        free(cwd);
+        cwd = ft_strdup("~");
+    }
+	join = ft_vstrjoin(2, " ", user, cwd);
+	base_split = ft_split(PS1, ' ');
+	if (!base_split)
+		return (NULL);
+	prompt = ft_vstrjoin(6, NULL, base_split[0], " [", join, "] ",
+			base_split[1], " ");
+	free_str_arr(base_split, 2);
+	free(join);
+	free(cwd);
+	if (!prompt)
+		return (ft_strdup(PS1));
+	return (prompt);
+}
+
+char	*create_user(t_map *map)
+{
+	t_environ	*user;
+
+	if (!map)
+		return (NULL);
+	user = search_entry(map, "USER");
+	if (!user)
+	{
+		user = search_entry(map, "LOGNAME");
+		if (!user)
+			return (NULL);
+	}
+	return (ft_strdup(user->value));
+}
+
+t_bool	check_arithmetic(t_token *head, unsigned int mask)
+{
+	if ((mask & TOKEN_ARITH) && is_arithmetic(head))
+	{
+		log_error(ERROR_SYNTAX, ERR_BASE,
+			"arithmetic expressions are not supported\n");
+		return (FALSE);
+	}
+	return (TRUE);
+}

@@ -12,6 +12,9 @@
 
 #include <libft.h>
 #include <debug.h>
+#include <environ.h>
+#include <parsing/clean.h>
+#include <parsing/expand.h>
 
 void	print_entry_info(t_environ *entry)
 {
@@ -31,27 +34,72 @@ void	print_entry_info(t_environ *entry)
     ft_printf("\n");
 }
 
-void	print_env(t_environ *head, t_bool formatted)
+static char **sort_envp(t_map *map)
 {
-    ft_printf("\n");
+    size_t  size;
+    char    **sorted;
+
+    sorted = map_to_envp(map);
+    if (!sorted)
+        return (NULL);
+    size = environ_size(sorted);
+    quick_sort(sorted, 0, size - 1);
+    return (sorted);
+}
+
+static t_environ *create_sorted_entries(t_map *map, char **sorted)
+{
+    size_t      i;
+    t_environ   *head;
+    t_environ   *copy;
+    t_environ   *entry;
+    char        **pair;
+
+    head = NULL;
+    i = -1;
+    while (sorted[++i])
+    {
+        pair = get_pair(sorted[i]);
+        if (pair)
+        {
+            entry = search_entry(map, pair[0]);
+            if (!entry)
+            {
+                free_entries(&head);
+                return (NULL);
+            }
+            copy = create_entry(entry->key, entry->value);
+            copy->readonly = entry->readonly;
+            append_entry(&head, copy);
+        }
+    }
+    return (head);
+}
+
+void    print_env(t_map *map, t_bool formatted)
+{
+    t_environ   *head;
+    char        *format;
+    char        **sorted;
+    
+    sorted = sort_envp(map);
+    if (!sorted)
+        return ;
+    head = create_sorted_entries(map, sorted);
+    free_str_arr(sorted, -1);
+    if (!head)
+        return ;
+    if (formatted)
+        format = "declare -x %s=\"%s\"\n";
+    else
+        format = "%s=%s\n";
     while (head)
     {
         if (!head->readonly)
-        {
-            if (formatted)
-                ft_printf("declare -x %s", head->key);
-            else
-                ft_printf("%s", head->key);
-            if (head->value)
-            {
-                if (formatted)
-                    ft_printf("=\"%s\"", head->value);
-                else
-                    ft_printf("=%s", head->value);
-            }
-            ft_printf("\n");
-        }
+            ft_printf(format, head->key, head->value);
         head = head->next;
     }
     ft_printf("\n");
+    free_entries(&head);
 }
+

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/15 21:34:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:24:13 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	free_shell(t_shell *shell, t_bool full_free)
 
 static int	shell_loop_interactive(t_shell *shell)
 {
+	char	*user;
 	char	*prompt;
-	char	*identifier;
 
 	while (TRUE)
 	{
-		identifier = create_identifier(shell->map);
-		prompt = set_prompt(shell, identifier);
-		free(identifier);
+		user = create_user(shell->map);
+		prompt = set_prompt(shell, user);
+		free(user);
 		shell->line = readline(prompt);
 		free(prompt);
 		if (!shell->line)
@@ -52,7 +52,6 @@ static int	shell_loop_interactive(t_shell *shell)
 		}
 		add_history(shell->line);
 		start_shell(shell);
-		update_status(shell);
 	}
 	return (shell->status);
 }
@@ -71,7 +70,6 @@ static int	shell_loop_noninteractive(t_shell *shell)
 		if (len && shell->line[len - 1] == '\n')
 			shell->line[len - 1] = '\0';
 		start_shell(shell);
-		update_status(shell);
 	}
 	return (shell->status);
 }
@@ -98,10 +96,10 @@ int	main(int argc, char **argv, char **envp)
 	if (!shell)
 		return (EXIT_FAILURE);
 	if (shell->map && shell->envp)
-	{
+    {
 		init_environ(shell->map, shell->envp);
-		init_shell_variables(shell->map);
-	}
+        init_shell_variables(shell->map);
+    }
 	status = shell_mode(shell);
 	if (DEBUG_MODE)
 		ft_printf("Status: %d\n", status);

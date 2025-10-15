@@ -44,7 +44,7 @@ int builtin_export(char **argv, t_map *map)
 
     if (!argv[1])
     {
-        print_env(map->order, TRUE);
+        print_env(map, TRUE);
         return (0);
     }
     i = 1;

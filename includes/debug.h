@@ -22,7 +22,7 @@
 void    print_dir_list(void);
 
 void	print_entry_info(t_environ *entry);
-void	print_env(t_environ *head, t_bool formatted);
+void	print_env(t_map *map, t_bool formatted);
 
 void	print_syntax_tree(t_node *node);
 void	print_tokens(t_token *head, t_bool show_whitespace);
