@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/15 14:45:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/15 21:34:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,16 @@ static int	shell_loop_interactive(t_shell *shell)
 static int	shell_loop_noninteractive(t_shell *shell)
 {
 	size_t	len;
-	char	*line;
 
 	len = 0;
 	while (TRUE)
 	{
-		line = get_next_line(STDIN_FILENO);
-		if (!line)
+		shell->line = get_next_line(STDIN_FILENO);
+		if (!shell->line)
 			break ;
-		len = ft_strlen(line);
-		if (len && line[len - 1] == '\n')
-			line[len - 1] = '\0';
-		shell->line = line;
+		len = ft_strlen(shell->line);
+		if (len && shell->line[len - 1] == '\n')
+			shell->line[len - 1] = '\0';
 		start_shell(shell);
 		update_status(shell);
 	}
