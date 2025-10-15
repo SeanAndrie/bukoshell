@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:12:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 03:02:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
+
+static t_bool	is_home_directory(t_map *map, char *cwd)
+{
+	t_environ	*home;
+
+	if (!map || !cwd)
+		return (FALSE);
+	home = search_entry(map, "HOME");
+	if (!home)
+		return (FALSE);
+	return ((ft_strcmp(home->value, cwd) == 0));
+}
 
 static char	*create_cwd(t_shell *shell)
 {
@@ -20,6 +32,8 @@ static char	*create_cwd(t_shell *shell)
 
 	if (!getcwd(shell->cwd, sizeof(shell->cwd)))
 		return (NULL);
+	if (is_home_directory(shell->map, shell->cwd))
+		return (ft_strdup("~"));
 	split = ft_split(shell->cwd, '/');
 	if (!split)
 		return (NULL);
@@ -48,11 +62,6 @@ char	*set_prompt(t_shell *shell, char *user)
 	cwd = create_cwd(shell);
 	if (!cwd)
 		return (ft_strdup(PS1));
-    if (ft_strcmp(cwd, user) == 0)
-    {
-        free(cwd);
-        cwd = ft_strdup("~");
-    }
 	join = ft_vstrjoin(2, " ", user, cwd);
 	base_split = ft_split(PS1, ' ');
 	if (!base_split)

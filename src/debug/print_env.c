@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 02:46:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 12:35:20 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 02:48:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ void	print_entry_info(t_environ *entry)
         }
     }
     ft_printf("\n");
+}
+
+static void *free_helper(t_environ *head)
+{
+    if (head)
+        free_entries(&head);
+    return (NULL);
 }
 
 static char **sort_envp(t_map *map)
@@ -64,14 +71,14 @@ static t_environ *create_sorted_entries(t_map *map, char **sorted)
         {
             entry = search_entry(map, pair[0]);
             if (!entry)
-            {
-                free_entries(&head);
-                return (NULL);
-            }
+                return (free_helper(head));
             copy = create_entry(entry->key, entry->value);
+            if (!copy)
+                return (free_helper(head));
             copy->readonly = entry->readonly;
             append_entry(&head, copy);
         }
+        free_str_arr(pair, -1);
     }
     return (head);
 }
@@ -79,6 +86,7 @@ static t_environ *create_sorted_entries(t_map *map, char **sorted)
 void    print_env(t_map *map, t_bool formatted)
 {
     t_environ   *head;
+    t_environ   *curr;
     char        *format;
     char        **sorted;
     
@@ -93,13 +101,13 @@ void    print_env(t_map *map, t_bool formatted)
         format = "declare -x %s=\"%s\"\n";
     else
         format = "%s=%s\n";
-    while (head)
+    curr = head;
+    while (curr)
     {
-        if (!head->readonly)
-            ft_printf(format, head->key, head->value);
-        head = head->next;
+        if (!curr->readonly)
+            ft_printf(format, curr->key, curr->value);
+        curr = curr->next;
     }
     ft_printf("\n");
     free_entries(&head);
 }
-
