@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 14:46:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:45:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,50 +33,16 @@ void	free_shell(t_shell *shell, t_bool full_free)
 	}
 }
 
-static void	init_shell_variables(t_map *map)
-{
-	t_environ	*shlvl;
-	char		*shlvl_value;
-
-    set_entry(map, "?", "0", TRUE);
-	set_entry(map, "OLDPWD", "", FALSE);
-	shlvl = search_entry(map , "SHLVL");
-	if (!shlvl)
-	{
-		set_entry(map, "SHLVL", "0", FALSE);
-		shlvl = search_entry(map, "SHLVL");
-	}
-	shlvl_value = ft_itoa(ft_atoi(shlvl->value) + 1);
-	set_entry(map, "SHLVL", shlvl_value, FALSE);
-	free(shlvl_value);
-}
-
-static char	*create_identifier(t_map *map)
-{
-	t_environ	*user;
-
-	if (!map)
-		return (NULL);
-	user = search_entry(map, "USER");
-	if (!user)
-	{
-		user = search_entry(map, "LOGNAME");
-		if (!user)
-			return (NULL);
-	}
-	return (ft_strdup(user->value));
-}
-
-static int	shell_loop(t_shell *shell)
+static int	shell_loop_interactive(t_shell *shell)
 {
 	char	*prompt;
 	char	*identifier;
-    char    *status_str;
 
-	identifier = create_identifier(shell->map);
 	while (TRUE)
 	{
+		identifier = create_identifier(shell->map);
 		prompt = set_prompt(shell, identifier);
+		free(identifier);
 		shell->line = readline(prompt);
 		free(prompt);
 		if (!shell->line)
@@ -85,15 +51,42 @@ static int	shell_loop(t_shell *shell)
 			break ;
 		}
 		add_history(shell->line);
-		shell->status = start_shell(shell);
-        status_str = ft_itoa(shell->status);
-        if (!status_str)
-            status_str = ft_strdup("0");
-        set_entry(shell->map, "?", status_str, TRUE);
-        free(status_str);
+		start_shell(shell);
+		update_status(shell);
 	}
-	free(identifier);
 	return (shell->status);
+}
+
+static int	shell_loop_noninteractive(t_shell *shell)
+{
+	size_t	len;
+	char	*line;
+
+	len = 0;
+	while (TRUE)
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		len = ft_strlen(line);
+		if (len && line[len - 1] == '\n')
+			line[len - 1] = '\0';
+		shell->line = line;
+		start_shell(shell);
+		update_status(shell);
+	}
+	return (shell->status);
+}
+
+static int	shell_mode(t_shell *shell)
+{
+	if (isatty(STDIN_FILENO))
+	{
+		set_signals_interactive();
+		return (shell_loop_interactive(shell));
+	}
+	set_signals_noninteractive();
+	return (shell_loop_noninteractive(shell));
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -104,15 +97,16 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell = init_shell(envp);
-	set_signals_prompt();
 	if (!shell)
 		return (EXIT_FAILURE);
-    if (shell->map && shell->envp)
+	if (shell->map && shell->envp)
 	{
-	    init_environ(shell->map, shell->envp);
+		init_environ(shell->map, shell->envp);
 		init_shell_variables(shell->map);
 	}
-	status = shell_loop(shell);
+	status = shell_mode(shell);
+	if (DEBUG_MODE)
+		ft_printf("Status: %d\n", status);
 	free_shell(shell, TRUE);
 	return (status);
 }

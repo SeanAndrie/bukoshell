@@ -6,60 +6,25 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:29:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 14:49:33 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/15 13:29:51 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 
-static char	*create_cwd(char *cwd_buffer)
+void    update_status(t_shell *shell)
 {
-	size_t	i;
-	char	*cwd;
-	char	**split;
+    char *status;
 
-	split = ft_split(cwd_buffer, '/');
-	if (!split)
-		return (NULL);
-	if (!split[0])
-	{
-		free_str_arr(split, -1);
-		return (ft_strdup("/ "));
-	}
-	i = 0;
-	while (split[i + 1])
-		i++;
-	cwd = ft_strdup(split[i]);
-	free_str_arr(split, -1);
-	if (!cwd)
-		return (NULL);
-	return (cwd);
-}
-
-char	*set_prompt(t_shell *shell, char *identifier)
-{
-	char	*cwd;
-	char	*join;
-	char	*prompt;
-	char	**base_split;
-
-	if (!getcwd(shell->cwd, sizeof(shell->cwd)))
-		return (NULL);
-	cwd = create_cwd(shell->cwd);
-	if (!cwd)
-		return (NULL);
-	join = ft_vstrjoin(2, " ", identifier, cwd);
-	base_split = ft_split(PS1, ' ');
-	if (!base_split)
-		return (NULL);
-	prompt = ft_vstrjoin(6, NULL, base_split[0], " [", join, "] ",
-			base_split[1], " ");
-	free_str_arr(base_split, 2);
-	free(join);
-	free(cwd);
-	if (!prompt)
-		return (ft_strdup(PS1));
-	return (prompt);
+    if (!shell || !shell->map)
+        return ;
+    shell->status = g_signal;
+    status = ft_itoa(shell->status);
+    if (!status)
+        status = ft_strdup("0");
+    set_entry(shell->map, "?", status);
+    free(status);
+    g_signal = 0;
 }
 
 char **map_to_envp(t_map *map)

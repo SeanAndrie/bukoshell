@@ -56,7 +56,7 @@ t_environ	*search_entry(t_map *map, char *key)
 	return (NULL);
 }
 
-t_bool	insert_entry(t_map *map, char *key, char *value, t_bool readonly)
+t_bool	insert_entry(t_map *map, char *key, char *value)
 {
 	size_t		index;
 	t_environ	*entry;
@@ -67,14 +67,12 @@ t_bool	insert_entry(t_map *map, char *key, char *value, t_bool readonly)
 	entry = create_entry(key, value);
 	if (!entry)
 		return (FALSE);
-    entry->readonly = readonly;
 	order_entry = create_entry(entry->key, entry->value);
 	if (!order_entry)
 	{
 		free(entry);
 		return (FALSE);
 	}
-    order_entry->readonly = readonly;
 	index = hash_djb2(key) % map->capacity;
 	append_entry(&map->entries[index], entry);
 	append_entry(&map->order, order_entry);
@@ -83,7 +81,7 @@ t_bool	insert_entry(t_map *map, char *key, char *value, t_bool readonly)
 	return (TRUE);
 }
 
-t_bool	set_entry(t_map *map, char *key, char *value, t_bool readonly)
+t_bool	set_entry(t_map *map, char *key, char *value)
 {
 	t_environ	*target;
 
@@ -92,7 +90,7 @@ t_bool	set_entry(t_map *map, char *key, char *value, t_bool readonly)
 	target = search_entry(map, key);
 	if (!target)
 	{
-		if (!insert_entry(map, key, value, readonly))
+		if (!insert_entry(map, key, value))
 			return (FALSE);
 		map->modified = TRUE;
 		return (TRUE);
@@ -102,8 +100,7 @@ t_bool	set_entry(t_map *map, char *key, char *value, t_bool readonly)
 	target->value = ft_strdup(value);
 	if (!target->value)
 		return (FALSE);
-    target->readonly = readonly;
-	update_order(&map->order, target, readonly);
+	set_order(&map->order, target);
 	map->modified = TRUE;
 	return (TRUE);
 }

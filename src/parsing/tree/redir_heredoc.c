@@ -17,6 +17,16 @@
 #include <parsing/parsing.h>
 #include <readline/readline.h>
 
+int heredoc_event_hook(void)
+{
+    if (g_signal != 0)
+    {
+        g_signal = 0;
+        rl_done = 0;
+    }
+    return (0);
+}
+
 void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
 {
     t_token *tokens;
@@ -45,10 +55,10 @@ static char	*handle_heredoc(t_token *delim, t_map *map)
 
 	accum = NULL;
 	set_signals_heredoc();
-	while (g_signal == 128)
+	while (g_signal == 0)
 	{
 		line = readline(PS2);
-		if (g_signal > 128)
+		if (g_signal != 0)
 			return (heredoc_interrupt(line, accum));
 		if (!line)
 			return (heredoc_eof(accum, delim->lexeme));

@@ -49,7 +49,7 @@ void	free_map(t_map *map)
 	free(map);
 }
 
-void	update_order(t_environ **order, t_environ *entry, t_bool readonly)
+void	set_order(t_environ **order, t_environ *entry)
 {
     t_environ *curr;
 
@@ -63,7 +63,7 @@ void	update_order(t_environ **order, t_environ *entry, t_bool readonly)
             if (curr->value)
                 free(curr->value);
             curr->value = ft_strdup(entry->value);
-            curr->readonly = readonly;
+            curr->readonly = entry->readonly;
             return ;
         }
         curr = curr->next;
@@ -110,7 +110,7 @@ void	init_environ(t_map *map, char **envp)
 			pair = get_pair(*envp);
 			if (pair)
 			{
-				if (!insert_entry(map, pair[0], pair[1], FALSE))
+				if (!insert_entry(map, pair[0], pair[1]))
 				{
 					free_str_arr(pair, -1);
 					return ;

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 15:15:44 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/15 13:28:32 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,46 @@ t_shell	*init_shell(char **envp)
 	return (shell);
 }
 
-static t_bool	check_arithmetic(t_token *head, unsigned int mask)
+void	init_shell_variables(t_map *map)
 {
-	if ((mask & TOKEN_ARITH) && is_arithmetic(head))
+	t_environ	*shlvl;
+	char		*level;
+	t_environ	*status;
+
+	set_entry(map, "?", "0");
+	status = search_entry(map, "?");
+	if (status)
+		status->readonly = TRUE;
+	set_entry(map, "OLDPWD", "");
+	shlvl = search_entry(map, "SHLVL");
+	if (!shlvl)
 	{
-		log_error(ERROR_SYNTAX, ERR_BASE,
-			"arithmetic expressions are not supported\n");
-		return (FALSE);
+		set_entry(map, "SHLVL", "0");
+		shlvl = search_entry(map, "SHLVL");
 	}
-	return (TRUE);
+	level = ft_itoa(ft_atoi(shlvl->value) + 1);
+	set_entry(map, "SHLVL", level);
+	free(level);
 }
 
-static t_bool	parse_prompt(t_shell *shell)
+static void	resolve_map_changes(t_shell *shell)
+{
+	char	**temp;
+
+	if (shell->map->modified)
+	{
+		temp = shell->envp;
+		free_str_arr(shell->envp, -1);
+		shell->envp = map_to_envp(shell->map);
+		if (!shell->envp)
+			shell->envp = temp;
+		shell->map->modified = FALSE;
+	}
+	if (shell->map->load_factor >= LOAD_THRESHOLD)
+		shell->map = realloc_map(shell->map, shell->envp);
+}
+
+static t_bool	start_parser(t_shell *shell)
 {
 	shell->head = create_tokens(shell->line, FALSE, FALSE);
 	if (!shell->head)
@@ -64,36 +92,17 @@ static t_bool	parse_prompt(t_shell *shell)
 	return (TRUE);
 }
 
-static void	resolve_map_changes(t_shell *shell)
+void	start_shell(t_shell *shell)
 {
-	char	**temp;
-
-	if (shell->map->modified)
-	{
-		temp = shell->envp;
-		free_str_arr(shell->envp, -1);
-		shell->envp = map_to_envp(shell->map);
-		if (!shell->envp)
-			shell->envp = temp;
-		shell->map->modified = FALSE;
-	}
-	if (shell->map->load_factor >= LOAD_THRESHOLD)
-		shell->map = realloc_map(shell->map, shell->envp);
-}
-
-int	start_shell(t_shell *shell)
-{
-	int		status;
-
-	status = 0;
 	resolve_map_changes(shell);
-	if (!parse_prompt(shell))
+	if (!start_parser(shell))
 	{
+		g_signal = 127;
 		free_shell(shell, FALSE);
-		return (2);
+		return ;
 	}
-	status = exec_node(shell->root, shell->map, shell->envp);
+	if (g_signal == 0)
+		g_signal = exec_node(shell->root, shell->map, shell->envp);
 	shell->token_mask = 0;
 	free_shell(shell, FALSE);
-	return (status);
 }
