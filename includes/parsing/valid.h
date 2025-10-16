@@ -6,14 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:24:24 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:07:19 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:16:49 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VALID_H
 # define VALID_H
 
-# include <tokens.h>
+typedef struct s_token t_token;
 
 void	consume(t_token **curr);
 t_bool	is_arithmetic(t_token *head);

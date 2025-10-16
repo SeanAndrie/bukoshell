@@ -6,14 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:20:02 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:04:02 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:18:00 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-# include <tokens.h>
+# include <token_types.h>
+
+typedef enum e_bool t_bool;
+typedef struct s_token t_token;
 
 char			*process_word(char **line_ptr, t_token_type *type);
 char			*process_operator(char **line_ptr, t_token_type *type);

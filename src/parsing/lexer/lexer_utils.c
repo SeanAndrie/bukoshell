@@ -6,16 +6,16 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:54:54 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:18:31 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <boolean.h>
-#include <expand.h>
 #include <libft.h>
+#include <expand.h>
+#include <boolean.h>
+#include <parsing/valid.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
-#include <parsing/valid.h>
 
 void	handle_arithmetic(t_token **head)
 {
