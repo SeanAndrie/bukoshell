@@ -6,10 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:26:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:40:13 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <environ.h>
 #include <parsing/clean.h>
 

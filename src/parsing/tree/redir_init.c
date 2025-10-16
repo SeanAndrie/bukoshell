@@ -6,14 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 02:07:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/10 22:44:06 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:16:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <boolean.h>
+#include <parsing/tree.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
-#include <parsing/tree.h>
 
 static void	*free_helper(t_redirect *redir)
 {

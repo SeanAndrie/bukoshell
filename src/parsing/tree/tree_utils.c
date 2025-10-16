@@ -6,14 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 00:15:26 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 17:32:34 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:14:31 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <boolean.h>
+#include <parsing/tree.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
-#include <parsing/tree.h>
 
 static t_bool is_operator_or_group_token(t_token_type type)
 {

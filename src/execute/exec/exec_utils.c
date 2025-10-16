@@ -6,16 +6,18 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 22:36:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 13:12:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:54:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <debug.h>
 #include <libft.h>
-#include <parsing/tree.h>
-#include <parsing/clean.h>
-#include <parsing/tokens.h>
-#include <execute/execute.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <environ.h>
+#include <boolean.h>
+#include <execute/exec.h>
+#include <parsing/parsing.h>
 
 t_bool redirect_heredoc(t_redirect *redir)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 02:51:56 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/15 14:38:03 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:30:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include <libft.h>
 #include <environ.h>
 #include <signals.h>
-#include <parsing/tokens.h>
 #include <parsing/tree.h>
+#include <parsing/tokens.h>
 
 void	*heredoc_interrupt(char *line, char *accum)
 {

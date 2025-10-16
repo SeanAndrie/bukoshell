@@ -6,16 +6,19 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 14:54:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 20:47:48 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:53:12 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
+#include <stdio.h>
 #include <debug.h>
-#include <parsing/tree.h>
-#include <parsing/clean.h>
-#include <parsing/tokens.h>
-#include <parsing/prompts.h>
-#include <execute/execute.h>
+#include <fcntl.h>
+#include <environ.h>
+#include <boolean.h>
+#include <execute/exec.h>
+#include <parsing/parsing.h>
+#include <execute/builtins.h>
 
 static char *find_cmd_path(char *cmd, t_environ *path_var)
 {

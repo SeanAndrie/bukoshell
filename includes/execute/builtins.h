@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:49:40 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 21:06:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:28:31 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# include <parsing/tree.h>
+typedef enum e_bool t_bool;
+typedef struct s_map t_map;
+typedef struct s_node t_node;
 
 int     builtin_pwd(void);
 int     builtin_env(t_map *map);

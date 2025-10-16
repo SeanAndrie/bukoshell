@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 03:02:30 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 17:52:09 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*create_cwd(t_shell *shell)
 	if (!split[0])
 	{
 		free_str_arr(split, -1);
-		return (ft_strdup("/ "));
+		return (ft_strdup("/"));
 	}
 	i = 0;
 	while (split[i + 1])

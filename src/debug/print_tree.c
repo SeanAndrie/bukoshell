@@ -6,12 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:40:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/10 13:27:51 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:22:10 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <debug.h>
+#include <boolean.h>
+#include <parsing/tree.h>
+#include <parsing/tokens.h>
 
 void	print_argv(char **argv)
 {

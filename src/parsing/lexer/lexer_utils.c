@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:41:54 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:54:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/valid.h>
-#include <stdio.h>
 
 void	handle_arithmetic(t_token **head)
 {

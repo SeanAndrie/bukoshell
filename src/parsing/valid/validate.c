@@ -6,22 +6,31 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/07 02:58:13 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:19:02 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <debug.h>
-#include <parsing/tree.h>
-#include <parsing/clean.h>
-#include <parsing/lexer.h>
-#include <parsing/valid.h>
-#include <parsing/tokens.h>
+#include <boolean.h>
+#include <parsing/parsing.h>
 
 void	consume(t_token **curr)
 {
 	if (*curr)
 		*curr = (*curr)->next;
+}
+
+t_bool 	is_separated_command(t_token *token)
+{
+	if (token && !is_token_type(token->type, TOKEN_CTRL_OP)
+		&& !is_token_type(token->type, TOKEN_GROUP_CLOSE))
+	{
+		log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token '%s'\n",
+			token->lexeme);
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 static void assign_group(t_token *token)

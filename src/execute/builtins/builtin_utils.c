@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 15:15:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 20:31:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:27:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
 #include <libft.h>
+#include <debug.h>
+#include <boolean.h>
+#include <parsing/tree.h>
 #include <execute/builtins.h>
 
 t_bool  is_builtin(t_node *node)

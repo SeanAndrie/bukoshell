@@ -6,16 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:16:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/01 00:51:29 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:50:37 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
 
-# include <boolean.h>
-# include <environ.h>
 # include <token_types.h>
+
+typedef struct s_map t_map; 
+typedef enum e_bool t_bool;
 
 typedef struct s_token
 {

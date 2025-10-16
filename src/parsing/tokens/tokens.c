@@ -6,17 +6,18 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/07 15:08:06 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:55:25 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
-#include <expand.h>
 #include <libft.h>
+#include <debug.h>
+#include <boolean.h>
+#include <parsing/valid.h>
 #include <parsing/clean.h>
 #include <parsing/lexer.h>
 #include <parsing/tokens.h>
-#include <parsing/valid.h>
+#include <parsing/expand.h>
 
 static void	*free_helper(char *lexeme, t_token *head)
 {
@@ -73,8 +74,8 @@ t_bool	normalize_tokens(t_token **head, t_map *map)
 {
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
-	remove_tokens(head, TOKEN_WHITESPACE);
 	apply_expansions(head, map, FALSE);
+	remove_tokens(head, TOKEN_WHITESPACE);
 	handle_arithmetic(head);
 	return (TRUE);
 }

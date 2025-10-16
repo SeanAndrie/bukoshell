@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:49:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/12 20:12:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:48:08 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <errno.h>
-#include <debug.h>
 #include <libft.h>
+#include <debug.h>
 #include <execute/builtins.h>
 
 int builtin_exit(char **argv)

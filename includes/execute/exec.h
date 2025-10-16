@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.h                                            :+:      :+:    :+:   */
+/*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 14:23:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:16:07 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/10/16 23:35:53 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/10/16 23:53:53 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLEAN_H
-# define CLEAN_H
+#ifndef EXEC_H
+# define EXEC_H
 
 typedef enum e_bool t_bool;
+typedef struct s_map t_map;
 typedef struct s_node t_node;
-typedef struct s_token t_token;
 typedef struct s_redirect t_redirect;
 
-void	free_tokens(t_token **head);
-void	free_syntax_tree(t_node **root);
-void	free_str_arr(char **str_arr, int n);
-void	free_redirects(t_redirect **head, t_bool close_fds);
+int     exec_node(t_node *node, t_map *map, char **envp);
+int     exec_builtin(t_node *node, t_map *map);
+void    exec_external(t_node *node, t_map *map, char **envp);
+
+void    restore_fds(int in, int out);
+t_bool  handle_redirections(t_redirect *head);
 
 #endif

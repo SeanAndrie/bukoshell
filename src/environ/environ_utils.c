@@ -6,10 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:21:48 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:40:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <environ.h>
 
 static t_bool	clear_entry(t_environ **head, char *key)

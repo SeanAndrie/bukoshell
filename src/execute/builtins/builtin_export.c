@@ -6,11 +6,10 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 21:03:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 20:48:09 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:48:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <debug.h>
 #include <environ.h>
 #include <parsing/clean.h>
@@ -56,4 +55,3 @@ int builtin_export(char **argv, t_map *map)
     }
     return (status);
 }
-

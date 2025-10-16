@@ -6,15 +6,16 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 01:48:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/05 21:56:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:01:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPAND_H
 # define EXPAND_H
 
-# include <environ.h>
-# include <parsing/tokens.h>
+typedef enum e_bool t_bool;
+typedef struct s_map t_map;
+typedef struct s_token t_token;
 
 typedef struct s_glob
 {

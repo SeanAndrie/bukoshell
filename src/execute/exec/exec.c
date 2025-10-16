@@ -6,16 +6,19 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:23:11 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/13 12:56:29 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:54:11 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <environ.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <boolean.h>
+#include <sys/wait.h>
+#include <execute/exec.h>
 #include <parsing/tree.h>
 #include <parsing/clean.h>
-#include <parsing/tokens.h>
-#include <execute/execute.h>
+#include <execute/builtins.h>
 
 int exec_node(t_node *node, t_map *map, char **envp);
 

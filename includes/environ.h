@@ -6,14 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:23:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:00:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENVIRON_H
 # define ENVIRON_H
 
-# include <libft.h>
+# include <stdlib.h>
 # include <boolean.h>
 
 # define LOAD_THRESHOLD 0.75
@@ -22,7 +22,7 @@ typedef struct s_environ
 {
 	char				*key;
 	char				*value;
-    t_bool              readonly;
+    enum e_bool         readonly;
 	struct s_environ	*next;
 }						t_environ;
 
@@ -33,7 +33,7 @@ typedef struct s_map
 	double				load_factor;
 	size_t				capacity;
 	size_t				size;
-	t_bool				modified;
+	enum e_bool			modified;
 }						t_map;
 
 size_t					hash_djb2(char *key);

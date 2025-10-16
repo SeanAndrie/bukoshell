@@ -6,11 +6,12 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/30 16:43:14 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:55:59 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <boolean.h>
 #include <parsing/tokens.h>
 
 unsigned int	create_token_mask(t_token *head)

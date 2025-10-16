@@ -6,15 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 13:33:55 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 16:48:05 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:19:22 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <debug.h>
-#include <boolean.h>
 #include <dirent.h>
 #include <expand.h>
-#include <libft.h>
+#include <boolean.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 

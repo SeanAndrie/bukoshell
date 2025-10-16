@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   environ_ext.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:03:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:21:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:40:49 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <environ.h>
 #include <parsing/clean.h>
 #include <parsing/expand.h>

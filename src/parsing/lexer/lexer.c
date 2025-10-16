@@ -6,12 +6,13 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/09/27 03:02:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 22:54:23 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <debug.h>
+#include <boolean.h>
 #include <parsing/lexer.h>
 
 char	*process_parameter(char **line_ptr, t_token_type *type)

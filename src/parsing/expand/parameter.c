@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parameter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/07 15:10:46 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:59:09 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <environ.h>
-#include <expand.h>
 #include <libft.h>
+#include <expand.h>
+#include <environ.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 

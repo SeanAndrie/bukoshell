@@ -6,14 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:05:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 16:46:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:30:19 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <signals.h>
+#include <boolean.h>
 #include <parsing/parsing.h>
 #include <readline/readline.h>
 

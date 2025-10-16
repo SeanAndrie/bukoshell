@@ -6,15 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/15 14:29:13 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:05:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_H
 # define TREE_H
 
-# include <environ.h>
-# include <parsing/tokens.h>
+#include <token_types.h>
+
+typedef struct s_map t_map;
+typedef struct s_token t_token;
 
 # define EOF_MSG "here-document delimited by end-of-file (wanted '%s')\n"
 

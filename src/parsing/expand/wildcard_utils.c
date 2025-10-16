@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 11:08:28 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/09 13:47:34 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 00:03:25 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <expand.h>
 #include <dirent.h>
+#include <boolean.h>
 
 static void	backtrack(t_glob *g)
 {
