@@ -71,10 +71,10 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 
 t_bool	normalize_tokens(t_token **head, t_map *map)
 {
-	apply_expansions(head, map, FALSE);
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
 	remove_tokens(head, TOKEN_WHITESPACE);
+	apply_expansions(head, map, FALSE);
 	handle_arithmetic(head);
 	return (TRUE);
 }
