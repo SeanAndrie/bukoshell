@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:49:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:48:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:59:03 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int builtin_exit(char **argv)
     if (*endptr != '\0' || errno == EINVAL || errno == ERANGE)
     {
         log_error(ERROR_NONE, ERR_BASE, "exit: %s: numeric argument required\n", argv[1]);
-        exit(255);
+        exit(2);
     }
     if (argv[2])
     {
