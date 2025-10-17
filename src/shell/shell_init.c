@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:11:14 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 23:41:11 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,6 @@ static t_bool	start_parser(t_shell *shell)
     collect_heredocs(shell->root, shell->map);
     if (!validate_tokens(shell->head))
         return (FALSE);
-    // shell->token_mask = create_token_mask(shell->head);
-    // if (!check_arithmetic(shell->head, shell->token_mask))
-    // 	return (FALSE);
     if (DEBUG_MODE)
         print_syntax_tree(shell->root);
     return (TRUE);

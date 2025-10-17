@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 23:08:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 23:41:21 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_shell
 	struct s_node	*root;
 	int				status;
 	char			**envp;
-	unsigned int	token_mask;
 	char			cwd[PATH_MAX];
 }					t_shell;
 
