@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 23:41:11 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 23:42:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_shell	*init_shell(char **envp)
     shell->line = NULL;
     shell->head = NULL;
     shell->root = NULL;
-    shell->token_mask = 0;
     shell->envp = copy_envp(envp);
     ft_memset(shell->cwd, 0, sizeof(shell->cwd));
     shell->map = create_map(environ_size(shell->envp));
