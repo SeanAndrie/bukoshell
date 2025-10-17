@@ -18,7 +18,7 @@
 typedef enum e_bool t_bool;
 typedef struct s_map t_map;
 typedef struct s_node t_node;
-typedef struct s_token t_token; 
+typedef struct s_token t_token;
 typedef struct s_environ t_environ;
 
 void    print_dir_list(void);

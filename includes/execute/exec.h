@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 23:35:53 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:53:53 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:21:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 typedef enum e_bool t_bool;
 typedef struct s_map t_map;
 typedef struct s_node t_node;
+typedef struct s_token t_token;
 typedef struct s_redirect t_redirect;
 
 int     exec_node(t_node *node, t_map *map, char **envp);

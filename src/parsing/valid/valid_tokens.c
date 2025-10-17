@@ -74,7 +74,7 @@ static t_bool	parse_compound_command(t_token **curr, int *depth)
 	}
 	if (is_token_type((*curr)->type, TOKEN_GROUP_CLOSE))
 	{
-		log_error(ERROR_SYNTAX, ERR_BASE, "emtpy subshell '()' not allowed\n");
+		log_error(ERROR_SYNTAX, ERR_BASE, "empty subshell '()' not allowed\n");
 		return (FALSE);
 	}
 	if (!parse_command_list(curr, depth))

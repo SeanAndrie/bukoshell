@@ -20,10 +20,7 @@
 int heredoc_event_hook(void)
 {
     if (g_signal != 0)
-    {
         g_signal = 0;
-        rl_done = 0;
-    }
     return (0);
 }
 

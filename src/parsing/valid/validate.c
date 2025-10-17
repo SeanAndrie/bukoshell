@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:19:02 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:25:12 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,22 @@ void	consume(t_token **curr)
 		*curr = (*curr)->next;
 }
 
+t_bool	check_arithmetic(t_token *head)
+{
+	unsigned int	mask;
+
+	if (!head)
+		return (FALSE);
+	mask = create_token_mask(head);
+	if ((mask & TOKEN_ARITH) && !(mask & TOKEN_SUBSHELL))
+	{
+		log_error(ERROR_SYNTAX, ERR_BASE,
+			"arithmetic expressions are not supported\n");
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 t_bool 	is_separated_command(t_token *token)
 {
 	if (token && !is_token_type(token->type, TOKEN_CTRL_OP)
@@ -30,42 +46,6 @@ t_bool 	is_separated_command(t_token *token)
 			token->lexeme);
 		return (FALSE);
 	}
-	return (TRUE);
-}
-
-static void assign_group(t_token *token)
-{
-    if (token->lexeme[0] == '(')
-        token->type |= TOKEN_GROUP_OPEN;
-    else if (token->lexeme[0] == ')')
-        token->type |= TOKEN_GROUP_CLOSE;
-}
-
-t_bool	is_arithmetic(t_token *head)
-{
-	t_token	*copy;
-	t_token	*curr;
-	int		depth;
-
-	copy = copy_tokens(head, NULL);
-	if (!copy)
-		return (FALSE);
-	if (!handle_concatenation(&copy, TOKEN_ARITH))
-    {
-        free_tokens(&copy);
-        return (FALSE);
-    }
-	depth = 0;
-	curr = copy;
-	while (curr)
-	{
-        assign_group(curr);
-		track_depth(curr, &depth, TOKEN_ARITH);
-		curr = curr->next;
-	}
-	free_tokens(&copy);
-	if (depth != 0)
-		return (FALSE);
 	return (TRUE);
 }
 

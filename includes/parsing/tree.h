@@ -42,6 +42,7 @@ typedef struct s_node
 	enum e_node_type	type;
 	struct s_node		*left;
 	struct s_node		*right;
+    struct s_token      *inner;
 	char				**argv;
 	enum e_token_type	operand;
 	struct s_redirect	*redirect;

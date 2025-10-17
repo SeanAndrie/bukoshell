@@ -6,10 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:21:11 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:14:10 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:23:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <debug.h>
 #include <libft.h>
 #include <boolean.h>
 #include <parsing/tree.h>
@@ -60,7 +61,6 @@ static t_node	*create_node(t_token *head, t_node_type type)
 		node->argv = tokens_to_argv(head);
 		if (!node->argv)
 		{
-            ft_printf("tokens_to_argv failed\n");
 			free(node);
 			return (NULL);
 		}
@@ -74,12 +74,18 @@ static t_node	*create_subshell(t_token *start)
 {
 	t_node	*root;
 	t_token	*curr;
+    t_token *last;
 
 	curr = start;
 	skip_grouping(&curr);
 	root = create_node(NULL, N_SUBSHELL);
 	if (!root)
 		return (NULL);
+    last = start;
+    while (last && last->next != curr)
+        last = last->next;
+    root->inner= copy_tokens(start->next, last);
+    print_tokens(root->inner, FALSE);
 	root->left = create_syntax_tree(start->next, curr);
 	return (root);
 }

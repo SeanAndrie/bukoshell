@@ -92,13 +92,3 @@ char	*create_user(t_map *map)
 	return (ft_strdup(user->value));
 }
 
-t_bool	check_arithmetic(t_token *head, unsigned int mask)
-{
-	if ((mask & TOKEN_ARITH) && is_arithmetic(head))
-	{
-		log_error(ERROR_SYNTAX, ERR_BASE,
-			"arithmetic expressions are not supported\n");
-		return (FALSE);
-	}
-	return (TRUE);
-}

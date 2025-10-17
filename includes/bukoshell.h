@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 00:19:14 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:58:57 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void                start_shell(t_shell *shell);
 
 char	            *create_user(t_map *map);
 char				*set_prompt(t_shell *shell, char *user);
-t_bool	            check_arithmetic(t_token *head, unsigned int mask);
 
 void				free_shell(t_shell *shell, t_bool full_free);
 
