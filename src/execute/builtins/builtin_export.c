@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <debug.h>
 #include <environ.h>
 #include <parsing/clean.h>
@@ -24,6 +25,7 @@ static int export_variable(char *arg, t_map *map)
         return (1);
     if (!is_valid_identifier(pair[0]))
     {
+        log_error(ERROR_NONE, ERR_BASE, "export: '%s': not a valid identifier\n", pair[0]);
         free_str_arr(pair, -1);
         return (1);
     }

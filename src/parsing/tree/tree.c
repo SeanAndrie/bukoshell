@@ -85,7 +85,6 @@ static t_node	*create_subshell(t_token *start)
     while (last && last->next != curr)
         last = last->next;
     root->inner= copy_tokens(start->next, last);
-    print_tokens(root->inner, FALSE);
 	root->left = create_syntax_tree(start->next, curr);
 	return (root);
 }

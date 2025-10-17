@@ -163,4 +163,3 @@ void	                *heredoc_interrupt(char *line, char *accum);
 char	                *heredoc_success(char *line, char *accum, t_map *map, t_token_type delim_type);
 
 #endif
-

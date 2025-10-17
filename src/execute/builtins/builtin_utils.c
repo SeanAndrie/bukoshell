@@ -44,18 +44,12 @@ t_bool is_valid_identifier(char *key)
     if (!key || !*key)
         return (FALSE);
     if (!(ft_isalpha(*key) || *key == '_'))
-    {
-        log_error(ERROR_NONE, ERR_BASE, "export: `%s`: not a valid identifier\n", key);
         return (FALSE);
-    }
     i = 1;
     while (key[i])
     {
         if (!(ft_isalnum(key[i]) || key[i] == '_'))
-        {
-            log_error(ERROR_NONE, ERR_BASE, "export: `%s`: not a valid identifier\n", key);
             return (FALSE);
-        }
         i++;
     }
     return (TRUE);
