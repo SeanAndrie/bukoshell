@@ -37,7 +37,7 @@ PARSING_MODULES := \
     tokens/tokens.c tokens/token_init.c tokens/token_utils.c \
     tree/tree.c tree/tree_utils.c tree/redir_init.c tree/redir_heredoc.c tree/redir_utils.c \
     valid/validate.c valid/valid_tokens.c \
-	expand/parameter.c expand/wildcard.c expand/wildcard_utils.c
+	expand/parameter.c expand/tilde.c expand/wildcard.c expand/wildcard_utils.c
 
 EXECUTE_MODULES := \
 	exec/exec.c exec/exec_simple.c exec/exec_utils.c \

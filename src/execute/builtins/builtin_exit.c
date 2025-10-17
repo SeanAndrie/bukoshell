@@ -28,12 +28,12 @@ int builtin_exit(char **argv)
     if (*endptr != '\0' || errno == EINVAL || errno == ERANGE)
     {
         log_error(ERROR_NONE, ERR_BASE, "exit: %s: numeric argument required\n", argv[1]);
-        exit(2);
+        return (2);
     }
     if (argv[2])
     {
         log_error(ERROR_NONE, ERR_BASE, "exit: too many arguments\n");
-        return (1);
+        return (2);
     }
     exit((unsigned char)value);
 }

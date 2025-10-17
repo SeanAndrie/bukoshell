@@ -27,6 +27,7 @@ typedef struct s_glob
 
 void    apply_wildcard_expansion(t_token **head, t_token *token);
 void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc);
+void    apply_tilde_expansion(t_token *token, t_map *map);
 
 void    quick_sort(char **arr, int low, int high);
 t_bool	is_matching_pattern(char *pattern, char *str);
