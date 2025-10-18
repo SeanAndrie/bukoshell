@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 02:46:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 02:48:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/18 08:15:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,5 @@ void    print_env(t_map *map, t_bool formatted)
             ft_printf(format, curr->key, curr->value);
         curr = curr->next;
     }
-    ft_printf("\n");
     free_entries(&head);
 }
