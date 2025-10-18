@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 14:54:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:53:12 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 01:10:15 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char *find_cmd_path(char *cmd, t_environ *path_var)
 
 static void exec_simple_error(char *arg)
 {
-    log_error(ERROR_NONE, ERR_BASE, "command not found: %s\n", arg);
+    log_error(ERROR_NONE, ERR_BASE, "%s: command not found\n", arg);
     exit(127);
 }
 
@@ -118,7 +118,6 @@ void exec_external(t_node *node, t_map *map, char **envp)
     ft_strlcpy(buffer, cmd_path, sizeof(buffer));
     free(cmd_path);
     execve(buffer, node->argv, envp);
-    log_error(ERROR_NONE, ERR_BASE, "%s: command not found\n", node->argv[0]);
-    exit(127);
+    exec_simple_error(node->argv[0]);
 }
 
