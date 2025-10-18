@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 23:22:49 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/18 23:48:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	shell_loop_interactive(t_shell *shell)
 
 	while (TRUE)
 	{
-		identifier = create_identifier(shell);
+		identifier = create_identifier(shell->map);
 		prompt = set_prompt(shell, identifier);
 		free(identifier);
 		shell->line = readline(prompt);
@@ -96,11 +96,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!shell)
 		return (EXIT_FAILURE);
 	if (shell->map && shell->envp)
-    {
 		init_environ(shell->map, shell->envp);
-        init_shell_variables(shell->map);
-    }
-    create_host(shell);
 	status = shell_mode(shell);
 	if (DEBUG_MODE)
 		ft_printf("Status: %d\n", status);

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 23:21:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 00:11:17 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <readline/readline.h>
 
 # define DEBUG_MODE FALSE 
-# define HOST_NAME_MAX 64
 
 typedef struct s_shell
 {
@@ -35,14 +34,12 @@ typedef struct s_shell
 	int				status;
 	char			**envp;
 	char			cwd[PATH_MAX];
-    char            host[HOST_NAME_MAX];
 }					t_shell;
 
 t_shell				*init_shell(char **envp);
 void                start_shell(t_shell *shell);
 
-void                create_host(t_shell *shell);
-char	            *create_identifier(t_shell *shell);
+char	            *create_identifier(t_map *map);
 char				*set_prompt(t_shell *shell, char *user);
 
 void				free_shell(t_shell *shell, t_bool full_free);

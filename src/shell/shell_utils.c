@@ -6,11 +6,10 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 23:27:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 00:13:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include <bukoshell.h>
 
 static t_bool	is_home_directory(t_map *map, char *cwd)
@@ -77,35 +76,23 @@ char	*set_prompt(t_shell *shell, char *user)
 	return (prompt);
 }
 
-void create_host(t_shell *shell)
-{
-    int     fd;
-    ssize_t  bytes_read;
-
-    fd = open("/etc/hostname", O_RDONLY);
-    if (fd < 0)
-        return ;
-    bytes_read = read(fd, shell->host, sizeof(shell->host));
-    close(fd);
-    if (bytes_read < 0)
-        return ;
-    shell->host[bytes_read] = '\0';
-    shell->host[ft_strcspn(shell->host, "\n")] = '\0';
-}
-
-char	*create_identifier(t_shell *shell)
+char	*create_identifier(t_map *map)
 {
     t_environ   *user;
+    t_environ   *host;
+    char        *hostname;
 
-	if (!shell->map)
+	if (!map)
 		return (NULL);
-	user = search_entry(shell->map, "USER");
-	if (!user)
-	{
-		user = search_entry(shell->map, "LOGNAME");
-		if (!user)
-			return (NULL);
-	}
-    return (ft_vstrjoin(2, "@", user->value, shell->host));
+    user = search_entry(map, "USER");
+    if (!user)
+        user = search_entry(map, "LOGNAME");
+    if (!user)
+        return (NULL);
+    host = search_entry(map, "HOSTNAME");
+    if (!host)
+        hostname = "unknown";
+    else
+        hostname = host->value;
+    return ft_vstrjoin(2, "@", user->value, hostname);
 }
-

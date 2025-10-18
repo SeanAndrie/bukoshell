@@ -6,28 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:40:13 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 00:15:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <fcntl.h>
 #include <environ.h>
 #include <parsing/clean.h>
-
-void	free_entries(t_environ **entry)
-{
-	t_environ	*next;
-
-	while (*entry)
-	{
-		next = (*entry)->next;
-		free((*entry)->key);
-		if ((*entry)->value)
-			free((*entry)->value);
-		free(*entry);
-		*entry = next;
-	}
-}
 
 void	free_map(t_map *map)
 {
@@ -78,17 +64,39 @@ char	**get_pair(char *env)
 	return (pair);
 }
 
-void	init_shell_variables(t_map *map)
+static void special_variables(t_map *map)
 {
-	t_environ	*shlvl;
-	char		*level;
+    int         fd;
 	t_environ	*status;
+    t_environ   *hostname;
+    ssize_t     bytes_read;
+    char        buffer[64];
 
 	set_entry(map, "?", "0");
 	status = search_entry(map, "?");
 	if (status)
 		status->readonly = TRUE;
 	set_order(&map->order, status);
+    fd = open("/etc/hostname", O_RDONLY);
+    if (fd < 0)
+        return ;
+    bytes_read = read(fd, buffer, sizeof(buffer));
+    close(fd);
+    if (bytes_read < 0)
+        return ;
+    buffer[bytes_read] = '\0';
+    buffer[ft_strcspn(buffer, "\n")] = '\0';
+    set_entry(map, "HOSTNAME", buffer);
+    hostname = search_entry(map, "HOSTNAME");
+    set_order(&map->order, hostname);
+}
+
+static void	init_variables(t_map *map)
+{
+	t_environ	*shlvl;
+	char		*level;
+
+    special_variables(map);
 	set_entry(map, "OLDPWD", "");
 	shlvl = search_entry(map, "SHLVL");
 	if (!shlvl)
@@ -122,4 +130,5 @@ void	init_environ(t_map *map, char **envp)
 		}
 		envp++;
 	}
+    init_variables(map);
 }

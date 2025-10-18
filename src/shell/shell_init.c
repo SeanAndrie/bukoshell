@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 23:22:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/18 23:40:09 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_shell	*init_shell(char **envp)
     shell->root = NULL;
     shell->envp = copy_envp(envp);
     ft_memset(shell->cwd, 0, sizeof(shell->cwd));
-    ft_memset(shell->host, 0, sizeof(shell->host));
     shell->map = create_map(environ_size(shell->envp));
     return (shell);
 }

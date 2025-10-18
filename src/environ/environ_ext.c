@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:03:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:40:49 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/18 23:45:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include <environ.h>
 #include <parsing/clean.h>
 #include <parsing/expand.h>
+
+void	free_entries(t_environ **entry)
+{
+	t_environ	*next;
+
+	while (*entry)
+	{
+		next = (*entry)->next;
+		free((*entry)->key);
+		if ((*entry)->value)
+			free((*entry)->value);
+		free(*entry);
+		*entry = next;
+	}
+}
 
 void	set_order(t_environ **order, t_environ *entry)
 {
