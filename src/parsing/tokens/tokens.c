@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 09:01:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 19:14:35 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 				'$'))
 			apply_param_expansion(curr, map, heredoc);
 		if (ft_strchr(curr->lexeme, '*') && !heredoc)
+		{
 			apply_wildcard_expansion(head, curr);
+			curr = *head;
+			continue;
+		}
         if (curr->lexeme && curr->lexeme[0] == '~')
             apply_tilde_expansion(curr, map);
 		curr = next;
