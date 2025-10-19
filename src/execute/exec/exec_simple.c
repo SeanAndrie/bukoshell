@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 14:54:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 16:15:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 22:58:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@ static char *find_cmd_path(char *cmd, t_environ *path_var)
     }
     free_str_arr(paths, i);
     return (NULL);
-}
-
-static void exec_simple_error(char *arg)
-{
-    log_error(ERROR_NONE, ERR_BASE, "%s: command not found\n", arg);
-    exit(127);
 }
 
 static int map_builtin(char **argv, t_map *map)
@@ -110,17 +104,18 @@ void exec_external(t_node *node, t_map *map, char **envp)
     }
     if (ft_strchr(node->argv[0], '/')) 
     {
+        exec_dir_error(node->argv[0]);
         execve(node->argv[0], node->argv, envp);
-        return ;
+        exec_cmd_error(node->argv[0]);
     }
     path_var = search_entry(map, "PATH");
     if (!path_var)
-        exec_simple_error(node->argv[0]);
+        exec_cmd_error(node->argv[0]);
     cmd_path = find_cmd_path(node->argv[0], path_var);
     if (!cmd_path)
-        exec_simple_error(node->argv[0]);
+        exec_cmd_error(node->argv[0]);
     ft_strlcpy(buffer, cmd_path, sizeof(buffer));
     free(cmd_path);
     execve(buffer, node->argv, envp);
-    exec_simple_error(node->argv[0]);
+    exec_cmd_error(node->argv[0]);
 }

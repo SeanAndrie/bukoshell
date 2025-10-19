@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 00:15:34 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 20:00:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ static void special_variables(t_map *map)
 
 static void	init_variables(t_map *map)
 {
+	t_environ	*pid;
 	t_environ	*shlvl;
-	char		*level;
+	char		*value;
 
-    special_variables(map);
 	set_entry(map, "OLDPWD", "");
 	shlvl = search_entry(map, "SHLVL");
 	if (!shlvl)
@@ -104,9 +104,20 @@ static void	init_variables(t_map *map)
 		set_entry(map, "SHLVL", "0");
 		shlvl = search_entry(map, "SHLVL");
 	}
-	level = ft_itoa(ft_atoi(shlvl->value) + 1);
-	set_entry(map, "SHLVL", level);
-	free(level);
+	value = ft_itoa(ft_atoi(shlvl->value) + 1);
+	if (!value)
+		return ;
+	set_entry(map, "SHLVL", value);
+	free(value);
+	value = ft_itoa(getpid());
+	if (!value)
+		return ;
+	set_entry(map, "$", value);
+	free(value);
+	pid = search_entry(map, "$");
+	if (pid)
+		pid->readonly = TRUE;	
+	set_order(&map->order, pid);
 }
 
 void	init_environ(t_map *map, char **envp)
@@ -130,5 +141,6 @@ void	init_environ(t_map *map, char **envp)
 		}
 		envp++;
 	}
+    special_variables(map);
     init_variables(map);
 }
