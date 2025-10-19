@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 14:54:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 01:10:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 16:15:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <environ.h>
 #include <boolean.h>
+#include <sys/stat.h>
 #include <execute/exec.h>
 #include <parsing/parsing.h>
 #include <execute/builtins.h>
@@ -107,8 +108,11 @@ void exec_external(t_node *node, t_map *map, char **envp)
         free_redirects(&node->redirect, TRUE);
         exit(1);
     }
-    if (ft_strchr(node->argv[0], '/'))
+    if (ft_strchr(node->argv[0], '/')) 
+    {
         execve(node->argv[0], node->argv, envp);
+        return ;
+    }
     path_var = search_entry(map, "PATH");
     if (!path_var)
         exec_simple_error(node->argv[0]);
@@ -120,4 +124,3 @@ void exec_external(t_node *node, t_map *map, char **envp)
     execve(buffer, node->argv, envp);
     exec_simple_error(node->argv[0]);
 }
-

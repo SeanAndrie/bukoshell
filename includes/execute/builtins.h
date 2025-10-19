@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:49:40 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:28:31 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 16:00:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int     builtin_export(char **argv, t_map *map);
 int     builtin_unset(char **argv, t_map *map);
 
 t_bool  is_builtin(t_node *node);
+t_bool  is_directory(char *path);
 t_bool  is_valid_identifier(char *key);
 
 #endif

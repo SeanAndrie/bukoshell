@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:32:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 23:10:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 16:17:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,36 @@ static char *expand_tilde_path(char **paths, char *home_path)
     return (join);
 }
 
-void    apply_tilde_expansion(t_token *token, t_map *map)
+static char *get_tilde_base_path(char *lexeme, t_map *map)
 {
-    t_environ   *home;
-    char        *temp;
-    char        **paths;
+    t_environ *entry;
 
-    if (token->lexeme[1] && token->lexeme[1] != '/')
+    if (!lexeme || lexeme[0] != '~')
+        return (NULL);
+    if (lexeme[1] == '\0' || lexeme[1] == '/')
+        entry = search_entry(map, "HOME");
+    else if (lexeme[1] == '+')
+        entry = search_entry(map, "PWD");
+    else if (lexeme[1] == '-')
+        entry = search_entry(map, "OLDPWD");
+    else
+        return (NULL); 
+    if (!entry || !entry->value)
+        return (NULL);
+    return (entry->value);
+}
+
+
+void apply_tilde_expansion(t_token *token, t_map *map)
+{
+    char    *base_path;
+    char    **paths;
+    char    *temp;
+
+    if (!token->lexeme || token->lexeme[0] != '~')
         return ;
-    home = search_entry(map, "HOME");
-    if (!home)
+    base_path = get_tilde_base_path(token->lexeme, map);
+    if (!base_path)
         return ;
     paths = ft_split(token->lexeme, '/');
     if (!paths)
@@ -62,11 +82,10 @@ void    apply_tilde_expansion(t_token *token, t_map *map)
         return ;
     }
     free(token->lexeme);
-    token->lexeme = expand_tilde_path(paths, home->value);
+    token->lexeme = expand_tilde_path(paths, base_path);
     if (!token->lexeme)
         token->lexeme = temp;
     else
         free(temp);
     free_str_arr(paths, -1);
 }
-

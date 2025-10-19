@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:33:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:49:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 16:05:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,8 @@
 
 static t_bool is_valid_path(char *path)
 {
-    struct stat st;
-
-    if (stat(path, &st) != 0)
-    {
-        log_error(ERROR_NONE, ERR_BASE, "cd: no such file or directory\n", path);
+    if (!is_directory(path))
         return (FALSE);
-    }
-    else if (!S_ISDIR(st.st_mode))
-    {
-        log_error(ERROR_NONE, ERR_BASE, "cd: %s: not a directory\n", path);
-        return (FALSE);
-    }
     else if (access(path, X_OK) != 0)
     {
         log_error(ERROR_NONE, ERR_BASE, "cd: %s: permission denied", path);

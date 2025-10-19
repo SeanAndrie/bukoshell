@@ -6,13 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 15:15:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:27:59 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/19 16:13:47 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <debug.h>
 #include <boolean.h>
+#include <sys/stat.h>
 #include <parsing/tree.h>
 #include <execute/builtins.h>
 
@@ -55,3 +56,19 @@ t_bool is_valid_identifier(char *key)
     return (TRUE);
 }
 
+t_bool  is_directory(char *path)
+{
+    struct stat path_stat;
+
+    if (stat(path, &path_stat) != 0)
+    {
+        log_error(ERROR_NONE, ERR_BASE, "%s: no such file or directory\n", path);
+        return (FALSE);
+    }
+    else if (!S_ISDIR(path_stat.st_mode))
+    {
+        log_error(ERROR_NONE, ERR_BASE, "%s: not a directory\n", path);
+        return (FALSE);
+    }
+    return (TRUE);
+}
