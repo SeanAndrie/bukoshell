@@ -20,6 +20,8 @@ typedef struct s_token t_token;
 
 # define EOF_MSG "here-document delimited by end-of-file (wanted '%s')\n"
 
+typedef enum e_bool t_bool;
+
 typedef enum e_node_type
 {
 	N_COMMAND,
@@ -79,7 +81,7 @@ t_node					*create_syntax_tree(t_token *start, t_token *end);
 ** @return      A linked list of t_redirect nodes representing redirections,
 **              or NULL on allocation failure.
 */
-t_redirect				*create_redirections(t_token *head);
+t_redirect				*create_redirections(t_token *start, t_token *end);
 
 /*
 ** Converts a list of tokens into a NULL-terminated argv array.
@@ -93,7 +95,7 @@ t_redirect				*create_redirections(t_token *head);
 ** @return      A NULL-terminated array of strings (argv) representing the
 **              command and its arguments, or NULL if allocation fails.
 */
-char					**tokens_to_argv(t_token *head);
+char					**tokens_to_argv(t_token *start, t_token *end);
 
 /*
 ** Advances the token pointer past a balanced set of parentheses.
@@ -155,6 +157,7 @@ t_token					*find_lowest_precedence(t_token *start, t_token *end);
 ** @param map   Environment variable mapping used for parameter expansion.
 */
 void					collect_heredocs(t_node *node, t_map *map);
+t_bool                  is_operator_or_group_token(t_token_type type);
 void	                heredoc_expansion(char **join, t_map *map, t_token_type delim_type);
 
 int	                    heredoc_event_hook(void);

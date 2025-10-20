@@ -28,11 +28,10 @@ static void	handle_missing_command(t_node *node)
 	int	save_in;
 	int	save_out;
 
-	if (node->redirect)
-		return ;
 	save_in = dup(STDIN_FILENO);
 	save_out = dup(STDOUT_FILENO);
-	handle_redirections(node->redirect);
+    if (node->redirect)
+	    handle_redirections(node->redirect);
 	restore_fds(save_in, save_out);
 }
 
@@ -72,6 +71,11 @@ int	exec_subshell(t_node *node, t_map *map, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
+        if (node->redirect && !handle_redirections(node->redirect))
+        {
+            free_redirects(&node->redirect, TRUE);
+            exit(1);
+        }
 		if (node->inner && check_arithmetic(node->inner))
 			exit(1);
 		exit(exec_node(node->left, map, envp));

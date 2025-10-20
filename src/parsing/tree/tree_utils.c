@@ -16,7 +16,7 @@
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
-static t_bool is_operator_or_group_token(t_token_type type)
+t_bool is_operator_or_group_token(t_token_type type)
 {
 	return  (is_token_type(type, TOKEN_CTRL_OP) || is_token_type(type, TOKEN_GROUP));
 }
@@ -50,14 +50,14 @@ static char	**alloc_argv(t_token *head, size_t n)
 	return (argv);
 }
 
-char	**tokens_to_argv(t_token *head)
+char	**tokens_to_argv(t_token *start, t_token *end)
 {
 	size_t	n;
 	t_token	*curr;
 
 	n = 0;
-	curr = head;
-	while (curr)
+	curr = start;
+	while (curr != end)
 	{
 		if (is_operator_or_group_token(curr->type))
 			break ;
@@ -66,7 +66,7 @@ char	**tokens_to_argv(t_token *head)
 			n++;
 		curr = curr->next;
 	}
-	return (alloc_argv(head, n));
+	return (alloc_argv(start, n));
 }
 
 void	track_depth(t_token *head, int *depth, t_token_type group_category)

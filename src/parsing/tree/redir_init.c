@@ -74,15 +74,15 @@ static t_bool	is_valid_redir(t_token *curr, t_token *next)
 		&& is_token_type(next->type, TOKEN_WORD));
 }
 
-t_redirect	*create_redirections(t_token *head)
+t_redirect	*create_redirections(t_token *start, t_token *end)
 {
 	t_token		*curr;
 	t_token		*next;
 	t_redirect	*redir_head;
 
-	curr = head;
+	curr = start;
 	redir_head = NULL;
-	while (curr)
+	while (curr != end)
 	{
 		next = curr->next;
 		if (is_token_type(curr->type, TOKEN_REDIR_OP))

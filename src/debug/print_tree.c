@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <debug.h>
 #include <boolean.h>
-#include <parsing/tree.h>
+#include <debug.h>
+#include <libft.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
 void	print_argv(char **argv)
 {
@@ -42,6 +42,8 @@ void	print_redirects(t_redirect *head, int level)
 	int			i;
 	t_redirect	*curr;
 
+	if (!head)
+		return ;
 	curr = head;
 	while (curr)
 	{
@@ -92,13 +94,13 @@ void	recursive_print_tree(t_node *node, int level)
 	{
 		ft_printf("Subshell\n");
 		recursive_print_tree(node->left, level + 1);
+		print_redirects(node->redirect, level + 1);
 		return ;
 	}
 	else
 	{
 		print_argv(node->argv);
-		if (node->redirect)
-			print_redirects(node->redirect, level + 1);
+		print_redirects(node->redirect, level + 1);
 	}
 	recursive_print_tree(node->left, level + 1);
 	recursive_print_tree(node->right, level + 1);

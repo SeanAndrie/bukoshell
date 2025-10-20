@@ -23,7 +23,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define DEBUG_MODE TRUE 
+# define DEBUG_MODE FALSE
 
 typedef struct s_shell
 {
