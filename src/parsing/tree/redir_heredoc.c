@@ -31,7 +31,7 @@ void heredoc_expansion(char **join, t_map *map, t_token_type delim_type)
 
     if (is_token_type(delim_type, TOKEN_QUOTE))
         return  ;
-    tokens = create_tokens(*join, TRUE, TRUE);
+    tokens = create_tokens(*join, FALSE, TRUE);
     if (!tokens)
         return ;
     apply_expansions(&tokens, map, TRUE);
