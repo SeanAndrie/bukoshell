@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 22:36:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 18:58:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:22:33 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ t_bool handle_redirections(t_redirect *head)
 {
     t_redirect *curr;
 
-    if (!head)
-        return (TRUE);
     curr = head;
     while (curr)
     {

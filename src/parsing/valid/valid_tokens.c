@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:56:21 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:18:24 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/20 12:56:29 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,43 +21,26 @@ static t_bool	parse_command(t_token **curr, int *depth);
 t_bool			parse_command_list(t_token **curr, int *depth);
 static t_bool	parse_compound_command(t_token **curr, int *depth);
 
-t_bool	is_valid_metachar(t_token *token)
-{
-	if (!is_token_type(token->type, TOKEN_METACHAR))
-		return (TRUE);
-	if (!token->next)
-	{
-		log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token 'newline'\n");
-		return (FALSE);
-	}
-	if (is_token_type(token->type, T_PIPE))
-	{
-		if (!is_token_type(token->next->type, TOKEN_WORD)
-			&& !is_token_type(token->next->type, TOKEN_GROUP_OPEN))
-		{
-			log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token '%s'\n",
-				token->next->lexeme);
-			return (FALSE);
-		}
-	}
-	return (TRUE);
-}
-
 static t_bool	parse_simple_command(t_token **curr)
 {
-	while (*curr && is_token_type((*curr)->type, T_WORD))
-		consume(curr);
-	while (*curr && is_token_type((*curr)->type, TOKEN_REDIR_OP))
+	while (*curr)
 	{
-		if (!is_valid_metachar(*curr))
-			return (FALSE);
-		consume(curr);
-		if (!*curr || !is_token_type((*curr)->type, T_WORD))
+		if (is_token_type((*curr)->type, T_WORD))
+			consume(curr);
+		else if (is_token_type((*curr)->type, TOKEN_REDIR_OP))
 		{
-			log_error(ERROR_SYNTAX, ERR_BASE, "redirection: missing target\n");
-			return (FALSE);
+			if (!is_valid_metachar(*curr))
+				return (FALSE);
+			consume(curr);
+			if (!*curr || !is_token_type((*curr)->type, T_WORD))
+			{
+				log_error(ERROR_SYNTAX, ERR_BASE, "redirection: missing target\n");
+				return (FALSE);
+			}
+			consume(curr);
 		}
-		consume(curr);
+		else
+			break;
 	}
 	return (TRUE);
 }

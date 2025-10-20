@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 12:18:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 09:00:20 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/20 12:40:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@ void	consume(t_token **curr)
 {
 	if (*curr)
 		*curr = (*curr)->next;
+}
+
+t_bool	is_valid_metachar(t_token *token)
+{
+	if (!is_token_type(token->type, TOKEN_METACHAR))
+		return (TRUE);
+	if (!token->next)
+	{
+		log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token 'newline'\n");
+		return (FALSE);
+	}
+	if (is_token_type(token->type, T_PIPE))
+	{
+		if (!is_token_type(token->next->type, TOKEN_WORD)
+			&& !is_token_type(token->next->type, TOKEN_GROUP_OPEN))
+		{
+			log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token '%s'\n",
+				token->next->lexeme);
+			return (FALSE);
+		}
+	}
+	return (TRUE);
 }
 
 t_bool	check_arithmetic(t_token *head)
@@ -40,7 +62,8 @@ t_bool	check_arithmetic(t_token *head)
 t_bool 	is_separated_command(t_token *token)
 {
 	if (token && !is_token_type(token->type, TOKEN_CTRL_OP)
-		&& !is_token_type(token->type, TOKEN_GROUP_CLOSE))
+		&& !is_token_type(token->type, TOKEN_GROUP_CLOSE)
+		&& !is_token_type(token->type, TOKEN_REDIR_OP))
 	{
 		log_error(ERROR_SYNTAX, ERR_BASE, "near unexpected token '%s'\n",
 			token->lexeme);
