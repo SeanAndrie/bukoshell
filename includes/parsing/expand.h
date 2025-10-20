@@ -25,7 +25,7 @@ typedef struct s_glob
     char    *s_back;
 }               t_glob;
 
-void    apply_wildcard_expansion(t_token **head, t_token *token);
+t_bool  apply_wildcard_expansion(t_token **head, t_token *token);
 void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc);
 void    apply_tilde_expansion(t_token *token, t_map *map);
 

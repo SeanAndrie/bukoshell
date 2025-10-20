@@ -15,6 +15,7 @@
 #include <dirent.h>
 #include <expand.h>
 #include <boolean.h>
+#include <parsing/lexer.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
@@ -78,8 +79,8 @@ static t_token *create_path_tokens(char **paths)
 
     tokens = NULL;
     concat = NULL;
-    i = 0;
-    while (paths[i])
+    i = -1;
+    while (paths[++i])
     {
         temp = ft_vstrjoin(2, " ", concat, paths[i]);
         if (!temp)
@@ -89,10 +90,10 @@ static t_token *create_path_tokens(char **paths)
         }
         free(concat);
         concat = temp;
-        i++;
     }
-    tokens = create_tokens(concat, TRUE, FALSE);
+    tokens = create_tokens(concat, FALSE, TRUE);
     free(concat);
+    handle_concatenation(&tokens, TOKEN_WORD);
     if (!tokens)
         return (NULL);
     return (tokens);
@@ -113,7 +114,7 @@ static void attach_path_head(t_token **head, t_token *path_tokens, t_token *wc_t
     append_token(&path_tokens, after);
 }
 
-void apply_wildcard_expansion(t_token **head, t_token *wc_token)
+t_bool apply_wildcard_expansion(t_token **head, t_token *wc_token)
 {
     DIR     *dir;
     size_t  count;
@@ -122,16 +123,17 @@ void apply_wildcard_expansion(t_token **head, t_token *wc_token)
 
     dir = opendir(".");
     if (!dir)
-        return;
+        return (FALSE);
     count = count_matching_paths(wc_token->lexeme);
     paths = create_paths(dir, wc_token->lexeme, count);
     closedir(dir);
     if (!paths)
-        return ;
+        return (FALSE);
     quick_sort(paths, 0, count - 1);
     tokens = create_path_tokens(paths);
     free_str_arr(paths, count);
     if (!tokens)
-        return ;
+        return (FALSE);
     attach_path_head(head, tokens, wc_token);
+    return (TRUE);
 }

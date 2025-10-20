@@ -62,9 +62,11 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 			apply_param_expansion(curr, map, heredoc);
 		if (ft_strchr(curr->lexeme, '*') && !heredoc)
 		{
-			apply_wildcard_expansion(head, curr);
-			curr = *head;
-			continue;
+			if (apply_wildcard_expansion(head, curr))
+            {
+			    curr = *head;
+			    continue;
+            }
 		}
         if (curr->lexeme && curr->lexeme[0] == '~')
             apply_tilde_expansion(curr, map);
