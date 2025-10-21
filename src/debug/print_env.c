@@ -14,7 +14,6 @@
 #include <debug.h>
 #include <environ.h>
 #include <parsing/clean.h>
-#include <parsing/expand.h>
 
 void	print_entry_info(t_environ *entry)
 {
@@ -34,79 +33,20 @@ void	print_entry_info(t_environ *entry)
     ft_printf("\n");
 }
 
-static void *free_helper(t_environ *head)
+void    print_env(t_environ *head, t_bool formatted)
 {
-    if (head)
-        free_entries(&head);
-    return (NULL);
-}
-
-static char **sort_envp(t_map *map)
-{
-    size_t  size;
-    char    **sorted;
-
-    sorted = map_to_envp(map);
-    if (!sorted)
-        return (NULL);
-    size = environ_size(sorted);
-    quick_sort(sorted, 0, size - 1);
-    return (sorted);
-}
-
-static t_environ *create_sorted_entries(t_map *map, char **sorted)
-{
-    size_t      i;
-    t_environ   *head;
-    t_environ   *copy;
-    t_environ   *entry;
-    char        **pair;
-
-    head = NULL;
-    i = -1;
-    while (sorted[++i])
-    {
-        pair = get_pair(sorted[i]);
-        if (pair)
-        {
-            entry = search_entry(map, pair[0]);
-            if (!entry)
-                return (free_helper(head));
-            copy = create_entry(entry->key, entry->value);
-            if (!copy)
-                return (free_helper(head));
-            copy->readonly = entry->readonly;
-            append_entry(&head, copy);
-        }
-        free_str_arr(pair, -1);
-    }
-    return (head);
-}
-
-void    print_env(t_map *map, t_bool formatted)
-{
-    t_environ   *head;
     t_environ   *curr;
-    char        *format;
-    char        **sorted;
-    
-    sorted = sort_envp(map);
-    if (!sorted)
-        return ;
-    head = create_sorted_entries(map, sorted);
-    free_str_arr(sorted, -1);
-    if (!head)
-        return ;
-    if (formatted)
-        format = "declare -x %s=\"%s\"\n";
-    else
-        format = "%s=%s\n";
+
     curr = head;
     while (curr)
     {
-        if (!curr->readonly)
-            ft_printf(format, curr->key, curr->value);
+        if (curr && !curr->readonly)
+        {
+            if (formatted)
+                ft_printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
+            else
+                ft_printf("%s=%s\n", curr->key, curr->value);
+        }
         curr = curr->next;
     }
-    free_entries(&head);
 }

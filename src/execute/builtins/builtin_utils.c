@@ -72,10 +72,8 @@ t_bool	is_directory(char *path)
 void	exec_dir_error(char *arg)
 {
 	if (is_directory(arg))
-	{
 		log_error(ERROR_NONE, ERR_BASE, "%s: Is a directory\n", arg);
-		exit(126);
-	}
+	exit(126);
 }
 
 void	exec_cmd_error(char *arg)

@@ -12,11 +12,12 @@
 
 #include <debug.h>
 #include <boolean.h>
+#include <environ.h>
 #include <execute/builtins.h>
 
 int builtin_env(t_map *map)
 {
-    print_env(map, FALSE);
+    print_env(map->order, FALSE);
     return (0);
 }
 
