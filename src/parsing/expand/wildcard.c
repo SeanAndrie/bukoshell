@@ -125,6 +125,8 @@ t_bool apply_wildcard_expansion(t_token **head, t_token *wc_token)
     if (!dir)
         return (FALSE);
     count = count_matching_paths(wc_token->lexeme);
+    if (!count)
+        return (FALSE);
     paths = create_paths(dir, wc_token->lexeme, count);
     closedir(dir);
     if (!paths)

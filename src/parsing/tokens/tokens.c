@@ -68,7 +68,7 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 			    continue;
             }
 		}
-        if (curr->lexeme && curr->lexeme[0] == '~')
+        if (curr->lexeme && curr->lexeme[0] == '~' && !is_token_type(curr->type, TOKEN_QUOTE))
             apply_tilde_expansion(curr, map);
 		curr = next;
 	}

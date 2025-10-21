@@ -56,12 +56,12 @@ This means each token can belong to multiple categories simultaneously, allowing
 
 Each bit in a bitmask corresponds to a unique power of two so that each flag can be represented and combined using bitwise operations without overlap. In order to identify if a token belongs to a specific group of tokens or *is* a particular token type, we use the following function:
 
-````C
+```C
 t_bool	is_token_type(t_token_type type, unsigned int category_mask)
 {
 	return ((type & category_mask) == category_mask);
 }
-````
+```
 
 This performs a bit AND operation on the given token `type` and `category_mask` and checks if the result is equal to our `category_mask`, indicating that `category_mask` is present in `type`.
 
@@ -71,7 +71,7 @@ The extraction, categorization, and organization of these syntactically meaningf
 
 Below are some simple prompts along with a visualization of their corresponding linked list:
 
-````bash
+```bash
 bukoshell [user@hostname ~] ❯ echo hello world
 
 Tokens:
@@ -86,7 +86,7 @@ bukoshell [user@hostname ~] ❯ cat Makefile > out
 
 Tokens:
 [cat : WORD] -> [Makefile : WORD] -> [> : REDIR_OUT] -> [out : WORD]
-````
+```
 
 ## 2.1. Normalization
 
@@ -94,12 +94,12 @@ Tokens:
 
 This describes the behaviour of concatenating consecutive adjacent word-like tokens. For example:
 
-````bash
+```bash
 bukoshell [user@hostname ~] ❯ echo foo"bar"'bazz'
 
 Tokens:
 [echo : WORD] -> [foobarbazz : WORD]
-````
+```
 
 According to the Bash manual, a 'word' is **a sequence of characters treated as a unit** (words may not include unquoted metacharacters). In practice, many shells allow adjacent literal segments (e.g., quoted + unquoted) to form a single command-word argument. Though the Bash manual doesn't explicitly say 'adjacent word tokens are concatenated', we've implemented this behaviour in our normalization step to match observed shell semantics.
 
@@ -120,16 +120,75 @@ Bukoshell supports three types of expansions: (1) *parameter* (`$`), (2) *wildca
 
 **Parameter expansion** refers to replacing variable references (like `$USER` or `$?`) with their values before executing the command. For example:
 
-````bash
-bukoshell [seang@Skylake bukoshell] ❯ echo $USER
+```bash
+bukoshell [user@hostname ~] ❯ echo $USER
 
 Tokens:
 [echo : WORD] -> [seang : PARAMETER]
 
 Syntax Tree:
 └── Command: echo seang
-````
+```
 
-Parameters expansion has the following quoting rules:
+Parameter expansion has the following quoting rules:
 - If the parameter is enclosed in *double quotes*, allow expansion.
 - If parameter is enclosed in *single quotes*, skip expansion.
+
+Parameters can either be in the form of sole `T_PARAMETER` tokens or parameters enclosed in double quotes (`T_WORD_DQUOTE`). 
+
+For sole `T_PARAMETER` tokens, we simply use the variable as a key and check if an entry that corresponds to it already exists in our shell environment hash map. If an entry is found, we replace the token's lexeme with the key's value. Otherwise, we leave the lexeme as is and continue to traverse the list. 
+
+For enclosed parameters, since quote characters are stripped beforehand when tokens are created initially, we can safely create tokens out of the target token's lexeme. Hence, turning each parameter instance into a sole `T_PARAMETER` token. We can then traverse through this list and expand parameters normally.
+
+**Wildcard expansion** is the process of matching a given pattern with special characters against filenames in the current working directory. For the bonus part of this project, we're only meant to handle the asterisk (`*`) character which can represent zero or more characters.
+
+Example:
+
+```bash
+bukoshell [seang@deus-ex-machina Temporary] ❯ echo *
+file1 file2 file3
+
+bukoshell [seang@deus-ex-machina Temporary] ❯ echo .*
+.dotfile1 .dotfile2 .dotfile3
+
+bukoshell [seang@deus-ex-machina Temporary] ❯ echo invalid-pattern*
+invalid-pattern*
+```
+```
+```
+```
+
+For pattern matching, we use iterative backtracking. This process works by scanning both the pattern and the string from left to right while remembering the position of the last `*` in the pattern.
+
+When characters match normally, both pointers advance. When a `*` is encountered,
+
+    - the algorithm skips over it,
+    - records where it occurred in the pattern, and
+    - remembers the corresponding position in the string via a backtracking pointer.
+
+If a mismatch happens later,
+
+    - it backtracks to the last `*`,
+    - shifts the backtrack pointer one character forward in the string, and
+    - retries the match from there.
+
+This process repeats until the pattern and string both reach the end successfully (match) or all backtracking options are exhausted (no match).
+
+**Tilde expansion** involves replacing a tilde (`~`) at the start of a word with a specific directory path -- most commonly, a user's home directory. Bukoshell currently only implemented tilde expansion on
+
+- the user's home directory (`~`),
+- the current working directory (`~+`), and
+- the previous working directory (`~-`).
+
+Remainders directly after the tilde character are also preserved.
+
+Example:
+
+```bash
+bukoshell [seang@deus-ex-machina bukoshell] ❯ echo ~
+/home/seang
+
+bukoshell [seang@deus-ex-machina bukoshell] ❯ echo ~/Desktop
+/home/seang/Desktop
+```
+
