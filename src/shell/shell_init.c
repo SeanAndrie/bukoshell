@@ -6,28 +6,11 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/20 15:00:31 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:45:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
-
-t_shell	*init_shell(char **envp)
-{
-    t_shell	*shell;
-
-    shell = malloc(sizeof(t_shell));
-    if (!shell)
-        return (NULL);
-    shell->status = 0;
-    shell->line = NULL;
-    shell->head = NULL;
-    shell->root = NULL;
-    shell->envp = copy_envp(envp);
-    ft_memset(shell->cwd, 0, sizeof(shell->cwd));
-    shell->map = create_map(environ_size(shell->envp));
-    return (shell);
-}
 
 static void	resolve_map_changes(t_shell *shell)
 {
@@ -61,33 +44,49 @@ static void update_status(t_shell *shell)
     g_signal = 0;
 }
 
-static t_bool	start_parser(t_shell *shell)
+static int start_parser(t_shell *shell)
 {
+    if (!shell)
+        return (2);
     shell->head = create_tokens(shell->line, FALSE, FALSE);
     if (!shell->head)
-        return (FALSE);
+        return (2);
     if (!normalize_tokens(&shell->head, shell->map))
-        return (FALSE);
+        return (2);
     if (DEBUG_MODE)
         print_tokens(shell->head, TRUE);
     shell->root = create_syntax_tree(shell->head, NULL);
     if (!shell->root)
-        return (FALSE);
+        return (2);
     collect_heredocs(shell->root, shell->map);
     if (!validate_tokens(shell->head))
-        return (FALSE);
+        return (2);
     if (DEBUG_MODE)
         print_syntax_tree(shell->root);
-    return (TRUE);
+    return (0);
+}
+
+static int start_execution(t_shell *shell)
+{
+    int status;
+   
+    if (!shell || !shell->root)
+        return (1);
+    status = exec_node(shell->root, shell->map, shell->envp);
+    return (status);
 }
 
 void	start_shell(t_shell *shell)
 {
+    if (!shell)
+    {
+        g_signal = 2;
+        return ;
+    }
     resolve_map_changes(shell);
-    if (!start_parser(shell))
-        g_signal = 127;
-    else if (g_signal == 0)
-        g_signal = exec_node(shell->root, shell->map, shell->envp);
+    g_signal = start_parser(shell);
+    if (g_signal == 0)
+        g_signal = start_execution(shell); 
     free_shell(shell, FALSE);
     update_status(shell);
 }

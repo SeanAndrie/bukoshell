@@ -6,31 +6,27 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 23:48:05 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:24:37 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
 
-void	free_shell(t_shell *shell, t_bool full_free)
+static t_shell	*init_shell(char **envp)
 {
-	if (!shell)
-		return ;
-	if (shell->line)
-		free(shell->line);
-	if (shell->head)
-		free_tokens(&shell->head);
-	if (shell->root)
-		free_syntax_tree(&shell->root);
-	if (full_free)
-	{
-		if (shell->envp)
-			free_str_arr(shell->envp, -1);
-		if (shell->map)
-			free_map(shell->map);
-		free(shell);
-		clear_history();
-	}
+    t_shell	*shell;
+
+    shell = malloc(sizeof(t_shell));
+    if (!shell)
+        return (NULL);
+    shell->status = 0;
+    shell->line = NULL;
+    shell->head = NULL;
+    shell->root = NULL;
+    shell->envp = copy_envp(envp);
+    ft_memset(shell->cwd, 0, sizeof(shell->cwd));
+    shell->map = create_map(environ_size(shell->envp));
+    return (shell);
 }
 
 static int	shell_loop_interactive(t_shell *shell)

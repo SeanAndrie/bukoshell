@@ -6,11 +6,32 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 00:13:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:23:38 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bukoshell.h>
+
+void	free_shell(t_shell *shell, t_bool full_free)
+{
+	if (!shell)
+		return ;
+	if (shell->line)
+		free(shell->line);
+	if (shell->head)
+		free_tokens(&shell->head);
+	if (shell->root)
+		free_syntax_tree(&shell->root);
+	if (full_free)
+	{
+		if (shell->envp)
+			free_str_arr(shell->envp, -1);
+		if (shell->map)
+			free_map(shell->map);
+		free(shell);
+		clear_history();
+	}
+}
 
 static t_bool	is_home_directory(t_map *map, char *cwd)
 {
@@ -52,30 +73,6 @@ static char	*create_cwd(t_shell *shell)
 	return (cwd);
 }
 
-char	*set_prompt(t_shell *shell, char *user)
-{
-	char	*cwd;
-	char	*join;
-	char	*prompt;
-	char	**base_split;
-
-	cwd = create_cwd(shell);
-	if (!cwd)
-		return (ft_strdup(PS1));
-	join = ft_vstrjoin(2, " ", user, cwd);
-	base_split = ft_split(PS1, ' ');
-	if (!base_split)
-		return (NULL);
-	prompt = ft_vstrjoin(6, NULL, base_split[0], " [", join, "] ",
-			base_split[1], " ");
-	free_str_arr(base_split, 2);
-	free(join);
-	free(cwd);
-	if (!prompt)
-		return (ft_strdup(PS1));
-	return (prompt);
-}
-
 char	*create_identifier(t_map *map)
 {
     t_environ   *user;
@@ -95,4 +92,28 @@ char	*create_identifier(t_map *map)
     else
         hostname = host->value;
     return ft_vstrjoin(2, "@", user->value, hostname);
+}
+
+char	*set_prompt(t_shell *shell, char *identifier)
+{
+	char	*cwd;
+	char	*join;
+	char	*prompt;
+	char	**base_split;
+
+	cwd = create_cwd(shell);
+	if (!cwd)
+		return (ft_strdup(PS1));
+	join = ft_vstrjoin(2, " ", identifier, cwd);
+	base_split = ft_split(PS1, ' ');
+	if (!base_split)
+		return (NULL);
+	prompt = ft_vstrjoin(6, NULL, base_split[0], " [", join, "] ",
+			base_split[1], " ");
+	free_str_arr(base_split, 2);
+	free(join);
+	free(cwd);
+	if (!prompt)
+		return (ft_strdup(PS1));
+	return (prompt);
 }
