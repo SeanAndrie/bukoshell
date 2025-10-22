@@ -6,16 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 15:15:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 22:57:42 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:53:28 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <boolean.h>
-#include <debug.h>
-#include <execute/builtins.h>
 #include <libft.h>
+#include <debug.h>
+#include <boolean.h>
 #include <parsing/tree.h>
-#include <sys/stat.h>
+#include <execute/builtins.h>
 
 t_bool	is_builtin(t_node *node)
 {
@@ -54,30 +53,4 @@ t_bool	is_valid_identifier(char *key)
 		i++;
 	}
 	return (TRUE);
-}
-
-t_bool	is_directory(char *path)
-{
-	struct stat	path_stat;
-
-	if (stat(path, &path_stat) != 0)
-	{
-		log_error(ERROR_NONE, ERR_BASE, "%s: no such file or directory\n",
-			path);
-		return (FALSE);
-	}
-	return (S_ISDIR(path_stat.st_mode));
-}
-
-void	exec_dir_error(char *arg)
-{
-	if (is_directory(arg))
-		log_error(ERROR_NONE, ERR_BASE, "%s: Is a directory\n", arg);
-	exit(126);
-}
-
-void	exec_cmd_error(char *arg)
-{
-	log_error(ERROR_NONE, ERR_BASE, "%s: command not found\n", arg);
-	exit(127);
 }
