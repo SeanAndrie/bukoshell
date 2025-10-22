@@ -118,7 +118,7 @@ Token types with the `TOKEN_WORD` category mask include: `T_WORD`, `T_WORD_SQUOT
 
 Bukoshell supports three types of expansions: (1) *parameter* (`$`), (2) *wildcard* (`*`), and (3) and *tilde* (`~`) expansion.
 
-**Parameter expansion** refers to replacing variable references (like `$USER` or `$?`) with their values before executing the command. For example:
+1. **Parameter expansion** refers to replacing variable references (like `$USER` or `$?`) with their values before executing the command. For example:
 
 ```bash
 bukoshell [user@hostname ~] ❯ echo $USER
@@ -140,7 +140,7 @@ For sole `T_PARAMETER` tokens, we simply use the variable as a key and check if 
 
 For enclosed parameters, since quote characters are stripped beforehand when tokens are created initially, we can safely create tokens out of the target token's lexeme. Hence, turning each parameter instance into a sole `T_PARAMETER` token. We can then traverse through this list and expand parameters normally.
 
-**Wildcard expansion** is the process of matching a given pattern with special characters against filenames in the current working directory. For the bonus part of this project, we're only meant to handle the asterisk (`*`) character which can represent zero or more characters.
+2. **Wildcard expansion** is the process of matching a given pattern with special characters against filenames in the current working directory. For the bonus part of this project, we're only meant to handle the asterisk (`*`) character which can represent zero or more characters.
 
 Example:
 
@@ -154,27 +154,24 @@ bukoshell [seang@deus-ex-machina Temporary] ❯ echo .*
 bukoshell [seang@deus-ex-machina Temporary] ❯ echo invalid-pattern*
 invalid-pattern*
 ```
-```
-```
-```
 
 For pattern matching, we use iterative backtracking. This process works by scanning both the pattern and the string from left to right while remembering the position of the last `*` in the pattern.
 
 When characters match normally, both pointers advance. When a `*` is encountered,
 
-    - the algorithm skips over it,
-    - records where it occurred in the pattern, and
-    - remembers the corresponding position in the string via a backtracking pointer.
+- the algorithm skips over it,
+- records where it occurred in the pattern, and
+- remembers the corresponding position in the string via a backtracking pointer.
 
 If a mismatch happens later,
 
-    - it backtracks to the last `*`,
-    - shifts the backtrack pointer one character forward in the string, and
-    - retries the match from there.
+- it backtracks to the last `*`,
+- shifts the backtrack pointer one character forward in the string, and
+- retries the match from there.
 
 This process repeats until the pattern and string both reach the end successfully (match) or all backtracking options are exhausted (no match).
 
-**Tilde expansion** involves replacing a tilde (`~`) at the start of a word with a specific directory path -- most commonly, a user's home directory. Bukoshell currently only implemented tilde expansion on
+3. **Tilde expansion** involves replacing a tilde (`~`) at the start of a word with a specific directory path -- most commonly, a user's home directory. Bukoshell currently only implemented tilde expansion on
 
 - the user's home directory (`~`),
 - the current working directory (`~+`), and
