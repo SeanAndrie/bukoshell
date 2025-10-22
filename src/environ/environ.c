@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 20:00:47 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:37:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,6 @@
 #include <fcntl.h>
 #include <environ.h>
 #include <parsing/clean.h>
-
-void	free_map(t_map *map)
-{
-	size_t	i;
-
-	if (!map)
-		return ;
-	if (map->entries)
-	{
-		i = 0;
-		while (i < map->capacity)
-		{
-			free_entries(&map->entries[i]);
-			i++;
-		}
-		free(map->entries);
-	}
-	free_entries(&map->order);
-	free(map->order);
-	free(map);
-}
 
 char	**get_pair(char *env)
 {
@@ -64,7 +43,7 @@ char	**get_pair(char *env)
 	return (pair);
 }
 
-static void special_variables(t_map *map)
+static void init_special_variables(t_map *map)
 {
     int         fd;
 	t_environ	*status;
@@ -91,24 +70,37 @@ static void special_variables(t_map *map)
     set_order(&map->order, hostname);
 }
 
-static void	init_variables(t_map *map)
+static void init_shlvl(t_map *map)
 {
-	t_environ	*pid;
+	int			n;
 	t_environ	*shlvl;
 	char		*value;
 
-	set_entry(map, "OLDPWD", "");
+	n = 0;
 	shlvl = search_entry(map, "SHLVL");
-	if (!shlvl)
-	{
-		set_entry(map, "SHLVL", "0");
-		shlvl = search_entry(map, "SHLVL");
-	}
-	value = ft_itoa(ft_atoi(shlvl->value) + 1);
+	if (shlvl && shlvl->value)
+		n = ft_atoi(shlvl->value);
+	if (n < 0)
+		n = 0;
+	else if (n >= MAX_SHLVL)
+		n = 1;
+	else
+		n++;
+	value = ft_itoa(n);
 	if (!value)
 		return ;
 	set_entry(map, "SHLVL", value);
 	free(value);
+}
+
+static void	init_variables(t_map *map)
+{
+	t_environ	*pid;
+	char		*value;
+
+	init_shlvl(map);
+    init_special_variables(map);
+	set_entry(map, "OLDPWD", "");
 	value = ft_itoa(getpid());
 	if (!value)
 		return ;
@@ -141,6 +133,5 @@ void	init_environ(t_map *map, char **envp)
 		}
 		envp++;
 	}
-    special_variables(map);
     init_variables(map);
 }

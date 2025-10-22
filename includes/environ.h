@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 00:00:58 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:37:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <boolean.h>
 
+# define MAX_SHLVL 1000
 # define LOAD_THRESHOLD 0.75
 
 typedef struct s_environ
@@ -39,7 +40,6 @@ typedef struct s_map
 size_t					hash_djb2(char *key);
 char	                **get_pair(char *env);
 size_t					environ_size(char **envp);
-void	                init_shell_variables(t_map *map);
 void					init_environ(t_map *map, char **envp);
 void                    set_order(t_environ **order, t_environ *entry);
 
