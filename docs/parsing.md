@@ -182,10 +182,10 @@ Remainders directly after the tilde character are also preserved.
 Example:
 
 ```bash
-bukoshell [seang@deus-ex-machina bukoshell] ❯ echo ~
+bukoshell [user@hostname ~] ❯ echo ~
 /home/seang
 
-bukoshell [seang@deus-ex-machina bukoshell] ❯ echo ~/Desktop
+bukoshell [user@hostname ~] ❯ echo ~/Desktop
 /home/seang/Desktop
 ```
 
