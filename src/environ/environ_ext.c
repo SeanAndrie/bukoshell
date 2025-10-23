@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:03:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 12:56:43 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 00:50:15 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,32 @@ char **map_to_envp(t_map *map)
 	return (envp);
 }
 
-t_map	*realloc_map(t_map *map, char **envp)
+t_map	*realloc_map(t_map *map)
 {
-	t_map	*copy;
+	t_map		*copy;
+	t_environ	*curr;
+	t_environ	*entry;
 
-	if (!envp)
+	if (!map)
 		return (NULL);
 	copy = create_map(map->capacity);
 	if (!copy)
 		return (NULL);
-	init_environ(copy, envp);
+	curr = map->order;
+	while (curr)
+	{
+		if (!insert_entry(copy, curr->key, curr->value))
+		{
+			free_map(copy);
+			return (NULL);
+		}
+		entry = search_entry(copy, curr->key);
+		if (entry)
+			entry->readonly = curr->readonly;
+		set_order(&copy->order, curr);
+		curr = curr->next;
+	}
 	free_map(map);
-	if (!copy)
-		return (NULL);
 	return (copy);
 }
 

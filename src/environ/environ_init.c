@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:55:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 22:22:02 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 00:27:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,3 @@ t_map	*create_map(size_t size)
 	map->modified = FALSE;
 	return (map);
 }
-

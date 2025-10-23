@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 22:20:26 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 00:50:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ t_environ				*search_entry(t_map *map, char *key);
 t_bool                  set_entry(t_map *map, char *key, char *value);
 t_bool					insert_entry(t_map *map, char *key, char *value);
 
+t_map	                *realloc_map(t_map *map);
 char	                **copy_envp(char **envp);
 char                    **map_to_envp(t_map *map);
-t_map	                *realloc_map(t_map *map, char **envp);
 char                    *getcwd_safe(char *buffer, size_t size, t_map *map);
 
 void	                free_entries(t_environ **entry);

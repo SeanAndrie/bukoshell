@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 23:37:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 23:47:48by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	resolve_map_changes(t_shell *shell)
         shell->map->modified = FALSE;
     }
     if (shell->map->load_factor >= LOAD_THRESHOLD)
-        shell->map = realloc_map(shell->map, shell->envp);
+        shell->map = realloc_map(shell->map);
 }
 
 static void update_variables(t_shell *shell)
@@ -42,7 +42,7 @@ static void update_variables(t_shell *shell)
         status = ft_strdup("0");
     set_entry(shell->map, "?", status);
     free(status);
-    if (shell->root)
+    if (shell->root && shell->root->argv)
     {
         i = 0;
         while (shell->root->argv[i + 1])
