@@ -108,7 +108,7 @@ static void	init_variables(t_map *map)
 	free(value);
 	pid = search_entry(map, "$");
 	if (pid)
-		pid->readonly = TRUE;	
+		pid->readonly = TRUE;
 	set_order(&map->order, pid);
 }
 

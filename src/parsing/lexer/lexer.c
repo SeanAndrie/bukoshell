@@ -30,11 +30,11 @@ char	*process_parameter(char **line_ptr, t_token_type *type)
         *type = T_WORD;
         return (ft_strdup("$"));
     }
-    if (ft_strchr(SPECIAL_VARIABLES, **line_ptr))
+    if (ft_strchr(SPECIAL_VARIABLES, **line_ptr) || ft_isdigit(**line_ptr))
         (*line_ptr)++;
     else
     {
-        while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
+        while (**line_ptr && (ft_isalpha(**line_ptr) || **line_ptr == '_'))
             (*line_ptr)++;
     }
     end = *line_ptr;

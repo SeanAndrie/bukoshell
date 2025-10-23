@@ -17,7 +17,7 @@ typedef enum e_bool t_bool;
 typedef struct s_map t_map;
 typedef struct s_node t_node;
 
-int     builtin_pwd(void);
+int     builtin_pwd(t_map *map);
 int     builtin_env(t_map *map);
 int     builtin_echo(char **argv);
 int     builtin_exit(char **argv);

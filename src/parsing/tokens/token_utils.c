@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:28:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:55:59 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:25:38 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,40 @@ unsigned int	create_token_mask(t_token *head)
 	return (mask);
 }
 
+static size_t concat_size(t_token *head)
+{
+    size_t  size;
+
+    if (!head)
+        return (0);
+    size = 0;
+    while (head)
+    {
+        if (head->lexeme)
+            size += ft_strlen(head->lexeme);
+        head = head->next;
+    }
+    return (size);
+}
+
 t_token	*concat_tokens(t_token *head, t_token_type concat_type)
 {
 	char	*concat;
 	t_token	*token;
 	t_token	*curr;
-	size_t	size;
+    size_t  size;
 
-	size = 0;
-	curr = head;
-	while (curr)
-	{
-		size += ft_strlen(curr->lexeme);
-		curr = curr->next;
-	}
-	concat = ft_calloc(size + 1, sizeof(char));
+    if (!head)
+        return (NULL);
+    size = concat_size(head);
+    concat = ft_calloc(size + 1, sizeof(char));
 	if (!concat)
 		return (NULL);
 	curr = head;
 	while (curr)
 	{
-		ft_strlcat(concat, curr->lexeme, size + 1);
+        if (curr->lexeme)
+		    ft_strlcat(concat, curr->lexeme, size + 1);
 		curr = curr->next;
 	}
 	token = create_token(concat, concat_type);
@@ -79,14 +92,21 @@ void	remove_tokens(t_token **head, t_token_type type_to_remove)
 	t_token	**curr;
 	t_token	*temp;
 
+	if (!*head)
+		return ;
 	curr = head;
 	while (*curr)
 	{
-		if (is_token_type((*curr)->type, type_to_remove))
+		if (is_token_type((*curr)->type, type_to_remove)
+            || !(*curr)->lexeme)
 		{
 			temp = *curr;
 			*curr = (*curr)->next;
-			free(temp->lexeme);
+			if (temp->lexeme)
+			{
+				free(temp->lexeme);
+				temp->lexeme = NULL;
+			}
 			free(temp);
 		}
 		else

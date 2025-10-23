@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/22 12:45:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:47:39 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ static void update_status(t_shell *shell)
 
 static int start_parser(t_shell *shell)
 {
-    if (!shell)
-        return (2);
     shell->head = create_tokens(shell->line, FALSE, FALSE);
     if (!shell->head)
         return (2);
@@ -59,6 +57,8 @@ static int start_parser(t_shell *shell)
     if (!shell->root)
         return (2);
     collect_heredocs(shell->root, shell->map);
+    if (g_signal != 0)
+        return (g_signal);
     if (!validate_tokens(shell->head))
         return (2);
     if (DEBUG_MODE)
@@ -69,8 +69,8 @@ static int start_parser(t_shell *shell)
 static int start_execution(t_shell *shell)
 {
     int status;
-   
-    if (!shell || !shell->root)
+    
+    if (!shell->root)
         return (1);
     status = exec_node(shell->root, shell->map, shell->envp);
     return (status);
@@ -78,13 +78,9 @@ static int start_execution(t_shell *shell)
 
 void	start_shell(t_shell *shell)
 {
-    if (!shell)
-    {
-        g_signal = 2;
-        return ;
-    }
     resolve_map_changes(shell);
-    g_signal = start_parser(shell);
+    if (g_signal == 0)
+        g_signal = start_parser(shell);
     if (g_signal == 0)
         g_signal = start_execution(shell); 
     free_shell(shell, FALSE);

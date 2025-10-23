@@ -55,6 +55,7 @@ t_bool					insert_entry(t_map *map, char *key, char *value);
 char	                **copy_envp(char **envp);
 char                    **map_to_envp(t_map *map);
 t_map	                *realloc_map(t_map *map, char **envp);
+char                    *getcwd_safe(char *buffer, size_t size, t_map *map);
 
 void	                free_entries(t_environ **entry);
 void					free_map(t_map *map);

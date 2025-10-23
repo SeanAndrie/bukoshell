@@ -33,7 +33,7 @@ static t_bool is_valid_path(char *path)
     }
     else if (access(path, X_OK) != 0)
     {
-        log_error(ERROR_NONE, ERR_BASE, "cd: %s: permission denied", path);
+        log_error(ERROR_NONE, ERR_BASE, "cd: %s: permission denied\n", path);
         return (FALSE);
     }
     return (TRUE);

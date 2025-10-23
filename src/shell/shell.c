@@ -77,7 +77,7 @@ static int	shell_mode(t_shell *shell)
 		set_signals_interactive();
 		return (shell_loop_interactive(shell));
 	}
-	set_signals_noninteractive();
+	set_signals_default();
 	return (shell_loop_noninteractive(shell));
 }
 

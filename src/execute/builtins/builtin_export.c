@@ -69,6 +69,7 @@ static t_environ *create_sorted_entries(t_map *map, char **sorted)
 static int export_variable(char *arg, t_map *map)
 {
     char        **pair;
+    t_environ   *entry;
 
     pair = get_pair(arg);
     if (!pair)
@@ -78,6 +79,12 @@ static int export_variable(char *arg, t_map *map)
         log_error(ERROR_NONE, ERR_BASE, "export: '%s': not a valid identifier\n", pair[0]);
         free_str_arr(pair, -1);
         return (1);
+    }
+    entry = search_entry(map, pair[0]);
+    if (entry && entry->value && !pair[1])
+    {
+        free_str_arr(pair, -1);
+        return (0);
     }
     if (!set_entry(map, pair[0], pair[1]))
     {

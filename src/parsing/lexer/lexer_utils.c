@@ -6,15 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:28:51 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/18 09:00:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:42:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <expand.h>
 #include <boolean.h>
-#include <parsing/valid.h>
 #include <parsing/clean.h>
+#include <parsing/valid.h>
 #include <parsing/tokens.h>
 
 void	mark_group_tokens(t_token **head)
@@ -68,22 +68,22 @@ t_bool	handle_concatenation(t_token **head, t_token_type concat_type)
 	return (TRUE);
 }
 
-char *process_quotes_heredoc(char **line_ptr, t_token_type *type)
+char	*process_quotes_heredoc(char **line_ptr, t_token_type *type)
 {
-    char    quote;
-    char    *lexeme;
+	char	quote;
+	char	*lexeme;
 
-    quote = **line_ptr;
-    if (quote == '\'')
-        *type = T_WORD_SQUOTE;
-    else
-        *type = T_WORD_DQUOTE;
-    lexeme = ft_calloc(2, sizeof(char));
-    if (!lexeme)
-        return NULL;
-    lexeme[0] = quote;
-    (*line_ptr)++;
-    return (lexeme);
+	quote = **line_ptr;
+	if (quote == '\'')
+		*type = T_WORD_SQUOTE;
+	else
+		*type = T_WORD_DQUOTE;
+	lexeme = ft_calloc(2, sizeof(char));
+	if (!lexeme)
+		return (NULL);
+	lexeme[0] = quote;
+	(*line_ptr)++;
+	return (lexeme);
 }
 
 t_token_type	categorize_ctrl_op(char c, t_bool is_double)

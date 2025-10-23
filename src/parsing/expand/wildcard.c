@@ -121,6 +121,8 @@ t_bool apply_wildcard_expansion(t_token **head, t_token *wc_token)
     char    **paths;
     t_token *tokens;
 
+    if (!head || !*head)
+        return (FALSE);
     dir = opendir(".");
     if (!dir)
         return (FALSE);

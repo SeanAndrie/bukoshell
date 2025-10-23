@@ -6,63 +6,58 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:59:09 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:46:32 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <debug.h>
 #include <expand.h>
+#include <boolean.h>
 #include <environ.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
-static t_bool	free_helper(char *s)
-{
-	if (s)
-		free(s);
-	return (FALSE);
-}
-
 static t_bool	handle_expansion(t_map *map, t_token *token)
 {
 	char		*key;
-	char		*temp;
+	char		*value;
 	t_environ	*entry;
 
-	temp = ft_strdup(token->lexeme);
-	if (!temp)
-		return (FALSE);
 	key = ft_substr(token->lexeme, 1, ft_strlen(token->lexeme) - 1);
 	if (!key)
-		return (free_helper(temp));
+		return (FALSE);
 	entry = search_entry(map, key);
 	free(key);
-	if (!entry)
-		return (free_helper(temp));
 	free(token->lexeme);
-	token->lexeme = ft_strdup(entry->value);
-	if (!token->lexeme)
+	if (!entry)
 	{
-		token->lexeme = temp;
+		token->lexeme = NULL;
 		return (FALSE);
 	}
-	free(temp);
+	value = ft_strdup(entry->value);
+	if (!value)
+		return (FALSE);
+	token->lexeme = value;
 	return (TRUE);
 }
 
-static char	*create_expanded_lexeme(t_map *map, t_token *tokens)
+static char	*create_expanded_lexeme(t_map *map, t_token **tokens)
 {
 	t_token	*curr;
 	t_token	*concat;
 	char	*lexeme;
 
-	curr = tokens;
+	curr = *tokens;
 	while (curr)
 	{
-		handle_expansion(map, curr);
+		if (!handle_expansion(map, curr))
+			curr->type = TOKEN_NONE;
 		curr = curr->next;
 	}
-	concat = concat_tokens(tokens, T_PARAMETER);
+	remove_tokens(tokens, TOKEN_NONE);
+	concat = concat_tokens(*tokens, TOKEN_WORD);
+	free_tokens(tokens);
 	if (!concat)
 		return (NULL);
 	lexeme = ft_strdup(concat->lexeme);
@@ -84,6 +79,5 @@ void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 	if (!tokens)
 		return ;
 	free(token->lexeme);
-	token->lexeme = create_expanded_lexeme(map, tokens);
-	free_tokens(&tokens);
+	token->lexeme = create_expanded_lexeme(map, &tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:49:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 13:59:03 by ccastro          ###   ########.fr       */
+/*   Updated: 2025/10/23 14:52:19 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int builtin_exit(char **argv)
     if (*endptr != '\0' || errno == EINVAL || errno == ERANGE)
     {
         log_error(ERROR_NONE, ERR_BASE, "exit: %s: numeric argument required\n", argv[1]);
-        exit(2);
+        exit(255);
     }
     if (argv[2])
     {
         log_error(ERROR_NONE, ERR_BASE, "exit: too many arguments\n");
-        exit(2);
+        exit(255);
     }
     exit((unsigned char)value);
 }

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:03:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/22 12:00:15 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:56:43 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,28 @@
 #include <environ.h>
 #include <parsing/clean.h>
 #include <parsing/expand.h>
+
+char    *getcwd_safe(char *buffer, size_t size, t_map *map)
+{
+    t_environ   *pwd;
+    char        *res;
+
+    res = getcwd(buffer, size);
+    if (res)
+        return (res);
+    if (!map)
+        return (NULL);
+    pwd = search_entry(map, "PWD");
+    if (!pwd || !pwd->value)
+        return (NULL);
+    if (buffer && size)
+    {
+        if (ft_strlen(pwd->value) >= size)
+            return (NULL);
+        ft_strlcpy(buffer, pwd->value, size);
+    }
+    return (ft_strdup(pwd->value));
+}
 
 void	set_order(t_environ **order, t_environ *entry)
 {

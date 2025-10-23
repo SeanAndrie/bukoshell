@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:59:16 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 19:14:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:34:34 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,40 +46,39 @@ t_token	*copy_tokens(t_token *start, t_token *end)
 	return (copy);
 }
 
-void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
+void apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 {
-	t_token	*curr;
-	t_token	*next;
+    t_token *curr;
+    t_token *next;
 
-	if (!head || !*head || !map)
-		return ;
-	curr = *head;
-	while (curr)
-	{
-		next = curr->next;
-		if (is_token_type(curr->type, TOKEN_WORD) && ft_strchr(curr->lexeme,
-				'$'))
-			apply_param_expansion(curr, map, heredoc);
-		if (ft_strchr(curr->lexeme, '*') && !heredoc)
-		{
-			if (apply_wildcard_expansion(head, curr))
+    curr = *head;
+    while (curr)
+    {
+        next = curr->next;
+        if (curr->lexeme && is_token_type(curr->type, TOKEN_WORD)
+            && ft_strchr(curr->lexeme, '$'))
+            apply_param_expansion(curr, map, heredoc);
+        if (curr->lexeme && ft_strchr(curr->lexeme, '*') && !heredoc)
+        {
+            if (apply_wildcard_expansion(head, curr))
             {
-			    curr = *head;
-			    continue;
+                curr = *head;
+                continue;
             }
-		}
-        if (curr->lexeme && curr->lexeme[0] == '~' && !is_token_type(curr->type, TOKEN_QUOTE))
+        }
+        if (curr->lexeme && curr->lexeme[0] == '~'
+            && !is_token_type(curr->type, TOKEN_QUOTE) && !heredoc)
             apply_tilde_expansion(curr, map);
-		curr = next;
-	}
+        curr = next;
+    }
 }
 
 t_bool	normalize_tokens(t_token **head, t_map *map)
 {
+	apply_expansions(head, map, FALSE);
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
-	apply_expansions(head, map, FALSE);
-	remove_tokens(head, TOKEN_WHITESPACE);
+    remove_tokens(head, TOKEN_WHITESPACE);
 	mark_group_tokens(head);
 	return (TRUE);
 }

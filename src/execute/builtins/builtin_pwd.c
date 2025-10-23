@@ -12,14 +12,15 @@
 
 #include <stdio.h>
 #include <libft.h>
+#include <environ.h>
 #include <parsing/prompts.h>
 #include <execute/builtins.h>
 
-int builtin_pwd(void)
+int builtin_pwd(t_map *map)
 {
     char    buffer[PATH_MAX];
 
-    if (!getcwd(buffer, sizeof(buffer)))
+    if (!getcwd_safe(buffer, sizeof(buffer), map))
     {
         perror("pwd");
         return (1);

@@ -18,8 +18,8 @@
 extern volatile sig_atomic_t g_signal;
 
 void    set_signals_heredoc(void); 
+void    set_signals_default(void);
 void	set_signals_interactive(void);
-void    set_signals_noninteractive(void);
 void	rl_replace_line(const char *text, int clear_undo);
 
 #endif

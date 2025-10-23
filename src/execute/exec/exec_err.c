@@ -22,19 +22,15 @@ static t_bool is_directory(char *path)
 	struct stat	path_stat;
 
 	if (stat(path, &path_stat) != 0)
-	{
-		log_error(ERROR_NONE, ERR_BASE, "%s: no such file or directory\n",
-			path);
 		return (FALSE);
-	}
 	return (S_ISDIR(path_stat.st_mode));
 }
 
-void	exec_cmd_error(char *arg)
+void	exec_cmd_error(char *arg, t_bool is_path)
 {
 	int	exit_code;
 
-	if (errno == ENOENT)
+	if (is_path && errno == ENOENT)
 	{
 		log_error(ERROR_NONE, ERR_BASE, "%s: No such file or directory\n", arg);
 		exit_code = 127;
@@ -43,11 +39,6 @@ void	exec_cmd_error(char *arg)
 	{
 		log_error(ERROR_NONE, ERR_BASE, "%s: Is a directory\n", arg);
 		exit_code = 126;	
-	}
-	else if (errno == EACCES)
-	{
-		log_error(ERROR_NONE, ERR_BASE, "%s: Is a directory\n", arg);
-		exit_code = 126;
 	}
 	else
 	{
@@ -62,11 +53,6 @@ void	exec_dir_error(char *arg)
 	if (is_directory(arg))
 	{
 		errno = EISDIR;
-		exec_cmd_error(arg);
-	}
-	if (access(arg, F_OK) == 0 && access(arg, X_OK) != 0)
-	{
-		errno = EACCES;
-		exec_cmd_error(arg);
+		exec_cmd_error(arg, TRUE);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/22 12:23:38 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:51:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*create_cwd(t_shell *shell)
 	char	*cwd;
 	char	**split;
 
-	if (!getcwd(shell->cwd, sizeof(shell->cwd)))
+	if (!getcwd_safe(shell->cwd, sizeof(shell->cwd), shell->map))
 		return (NULL);
 	if (is_home_directory(shell->map, shell->cwd))
 		return (ft_strdup("~"));

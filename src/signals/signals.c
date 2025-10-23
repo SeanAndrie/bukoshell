@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 16:21:58 by ccastro           #+#    #+#             */
-/*   Updated: 2025/10/15 14:54:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:42:37 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static void handle_sigint_prompt(int sig)
     write(STDOUT_FILENO, "\n", 1);
     rl_replace_line("", 0);
     rl_on_new_line();
-    rl_done = 1;
     rl_redisplay();
+    rl_done = 1;
     g_signal = 130;
 }
 
@@ -69,7 +69,7 @@ void set_signals_interactive(void)
     sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
-void set_signals_noninteractive(void)
+void set_signals_default(void)
 {
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
