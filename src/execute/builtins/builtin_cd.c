@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:33:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 23:07:08 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 23:19:01 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,43 @@ static t_bool is_valid_path(char *path)
     return (TRUE);
 }
 
-int builtin_cd(char **argv, t_map *map)
+static char *resolve_arg(char **argv, t_map *map)
 {
     t_environ   *home;
+    t_environ   *oldpwd;
+
+    if (!argv[1])
+    {
+        home = search_entry(map , "HOME");
+        if (!home)
+        {
+            log_error(ERROR_NONE, ERR_BASE, "cd: HOME not set\n");
+            return (NULL);
+        }
+        return (home->value);
+    }
+    else if (ft_strcmp(argv[1], "-") == 0)
+    {
+        oldpwd = search_entry(map, "OLDPWD");
+        if (!oldpwd || !*oldpwd->value)
+        {
+            log_error(ERROR_NONE, ERR_BASE, "cd: OLDPWD not set\n");
+            return (NULL);
+        }
+        return (oldpwd->value);
+    }
+    return (argv[1]);
+}
+
+int builtin_cd(char **argv, t_map *map)
+{
     char        *path;
     t_environ   *pwd;
     char        cwd[PATH_MAX];
 
-    path = argv[1];
+    path = resolve_arg(argv, map);
     if (!path)
-    {
-        home = search_entry(map, "HOME");
-        if (!home)
-        {
-            log_error(ERROR_NONE, ERR_BASE, "cd: HOME not set\n");
-            return (1);
-        }
-        path = home->value;
-    }
+        return (1);
     if (!is_valid_path(path) || chdir(path) < 0)
         return (1);
     pwd = search_entry(map, "PWD");

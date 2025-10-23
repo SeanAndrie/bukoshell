@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:57:04 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/22 12:37:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 22:20:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_map
 size_t					hash_djb2(char *key);
 char	                **get_pair(char *env);
 size_t					environ_size(char **envp);
+void					init_variables(t_map *map);
 void					init_environ(t_map *map, char **envp);
 void                    set_order(t_environ **order, t_environ *entry);
 

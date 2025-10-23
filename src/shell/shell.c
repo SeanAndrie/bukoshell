@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/22 12:24:37 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 22:21:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,10 @@ int	main(int argc, char **argv, char **envp)
 	if (!shell)
 		return (EXIT_FAILURE);
 	if (shell->map && shell->envp)
+	{
 		init_environ(shell->map, shell->envp);
+		init_variables(shell->map);
+	}
 	status = shell_mode(shell);
 	if (DEBUG_MODE)
 		ft_printf("Status: %d\n", status);

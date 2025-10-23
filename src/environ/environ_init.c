@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:55:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:40:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 22:22:02 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ t_map	*create_map(size_t size)
 {
 	t_map	*map;
 
+	if (size == 0)
+		size = 1;
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);

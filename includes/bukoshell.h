@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:51:09 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 13:45:35 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 22:22:29 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define DEBUG_MODE TRUE 
+# define DEBUG_MODE FALSE 
 
 typedef struct s_shell
 {

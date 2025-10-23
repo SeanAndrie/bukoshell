@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 14:47:39 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 22:51:21 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void	resolve_map_changes(t_shell *shell)
 
 static void update_status(t_shell *shell)
 {
-    char *status;
+    size_t  i;
+    char    *status;
 
     if (!shell || !shell->map)
         return ;
@@ -41,6 +42,10 @@ static void update_status(t_shell *shell)
         status = ft_strdup("0");
     set_entry(shell->map, "?", status);
     free(status);
+    i = 0;
+    while (shell->root->argv[i + 1])
+        i++;
+    set_entry(shell->map, "_", shell->root->argv[i]);
     g_signal = 0;
 }
 
@@ -83,6 +88,6 @@ void	start_shell(t_shell *shell)
         g_signal = start_parser(shell);
     if (g_signal == 0)
         g_signal = start_execution(shell); 
-    free_shell(shell, FALSE);
     update_status(shell);
+    free_shell(shell, FALSE);
 }
