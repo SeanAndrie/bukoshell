@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:20:12 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 23:36:02 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/23 23:37:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	resolve_map_changes(t_shell *shell)
         shell->map = realloc_map(shell->map, shell->envp);
 }
 
-static void update_status(t_shell *shell)
+static void update_variables(t_shell *shell)
 {
     size_t  i;
     char    *status;
@@ -91,6 +91,6 @@ void	start_shell(t_shell *shell)
         g_signal = start_parser(shell);
     if (g_signal == 0)
         g_signal = start_execution(shell); 
-    update_status(shell);
+    update_variables(shell);
     free_shell(shell, FALSE);
 }
