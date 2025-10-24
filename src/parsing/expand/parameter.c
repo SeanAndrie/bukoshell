@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <debug.h>
-#include <expand.h>
 #include <boolean.h>
+#include <debug.h>
 #include <environ.h>
+#include <expand.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
@@ -71,7 +71,10 @@ void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 {
 	t_token	*tokens;
 
-	if (is_token_type(token->type, T_WORD_SQUOTE) || ft_strcmp(token->lexeme, "$") == 0)
+	if (!token->expandable)
+		return ;
+	if (is_token_type(token->type, T_WORD_SQUOTE) || ft_strcmp(token->lexeme,
+			"$") == 0)
 		return ;
 	if (!*token->lexeme)
 		return ;

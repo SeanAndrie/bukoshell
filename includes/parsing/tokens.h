@@ -147,7 +147,7 @@ unsigned int			create_token_mask(t_token *head);
 */
 t_token					*copy_tokens(t_token *start, t_token *end);
 
-void                    apply_expansions(t_token **head, t_map *map, t_bool heredoc);
 t_bool                  is_expandable(t_token *token);
+void                    apply_expansions(t_token **head, t_map *map, t_bool heredoc);
 
 #endif
