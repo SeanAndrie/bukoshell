@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:11:25 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:48:43 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 11:35:26 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int builtin_pwd(t_map *map)
 
     if (!getcwd_safe(buffer, sizeof(buffer), map))
     {
+        ft_dprintf(STDERR_FILENO, "bukoshell: ");
         perror("pwd");
         return (1);
     }

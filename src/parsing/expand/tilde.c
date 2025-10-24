@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:32:27 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 16:17:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 13:37:50 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static char *get_tilde_base_path(char *lexeme, t_map *map)
         return (NULL);
     return (entry->value);
 }
-
 
 void apply_tilde_expansion(t_token *token, t_map *map)
 {

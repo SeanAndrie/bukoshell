@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:40:30 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:08:12 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,14 @@ t_bool	set_entry(t_map *map, char *key, char *value)
 		map->modified = TRUE;
 		return (TRUE);
 	}
-	if (target->value)
-		free(target->value);
-	target->value = ft_strdup(value);
-	if (!target->value)
-		return (FALSE);
+	if (value)
+	{
+		if (target->value)
+			free(target->value);
+		target->value = ft_strdup(value);
+		if (!target->value)
+			return (FALSE);
+	}
 	set_order(&map->order, target);
 	map->modified = TRUE;
 	return (TRUE);

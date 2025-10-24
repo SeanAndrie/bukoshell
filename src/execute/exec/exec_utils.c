@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 22:36:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/20 13:22:33 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 11:35:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_bool redirect_heredoc(t_redirect *redir)
 
     if (pipe(fds) != 0)
     {
+        ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
         perror("pipe");
         return (FALSE);
     }
@@ -38,6 +39,7 @@ t_bool redirect_heredoc(t_redirect *redir)
     close(fds[1]);
     if (dup2(fds[0], STDIN_FILENO) < 0)
     {
+        ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
         perror("dup2");
         close(fds[0]);
         return (FALSE);
@@ -49,10 +51,16 @@ t_bool redirect_heredoc(t_redirect *redir)
 void restore_fds(int in, int out)
 {
     if (dup2(in, STDIN_FILENO) < 0)
+    {
+        ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
         perror("dup2");
+    }
     close(in);
     if (dup2(out, STDOUT_FILENO) < 0)
+    {
+        ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
         perror("dup2");
+    }
     close(out);
 }
 
@@ -68,6 +76,7 @@ static t_bool open_file(t_redirect *redir)
         return (FALSE);
     if (redir->fd < 0)
     {
+        ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
         perror(redir->fname);
         return (FALSE);
     }
@@ -79,12 +88,18 @@ static void redirect_fds(t_redirect *redir)
     if (is_token_type(redir->type, T_REDIR_IN))
     {
         if (dup2(redir->fd, STDIN_FILENO) < 0)
+        {
+            ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
             perror("dup2");
+        }
     }
     else
     {
         if (dup2(redir->fd, STDOUT_FILENO) < 0)
+        {
+            ft_dprintf(STDERR_FILENO, "%s: ", ERR_BASE);
             perror("dup2");
+        }
     }
 }
 
