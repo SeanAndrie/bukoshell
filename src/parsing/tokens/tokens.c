@@ -53,7 +53,7 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 	t_token	*curr;
 	t_token	*next;
 
-    mark_expandable_tokens(*head);
+	mark_expandable_tokens(*head);
 	curr = *head;
 	while (curr)
 	{
@@ -72,14 +72,14 @@ void	apply_expansions(t_token **head, t_map *map, t_bool heredoc)
 		if (curr->lexeme && curr->lexeme[0] == '~' && !is_token_type(curr->type,
 				TOKEN_QUOTE) && !heredoc)
 			apply_tilde_expansion(curr, map);
-	    curr = next;
+		curr = next;
 	}
 }
 
 t_bool	normalize_tokens(t_token **head, t_map *map)
 {
-    if (!head || !*head)
-        return (FALSE);
+	if (!head || !*head)
+		return (FALSE);
 	apply_expansions(head, map, FALSE);
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
