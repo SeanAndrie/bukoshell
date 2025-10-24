@@ -105,12 +105,14 @@ int builtin_export(char **argv, t_map *map)
         if (!head)
             return (1);
         print_env(head, TRUE);
-        free_entries(&head);
-        return (0);
+        return (free_entries(&head), 0);
     }
     i = 1;
     status = 0;
     while (argv[i])
-        status = export_variable(argv[i++], map);
+    {
+        if (export_variable(argv[i++], map) != 0)
+            status = 1;
+    }
     return (status);
 }

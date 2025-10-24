@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 12:46:32 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/24 17:41:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 {
 	t_token	*tokens;
 
-	if (is_token_type(token->type, T_WORD_SQUOTE))
+	if (is_token_type(token->type, T_WORD_SQUOTE) || ft_strcmp(token->lexeme, "$") == 0)
 		return ;
 	if (!*token->lexeme)
 		return ;
