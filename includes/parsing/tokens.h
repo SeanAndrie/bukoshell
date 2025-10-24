@@ -15,14 +15,15 @@
 
 # include <token_types.h>
 
-typedef struct s_map t_map; 
 typedef enum e_bool t_bool;
+typedef struct s_map t_map;
 
 typedef struct s_token
 {
 	enum e_token_type	type;
 	struct s_token		*next;
 	char				*lexeme;
+    t_bool              expandable;
 }						t_token;
 
 /*
@@ -147,5 +148,6 @@ unsigned int			create_token_mask(t_token *head);
 t_token					*copy_tokens(t_token *start, t_token *end);
 
 void                    apply_expansions(t_token **head, t_map *map, t_bool heredoc);
+t_bool                  is_expandable(t_token *token);
 
 #endif

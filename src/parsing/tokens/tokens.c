@@ -24,26 +24,28 @@ static void	*free_helper(char *lexeme, t_token *head)
 	return (NULL);
 }
 
-t_token	*copy_tokens(t_token *start, t_token *end)
+static void mark_expandable_tokens(t_token *head)
 {
-	t_token	*copy;
-	t_token	*curr;
-	t_token	*token;
+    t_token *prev;
+    t_token *curr;
 
-	copy = NULL;
-	curr = start;
-	while (curr && curr != end)
-	{
-		token = create_token(curr->lexeme, curr->type);
-		if (!token)
-		{
-			free_tokens(&copy);
-			return (NULL);
-		}
-		append_token(&copy, token);
-		curr = curr->next;
-	}
-	return (copy);
+    if (!head)
+        return ;
+    curr = head;
+    prev = NULL;
+    while (curr)
+    {
+        if (is_token_type(curr->type, TOKEN_WHITESPACE))
+        {
+            curr = curr->next;
+            continue;
+        }
+        if ((!prev || !is_token_type(prev->type, T_HEREDOC))
+            && is_expandable(curr))
+            curr->expandable = TRUE;
+        prev = curr;
+        curr = curr->next;
+    }
 }
 
 void apply_expansions(t_token **head, t_map *map, t_bool heredoc)
@@ -55,26 +57,28 @@ void apply_expansions(t_token **head, t_map *map, t_bool heredoc)
     while (curr)
     {
         next = curr->next;
-        if (curr->lexeme && is_token_type(curr->type, TOKEN_WORD)
-            && ft_strchr(curr->lexeme, '$'))
-            apply_param_expansion(curr, map, heredoc);
-        if (curr->lexeme && ft_strchr(curr->lexeme, '*') && !heredoc)
+        if (curr->expandable)
         {
-            if (apply_wildcard_expansion(head, curr))
+            if (is_token_type(curr->type, TOKEN_WORD) && ft_strchr(curr->lexeme, '$'))
+                apply_param_expansion(curr, map, heredoc);
+            if (ft_strchr(curr->lexeme, '*') && !heredoc)
             {
-                curr = *head;
-                continue;
+                if (apply_wildcard_expansion(head, curr))
+                {
+                    curr = *head;
+                    continue;
+                }
             }
+            if (curr->lexeme[0] == '~' && !is_token_type(curr->type, TOKEN_QUOTE) && !heredoc)
+                apply_tilde_expansion(curr, map);
         }
-        if (curr->lexeme && curr->lexeme[0] == '~'
-            && !is_token_type(curr->type, TOKEN_QUOTE) && !heredoc)
-            apply_tilde_expansion(curr, map);
         curr = next;
     }
 }
 
 t_bool	normalize_tokens(t_token **head, t_map *map)
 {
+    mark_expandable_tokens(*head);
 	apply_expansions(head, map, FALSE);
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
