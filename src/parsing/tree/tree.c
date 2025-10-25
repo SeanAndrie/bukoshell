@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:21:11 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 13:23:45 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/25 08:02:25 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static t_node	*create_subshell(t_token *start, t_token *end)
 	t_redirect	*redir;
 
 	curr = start;
+	redir = NULL;
 	skip_grouping(&curr);
 	if (curr && is_token_type(curr->type, TOKEN_REDIR_OP))
 		redir = create_redirections(curr, end);

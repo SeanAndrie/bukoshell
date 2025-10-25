@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:13:40 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/25 07:58:16 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	free_syntax_tree(t_node **root)
 		free_str_arr((*root)->argv, -1);
 	if ((*root)->redirect)
 		free_redirects(&(*root)->redirect, FALSE);
+	if ((*root)->inner)
+		free_tokens(&(*root)->inner);
 	free(*(root));
 	*root = NULL;
 }

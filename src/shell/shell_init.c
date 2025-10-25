@@ -42,12 +42,12 @@ static void update_variables(t_shell *shell)
         status = ft_strdup("0");
     set_entry(shell->map, "?", status);
     free(status);
-    if (shell->root && shell->root->argv)
+    if (shell->root && shell->root->argv && *shell->root->argv)
     {
         i = 0;
-        while (shell->root->argv[i + 1])
+        while (shell->root->argv[i])
             i++;
-        set_entry(shell->map, "_", shell->root->argv[i]);
+        set_entry(shell->map, "_", shell->root->argv[i - 1]);
     }
     g_signal = 0;
 }
@@ -61,14 +61,14 @@ static int start_parser(t_shell *shell)
         return (2);
     if (DEBUG_MODE)
         print_tokens(shell->head, TRUE);
+    if (!validate_tokens(shell->head))
+        return (2);
     shell->root = create_syntax_tree(shell->head, NULL);
     if (!shell->root)
         return (2);
     collect_heredocs(shell->root, shell->map);
     if (g_signal != 0)
         return (g_signal);
-    if (!validate_tokens(shell->head))
-        return (2);
     if (DEBUG_MODE)
         print_syntax_tree(shell->root);
     return (0);

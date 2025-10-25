@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/24 17:41:05 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/25 08:44:49 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*create_expanded_lexeme(t_map *map, t_token **tokens)
 	curr = *tokens;
 	while (curr)
 	{
-		if (!handle_expansion(map, curr))
+		if (is_token_type(curr->type, T_PARAMETER) && !handle_expansion(map, curr))
 			curr->type = TOKEN_NONE;
 		curr = curr->next;
 	}
