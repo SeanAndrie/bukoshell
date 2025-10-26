@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 00:47:20 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/24 12:08:12 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 23:04:36 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static t_bool	clear_entry(t_environ **head, char *key)
 	{
 		if (ft_strcmp((*curr)->key, key) == 0)
 		{
+            if ((*curr)->readonly)
+                return (FALSE);
 			temp = *curr;
 			*curr = (*curr)->next;
 			free(temp->key);

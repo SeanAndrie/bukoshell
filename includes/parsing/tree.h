@@ -6,13 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:05:28 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 22:41:40 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_H
 # define TREE_H
 
+#include <boolean.h>
 #include <token_types.h>
 
 typedef struct s_map t_map;
@@ -48,6 +49,7 @@ typedef struct s_node
 	char				**argv;
 	enum e_token_type	operand;
 	struct s_redirect	*redirect;
+    enum e_bool         in_pipeline;
 }						t_node;
 
 /*

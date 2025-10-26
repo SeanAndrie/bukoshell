@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 13:05:03 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 13:05:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 02:33:55 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,25 @@ static int map_builtin(char **argv, t_map *map)
 
 int exec_builtin(t_node *node, t_map *map)
 {
-    int status;
-    int save_in;
-    int save_out;
+    t_bool  saved;
+    int     status;
+    int     save_in;
+    int     save_out;
 
-    if (node->redirect)
+    saved = FALSE;
+    if (!node->in_pipeline && node->redirect)
     {
         save_in = dup(STDIN_FILENO);
         save_out = dup(STDOUT_FILENO);
         if (!handle_redirections(node->redirect))
         {
-            free_redirects(&node->redirect, TRUE);
             restore_fds(save_in, save_out);
             return (1);
         }
+        saved = TRUE;
     }
     status = map_builtin(node->argv, map);
-    if (node->redirect)
+    if (saved)
         restore_fds(save_in, save_out);
     return (status);
 }

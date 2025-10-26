@@ -6,17 +6,17 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:40:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/26 13:33:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 23:14:17 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <boolean.h>
 #include <debug.h>
 #include <libft.h>
-#include <parsing/tokens.h>
+#include <boolean.h>
 #include <parsing/tree.h>
+#include <parsing/tokens.h>
 
-static void	print_argv(char **argv)
+void	print_argv(char **argv, t_bool formatted)
 {
 	size_t	i;
 
@@ -25,7 +25,8 @@ static void	print_argv(char **argv)
 		ft_printf("Command: [empty]\n");
 		return ;
 	}
-	ft_printf("Command: ");
+    if (formatted)
+	    ft_printf("Command: ");
 	i = 0;
 	while (argv[i])
 	{
@@ -99,7 +100,7 @@ void	recursive_print_tree(t_node *node, int level)
 	}
 	else
 	{
-		print_argv(node->argv);
+		print_argv(node->argv, TRUE);
 		print_redirects(node->redirect, level + 1);
 	}
 	recursive_print_tree(node->left, level + 1);

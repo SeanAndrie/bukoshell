@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 18:55:33 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 22:49:51 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 22:55:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 #include <environ.h>
 #include <execute/builtins.h>
 
-static int unset_variable(char *key, t_map *map)
+static int unset_variable(t_map *map, char *key)
 {
-    if (!is_valid_identifier(key))
-    {
-        log_error(ERROR_NONE, ERR_BASE, "unset: '%s': not a valid identifier\n", key);
-        return (1);
-    }
-    if (!delete_entry(map, key))
+    t_environ   *entry;
+    
+    delete_entry(map, key);
+    entry = search_entry(map, key);
+    if (entry && !entry->readonly)
         return (1);
     return (0);
 }
@@ -38,7 +37,7 @@ int builtin_unset(char **argv, t_map *map)
     status = 0;
     while (argv[i])
     {
-        status = unset_variable(argv[i], map);
+        status = unset_variable(map, argv[i]);
         i++;
     }
     return (status);

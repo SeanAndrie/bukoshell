@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_err.c                                         :+:      :+:    :+:   */
+/*   exec_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:51:15 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/22 11:53:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 01:29:07 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <errno.h>
 #include <debug.h>
+#include <stdio.h>
+#include <signals.h>
 #include <boolean.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <parsing/tree.h>
 #include <execute/exec.h>
 
-static t_bool is_directory(char *path)
+t_bool is_directory(char *path)
 {
 	struct stat	path_stat;
 
@@ -55,4 +59,43 @@ void	exec_dir_error(char *arg)
 		errno = EISDIR;
 		exec_cmd_error(arg, TRUE);
 	}
+}
+
+void handle_signal(pid_t pid, int *status, char **argv)
+{
+    int sig;
+
+    if (waitpid(pid, status, 0) == -1)
+    {
+        perror("waitpid");
+        *status = 1;
+        return ;
+    }
+    if (WIFEXITED(*status))
+        *status = WEXITSTATUS(*status);
+    else if (WIFSIGNALED(*status))
+    {
+        sig = WTERMSIG(*status);
+        if (sig == SIGINT)
+            ft_printf("\n");
+        else if (sig == SIGQUIT)
+        {
+            ft_printf("Quit\t\t\t\t(core dumped) ");
+            print_argv(argv, FALSE);
+        }
+        g_signal = 128 + sig;
+        *status = 128 + sig;
+    }
+}
+
+void	handle_missing_command(t_node *node)
+{
+	int	save_in;
+	int	save_out;
+
+	save_in = dup(STDIN_FILENO);
+	save_out = dup(STDOUT_FILENO);
+	if (node->redirect)
+		handle_redirections(node->redirect);
+	restore_fds(save_in, save_out);
 }

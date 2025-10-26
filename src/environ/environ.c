@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/24 12:13:24 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 23:07:04 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**get_pair(char *env)
 		pair[0] = ft_strdup(env);
 		pair[1] = NULL;
 	}
-	if (!pair[0] || (equal && !pair[1]))
+    if (!pair[0] && (equal && !pair[1]))
 	{
 		free_str_arr(pair, -1);
 		return (NULL);

@@ -6,7 +6,7 @@
 #    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/10/23 13:10:53 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/27 01:25:22 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ PARSING_MODULES := \
 	expand/parameter.c expand/tilde.c expand/wildcard.c expand/wildcard_utils.c
 
 EXECUTE_MODULES := \
-	exec/exec.c exec/exec_cmd.c exec/exec_err.c exec/exec_ext.c exec/exec_utils.c \
+	exec/exec.c exec/exec_cmd.c exec/exec_cmd_utils.c exec/exec_pipe.c exec/exec_pipe_utils.c exec/exec_redir.c \
 	builtins/builtin_echo.c builtins/builtin_exit.c builtins/builtin_utils.c \
 	builtins/builtin_pwd.c builtins/builtin_export.c builtins/builtin_cd.c \
 	builtins/builtin_unset.c builtins/builtin_env.c

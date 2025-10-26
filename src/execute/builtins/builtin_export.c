@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 21:03:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/24 11:48:49adinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 23:02:50 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static int export_variable(char *arg, t_map *map)
         free_str_arr(pair, -1);
         return (1);
     }
+    ft_printf("%s=%s\n", pair[0], pair[1]);
     if (!set_entry(map, pair[0], pair[1]))
     {
         free_str_arr(pair, -1);
