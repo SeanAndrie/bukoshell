@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 00:03:32 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 02:21:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 03:41:04 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ size_t  flatten_pipeline(t_node *node, t_node **arr, size_t index)
     if (node->operand == T_PIPE)
     {
         index = flatten_pipeline(node->left, arr, index);
-        return (flatten_pipeline(node->right, arr, index + 1));
+        index = flatten_pipeline(node->right, arr, index);
+        return (index);
     }
     mark_pipeline_nodes(node);
-    arr[index] = node;
+    arr[index++] = node;
     return (index);
 }

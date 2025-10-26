@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 19:23:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 03:02:53 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 03:54:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_pipeline  *create_pipeline(t_node *root, size_t n_cmds)
     return (pl);
 }
 
-void    exec_pipe_cmd(t_node *node, t_map *map, char **envp)
+static void exec_pipe_cmd(t_node *node, t_map *map, char **envp)
 {
     if (node->type == N_SUBSHELL)
         exit(exec_subshell(node, map, envp));
