@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 17:50:32 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/17 00:08:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:33:50 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ typedef struct s_redirect t_redirect;
 
 void    print_dir_list(void);
 void	print_syntax_tree(t_node *node);
-void	print_argv(char **argv);
 void	print_redirects(t_redirect *head, int level);
 void	print_entry_info(t_environ *entry);
 void	print_env(t_environ *head, t_bool formatted);

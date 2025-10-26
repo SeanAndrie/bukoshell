@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:23:11 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/25 07:57:21 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:36:52 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	exec_command(t_node *node, t_map *map, char **envp)
 		exit(127);
 	}
 	else if (pid > 0)
-        handle_signal(pid, &status);
+        handle_signal(pid, &status, node->argv);
     else
         status = 1;
     set_signals_interactive();
@@ -79,7 +79,7 @@ int	exec_subshell(t_node *node, t_map *map, char **envp)
 		exit(exec_node(node->left, map, envp));
 	}
 	else if (pid > 0)
-        handle_signal(pid, &status);
+        handle_signal(pid, &status, node->argv);
     else
         status = 1;
     set_signals_interactive();

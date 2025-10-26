@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 23:35:53 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 14:16:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:36:33 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void    restore_fds(int in, int out);
 t_bool  handle_redirections(t_redirect *head);
 void    exec_cmd_error(char *arg, t_bool is_path);
 
-void    handle_signal(pid_t pid, int *status);
+void    handle_signal(pid_t pid, int *status, char **argv);
 
 #endif

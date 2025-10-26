@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:40:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:22:10 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:33:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <parsing/tokens.h>
 #include <parsing/tree.h>
 
-void	print_argv(char **argv)
+static void	print_argv(char **argv)
 {
 	size_t	i;
 
