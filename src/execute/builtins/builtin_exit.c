@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:49:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 14:08:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 14:12:13 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 
 static void exit_with_last_status(t_shell_ctx *ctx)
 {
-    int status = ctx->shell->status;
+    int status;
+    
+    status = ctx->shell->status;
     if (status < 0)
         status = 0;
     free_shell(ctx->shell, TRUE);
