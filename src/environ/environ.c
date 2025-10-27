@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 09:47:34 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/26 23:07:04 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 14:43:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ static void init_shlvl(t_map *map)
 
 static void init_special_variables(t_map *map)
 {
-	t_environ	*status;
 	t_environ	*pid;
 	char		*value;
+	t_environ	*status;
+	t_environ	*last_arg;
 
 	set_entry(map, "?", "0");
 	status = search_entry(map, "?");
@@ -86,6 +87,10 @@ static void init_special_variables(t_map *map)
 	if (pid)
 		pid->readonly = TRUE;
 	set_order(&map->order, pid);
+	last_arg = search_entry(map, "_");
+	if (last_arg)
+		last_arg->readonly = TRUE;
+	set_order(&map->order, last_arg);
 }
 
 void	init_variables(t_map *map)
