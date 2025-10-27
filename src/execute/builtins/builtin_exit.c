@@ -43,7 +43,7 @@ int builtin_exit(char **argv, t_shell_ctx *ctx)
     }
     errno = 0;
     value = ft_strtol(argv[1], &endptr, 10);
-    if (*endptr != '\0' || errno == ERANGE)
+    if (*endptr != '\0' || errno == ERANGE || errno == EINVAL)
     {
         log_error(ERROR_NONE, ERR_BASE,
                   "exit: %s: numeric argument required\n", argv[1]);
