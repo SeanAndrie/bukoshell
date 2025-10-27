@@ -42,7 +42,7 @@ void	exec_cmd_error(char *arg, t_bool is_path)
 	else if (errno == EISDIR)
 	{
 		log_error(ERROR_NONE, ERR_BASE, "%s: Is a directory\n", arg);
-		exit_code = 126;	
+		exit_code = 126;
 	}
 	else
 	{

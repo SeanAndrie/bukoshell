@@ -44,8 +44,8 @@ void        restore_fds(int in, int out);
 t_bool      handle_redirections(t_redirect *head);
 
 t_bool      is_directory(char *path);
-void	    exec_dir_error(char *arg);
 void	    handle_missing_command(t_node *node);
+void	    exec_dir_error(char *arg);
 void        exec_cmd_error(char *arg, t_bool is_path);
 void        handle_signal(pid_t pid, int *status, char **argv);
 

@@ -77,21 +77,18 @@ char	*create_identifier(t_map *map)
 {
     t_environ   *user;
     t_environ   *host;
-    char        *hostname;
 
 	if (!map)
 		return (NULL);
     user = search_entry(map, "USER");
     if (!user)
         user = search_entry(map, "LOGNAME");
-    if (!user)
-        return (NULL);
     host = search_entry(map, "HOSTNAME");
-    if (!host)
-        hostname = "unknown";
-    else
-        hostname = host->value;
-    return ft_vstrjoin(2, "@", user->value, hostname);
+    if (!user && host)
+        return (ft_strdup(host->value));
+    if (user && !host)
+        return (ft_strdup(user->value));
+    return (ft_vstrjoin(2, "@", user->value, host->value));
 }
 
 char	*set_prompt(t_shell *shell, char *identifier)

@@ -79,7 +79,6 @@ static int export_variable(char *arg, t_map *map)
         free_str_arr(pair, -1);
         return (1);
     }
-    ft_printf("%s=%s\n", pair[0], pair[1]);
     if (!set_entry(map, pair[0], pair[1]))
     {
         free_str_arr(pair, -1);

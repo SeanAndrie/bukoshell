@@ -103,7 +103,7 @@ void exec_external(t_node *node, t_shell_ctx *ctx)
 
     if (node->redirect && !handle_redirections(node->redirect))
         exit(1);
-    is_path = ft_strchr(node->argv[0], '/') != NULL;
+    is_path = (ft_strchr(node->argv[0], '/') != NULL);
     if (is_path)
     {
         exec_dir_error(node->argv[0]);
@@ -112,7 +112,7 @@ void exec_external(t_node *node, t_shell_ctx *ctx)
     }
     path_var = search_entry(ctx->shell->map, "PATH");
     if (!path_var)
-        exec_cmd_error(node->argv[0], is_path);
+        path_var = create_entry("TEMP", ".");
     cmd_path = find_cmd_path(node->argv[0], path_var);
     if (!cmd_path)
         exec_cmd_error(node->argv[0], is_path);
