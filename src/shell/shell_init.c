@@ -76,12 +76,12 @@ static int start_parser(t_shell *shell)
 
 static int start_execution(t_shell *shell)
 {
-    int status;
-    
+    t_shell_ctx ctx;
+   
     if (!shell->root)
         return (1);
-    status = exec_node(shell->root, shell->map, shell->envp);
-    return (status);
+    ctx.shell = shell;
+    return (exec_node(shell->root, &ctx));
 }
 
 void	start_shell(t_shell *shell)

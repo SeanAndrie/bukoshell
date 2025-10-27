@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 13:05:03 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 02:33:55 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 13:48:02 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <environ.h>
 #include <boolean.h>
 #include <sys/stat.h>
+#include <bukoshell.h>
 #include <execute/exec.h>
 #include <parsing/parsing.h>
 #include <execute/builtins.h>
@@ -49,26 +50,26 @@ static char *find_cmd_path(char *cmd, t_environ *path_var)
     return (NULL);
 }
 
-static int map_builtin(char **argv, t_map *map)
+static int map_builtin(char **argv, t_shell_ctx *ctx)
 {
     if (ft_strcmp(argv[0], "echo") == 0)
         return (builtin_echo(argv));
     else if (ft_strcmp(argv[0], "exit") == 0)
-        return (builtin_exit(argv));
+        return (builtin_exit(argv, ctx));
     else if (ft_strcmp(argv[0], "pwd") == 0)
-        return (builtin_pwd(map));
+        return (builtin_pwd(ctx->shell->map));
     else if (ft_strcmp(argv[0], "cd") == 0)
-        return (builtin_cd(argv, map));
+        return (builtin_cd(argv, ctx->shell->map));
     else if (ft_strcmp(argv[0], "export") == 0)
-        return (builtin_export(argv, map));
+        return (builtin_export(argv, ctx->shell->map));
     else if (ft_strcmp(argv[0], "unset") == 0)
-        return (builtin_unset(argv, map));
+        return (builtin_unset(argv, ctx->shell->map));
     else if (ft_strcmp(argv[0], "env") == 0)
-        return (builtin_env(map));
+        return (builtin_env(ctx->shell->map));
     return (0);
 }
 
-int exec_builtin(t_node *node, t_map *map)
+int exec_builtin(t_node *node, t_shell_ctx *ctx)
 {
     t_bool  saved;
     int     status;
@@ -87,13 +88,13 @@ int exec_builtin(t_node *node, t_map *map)
         }
         saved = TRUE;
     }
-    status = map_builtin(node->argv, map);
+    status = map_builtin(node->argv, ctx);
     if (saved)
         restore_fds(save_in, save_out);
     return (status);
 }
 
-void exec_external(t_node *node, t_map *map, char **envp)
+void exec_external(t_node *node, t_shell_ctx *ctx)
 {
     t_bool      is_path;
     t_environ   *path_var;
@@ -106,10 +107,10 @@ void exec_external(t_node *node, t_map *map, char **envp)
     if (is_path)
     {
         exec_dir_error(node->argv[0]);
-        execve(node->argv[0], node->argv, envp);
+        execve(node->argv[0], node->argv, ctx->shell->envp);
         exec_cmd_error(node->argv[0], is_path);
     }
-    path_var = search_entry(map, "PATH");
+    path_var = search_entry(ctx->shell->map, "PATH");
     if (!path_var)
         exec_cmd_error(node->argv[0], is_path);
     cmd_path = find_cmd_path(node->argv[0], path_var);
@@ -117,6 +118,6 @@ void exec_external(t_node *node, t_map *map, char **envp)
         exec_cmd_error(node->argv[0], is_path);
     ft_strlcpy(buffer, cmd_path, sizeof(buffer));
     free(cmd_path);
-    execve(buffer, node->argv, envp);
+    execve(buffer, node->argv, ctx->shell->envp);
     exec_cmd_error(node->argv[0], is_path);
 }

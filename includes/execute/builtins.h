@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:49:40 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/19 16:00:36 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 13:45:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ typedef enum e_bool t_bool;
 typedef struct s_map t_map;
 typedef struct s_node t_node;
 
+typedef struct s_shell_ctx t_shell_ctx;
+
 int     builtin_pwd(t_map *map);
 int     builtin_env(t_map *map);
 int     builtin_echo(char **argv);
-int     builtin_exit(char **argv);
 int     builtin_cd(char **argv, t_map *map);
 int     builtin_export(char **argv, t_map *map);
 int     builtin_unset(char **argv, t_map *map);
+int     builtin_exit(char **argv, t_shell_ctx *ctx);
 
 t_bool  is_builtin(t_node *node);
 t_bool  is_directory(char *path);

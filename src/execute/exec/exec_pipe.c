@@ -6,13 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 19:23:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 04:02:11 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 13:52:56 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stdio.h>
 #include <signals.h>
+#include <bukoshell.h>
 #include <parsing/tree.h>
 #include <execute/exec.h>
 #include <execute/builtins.h>
@@ -85,22 +86,22 @@ t_pipeline  *create_pipeline(t_node *root, size_t n_cmds)
     return (pl);
 }
 
-static void exec_pipe_cmd(t_node *node, t_map *map, char **envp)
+static void exec_pipe_cmd(t_node *node, t_shell_ctx *ctx)
 {
     if (node->type == N_SUBSHELL)
-        exit(exec_subshell(node, map, envp));
+        exit(exec_subshell(node, ctx));
     if (node->type == N_COMMAND)
     {
         if (is_builtin(node))
-            exit(exec_builtin(node, map));
-        exec_external(node, map, envp);
+            exit(exec_builtin(node, ctx));
+        exec_external(node, ctx);
         if (node->argv)
             perror(node->argv[0]);
         exit(127);
     }
 }
 
-void    exec_pipeline(t_pipeline *pl, t_map *map, char **envp)
+void    exec_pipeline(t_pipeline *pl, t_shell_ctx *ctx)
 {
     size_t      i;
 
@@ -122,7 +123,7 @@ void    exec_pipeline(t_pipeline *pl, t_map *map, char **envp)
             if (i < pl->n_cmds - 1 && dup2(pl->pipes[i][1], STDOUT_FILENO) < 0)
                 exit(1);
             close_pipes(pl->pipes, pl->n_cmds - 1);
-            exec_pipe_cmd(pl->commands[i], map, envp);
+            exec_pipe_cmd(pl->commands[i], ctx); 
             exit(127);
         }
         i++;

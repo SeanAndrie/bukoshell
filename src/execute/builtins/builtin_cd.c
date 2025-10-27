@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:33:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 23:19:01 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 14:10:41 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,19 @@ static char *resolve_arg(char **argv, t_map *map)
 
 int builtin_cd(char **argv, t_map *map)
 {
+    int         argc;
     char        *path;
     t_environ   *pwd;
     char        cwd[PATH_MAX];
 
+    argc = 0;
+    while (argv[argc])
+        argc++;
+    if (argc > 2)
+    {
+        log_error(ERROR_NONE, ERR_BASE, "cd: too many arguments\n");
+        return (2);
+    }
     path = resolve_arg(argv, map);
     if (!path)
         return (1);
