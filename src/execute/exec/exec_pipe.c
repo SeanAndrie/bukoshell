@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 19:23:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 03:54:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/27 04:02:11 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ void    exec_pipeline(t_pipeline *pl, t_map *map, char **envp)
         if (pl->pids[i] == 0)
         {
             set_signals_default();
-            if (i > 0 && dup2(pl->pipes[i - 1][0], STDIN_FILENO) == -1)
+            if (i > 0 && dup2(pl->pipes[i - 1][0], STDIN_FILENO) < 0)
                 exit(1);
-            if (i < pl->n_cmds - 1 && dup2(pl->pipes[i][1], STDOUT_FILENO) == -1)
+            if (i < pl->n_cmds - 1 && dup2(pl->pipes[i][1], STDOUT_FILENO) < 0)
                 exit(1);
             close_pipes(pl->pipes, pl->n_cmds - 1);
             exec_pipe_cmd(pl->commands[i], map, envp);
