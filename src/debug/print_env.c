@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 02:46:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/28 12:23:40 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:09:54 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,13 @@ void	print_env(t_environ *head, t_bool formatted)
 		if (curr && !curr->readonly)
 		{
 			if (formatted)
-				ft_printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
-			else
+			{
+				ft_printf("declare -x %s", curr->key);
+				if (curr->value)
+					ft_printf("=\"%s\"", curr->value);
+				ft_printf("\n");
+			}
+			else if (!formatted && curr->value)
 				ft_printf("%s=%s\n", curr->key, curr->value);
 		}
 		curr = curr->next;
