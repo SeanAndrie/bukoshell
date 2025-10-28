@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:49:40 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 13:45:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 02:23:05 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 typedef enum e_bool			t_bool;
 typedef struct s_map		t_map;
 typedef struct s_node		t_node;
+
+# define NUMERIC_ARG_ERR "%s: exit: %s: numeric argument required\n" 
 
 typedef struct s_shell_ctx	t_shell_ctx;
 
