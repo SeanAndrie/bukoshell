@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <boolean.h>
 #include <libft.h>
+#include <boolean.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 #include <parsing/tree.h>

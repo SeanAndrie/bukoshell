@@ -103,7 +103,7 @@ void	init_variables(t_map *map)
 	init_shlvl(map);
 	init_special_variables(map);
 	if (search_entry(map, "OLDPWD"))
-        delete_entry(map, "OLDPWD");
+		delete_entry(map, "OLDPWD");
 	fd = open("/etc/hostname", O_RDONLY);
 	if (fd < 0)
 		return ;

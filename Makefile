@@ -14,7 +14,7 @@ NAME := minishell
 CC := cc
 CFLAGS := -Wall -Werror -Wextra -Iincludes -Iincludes/parsing -Ilibft/includes -g3
 
-RDL_INC := -I/opt/vagrant/embedded/include/readline
+RDL_INC := -I/opt/vagrant/embedded/include/
 RDL_LIB := -L/opt/vagrant/embedded/lib/
 
 CFLAGS += $(RDL_INC)

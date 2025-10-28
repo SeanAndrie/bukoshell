@@ -41,7 +41,7 @@ static void	mark_expandable_tokens(t_token *head)
 			continue ;
 		}
 		if ((!prev || !is_token_type(prev->type, T_HEREDOC))
-			&& is_expandable(curr))
+			&& is_expandable(curr, prev))
 			curr->expandable = TRUE;
 		prev = curr;
 		curr = curr->next;

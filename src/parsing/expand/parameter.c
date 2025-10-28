@@ -2,7 +2,8 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parameter.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*                                                    +:+ +:+
++:+     */
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 18:53:58 by sgadinga          #+#    #+#             */
@@ -29,12 +30,9 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 		return (FALSE);
 	entry = search_entry(map, key);
 	free(key);
-	free(token->lexeme);
 	if (!entry)
-	{
-		token->lexeme = NULL;
 		return (FALSE);
-	}
+	free(token->lexeme);
 	value = ft_strdup(entry->value);
 	if (!value)
 		return (FALSE);
@@ -57,7 +55,7 @@ static char	*create_expanded_lexeme(t_map *map, t_token **tokens)
 		curr = curr->next;
 	}
 	remove_tokens(tokens, TOKEN_NONE);
-	concat = concat_tokens(*tokens, TOKEN_WORD);
+	concat = concat_tokens(*tokens, T_PARAMETER);
 	free_tokens(tokens);
 	if (!concat)
 		return (NULL);
@@ -70,14 +68,16 @@ static char	*create_expanded_lexeme(t_map *map, t_token **tokens)
 
 void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 {
+	char	*temp;
 	t_token	*tokens;
 
-	if (!token->expandable)
-		return ;
 	if (is_token_type(token->type, T_WORD_SQUOTE) || ft_strcmp(token->lexeme,
-			"$") == 0)
+			"$") == 0 || !token->expandable)
 		return ;
 	if (!*token->lexeme)
+		return ;
+	temp = ft_strdup(token->lexeme);
+	if (!temp)
 		return ;
 	tokens = create_tokens(token->lexeme, TRUE, heredoc);
 	if (!tokens)

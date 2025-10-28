@@ -66,6 +66,12 @@ void	restore_fds(int in, int out)
 
 static t_bool	open_file(t_redirect *redir)
 {
+	if (ft_strcmp(redir->fname, "*") == 0)
+	{
+		ft_dprintf(STDERR_FILENO, "%s: %s: ambiguous redirection\n", ERR_BASE,
+			redir->fname);
+		return (FALSE);
+	}
 	if (is_token_type(redir->type, T_REDIR_OUT))
 		redir->fd = open(redir->fname, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (is_token_type(redir->type, T_REDIR_APPEND))

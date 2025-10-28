@@ -78,14 +78,18 @@ t_token	*copy_tokens(t_token *start, t_token *end)
 	return (copy);
 }
 
-t_bool	is_expandable(t_token *token)
+t_bool	is_expandable(t_token *token, t_token *prev_token)
 {
 	if (!token || !token->lexeme)
 		return (FALSE);
 	if (ft_strchr(token->lexeme, '$'))
 		return (TRUE);
 	else if (ft_strchr(token->lexeme, '*'))
+	{
+		if (prev_token && is_token_type(prev_token->type, TOKEN_REDIR_OP))
+			return (FALSE);
 		return (TRUE);
+	}
 	else if (ft_strchr(token->lexeme, '~'))
 		return (TRUE);
 	return (FALSE);

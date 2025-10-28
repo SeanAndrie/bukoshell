@@ -25,9 +25,11 @@ char	*process_parameter(char **line_ptr, t_token_type *type)
 	*type = T_PARAMETER;
 	start = *line_ptr;
 	(*line_ptr)++;
-	if (!**line_ptr || ft_strchr(METACHARS, **line_ptr)
-		|| ft_isspace(**line_ptr))
+	if (!**line_ptr || ft_strchr(METACHARS, **line_ptr))
+	{
+		*type = T_WORD;
 		return (ft_strdup("$"));
+	}
 	if (ft_strchr(SPECIAL_VARIABLES, **line_ptr) || ft_isdigit(**line_ptr))
 		(*line_ptr)++;
 	else
