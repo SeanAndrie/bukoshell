@@ -88,8 +88,6 @@ static void	init_special_variables(t_map *map)
 		pid->readonly = TRUE;
 	set_order(&map->order, pid);
 	last_arg = search_entry(map, "_");
-	if (last_arg)
-		last_arg->readonly = TRUE;
 	set_order(&map->order, last_arg);
 }
 
