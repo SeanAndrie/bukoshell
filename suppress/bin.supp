@@ -1,0 +1,28 @@
+{
+   glibc_locale_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:setlocale
+}
+
+{
+   termcap_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   obj:/usr/lib/libtinfo.so*
+}
+
+{
+   ncurses_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   obj:/usr/lib/libncurses.so*
+}
+
+{
+   dynamic_loader_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   obj:/lib64/ld-linux*
+}
