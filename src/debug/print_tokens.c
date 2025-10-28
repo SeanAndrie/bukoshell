@@ -6,13 +6,13 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:01:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:21:19 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:23:43 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <debug.h>
 #include <boolean.h>
+#include <debug.h>
+#include <libft.h>
 #include <parsing/tokens.h>
 
 static void	print_token_operator(t_token_type type)

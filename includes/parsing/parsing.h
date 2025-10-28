@@ -13,13 +13,13 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <tree.h>
-# include <lexer.h>
-# include <valid.h>
 # include <clean.h>
-# include <tokens.h>
 # include <expand.h>
+# include <lexer.h>
 # include <prompts.h>
 # include <token_types.h>
+# include <tokens.h>
+# include <tree.h>
+# include <valid.h>
 
 #endif

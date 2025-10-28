@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <boolean.h>
+#include <libft.h>
 #include <parsing/tokens.h>
 
 unsigned int	create_token_mask(t_token *head)
@@ -29,20 +29,20 @@ unsigned int	create_token_mask(t_token *head)
 	return (mask);
 }
 
-static size_t concat_size(t_token *head)
+static size_t	concat_size(t_token *head)
 {
-    size_t  size;
+	size_t	size;
 
-    if (!head)
-        return (0);
-    size = 0;
-    while (head)
-    {
-        if (head->lexeme)
-            size += ft_strlen(head->lexeme);
-        head = head->next;
-    }
-    return (size);
+	if (!head)
+		return (0);
+	size = 0;
+	while (head)
+	{
+		if (head->lexeme)
+			size += ft_strlen(head->lexeme);
+		head = head->next;
+	}
+	return (size);
 }
 
 t_token	*concat_tokens(t_token *head, t_token_type concat_type)
@@ -50,19 +50,19 @@ t_token	*concat_tokens(t_token *head, t_token_type concat_type)
 	char	*concat;
 	t_token	*token;
 	t_token	*curr;
-    size_t  size;
+	size_t	size;
 
-    if (!head)
-        return (NULL);
-    size = concat_size(head);
-    concat = ft_calloc(size + 1, sizeof(char));
+	if (!head)
+		return (NULL);
+	size = concat_size(head);
+	concat = ft_calloc(size + 1, sizeof(char));
 	if (!concat)
 		return (NULL);
 	curr = head;
 	while (curr)
 	{
-        if (curr->lexeme)
-		    ft_strlcat(concat, curr->lexeme, size + 1);
+		if (curr->lexeme)
+			ft_strlcat(concat, curr->lexeme, size + 1);
 		curr = curr->next;
 	}
 	token = create_token(concat, concat_type);
@@ -97,8 +97,7 @@ void	remove_tokens(t_token **head, t_token_type type_to_remove)
 	curr = head;
 	while (*curr)
 	{
-		if (is_token_type((*curr)->type, type_to_remove)
-            || !(*curr)->lexeme)
+		if (is_token_type((*curr)->type, type_to_remove) || !(*curr)->lexeme)
 		{
 			temp = *curr;
 			*curr = (*curr)->next;

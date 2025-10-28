@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <errno.h>
-#include <debug.h>
-#include <stdio.h>
-#include <signals.h>
 #include <boolean.h>
+#include <debug.h>
+#include <errno.h>
+#include <execute/exec.h>
+#include <libft.h>
+#include <parsing/tree.h>
+#include <signals.h>
+#include <stdio.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <parsing/tree.h>
-#include <execute/exec.h>
 
-t_bool is_directory(char *path)
+t_bool	is_directory(char *path)
 {
 	struct stat	path_stat;
 
@@ -61,31 +61,31 @@ void	exec_dir_error(char *arg)
 	}
 }
 
-void handle_signal(pid_t pid, int *status, char **argv)
+void	handle_signal(pid_t pid, int *status, char **argv)
 {
-    int sig;
+	int	sig;
 
-    if (waitpid(pid, status, 0) == -1)
-    {
-        perror("waitpid");
-        *status = 1;
-        return ;
-    }
-    if (WIFEXITED(*status))
-        *status = WEXITSTATUS(*status);
-    else if (WIFSIGNALED(*status))
-    {
-        sig = WTERMSIG(*status);
-        if (sig == SIGINT)
-            ft_printf("\n");
-        else if (sig == SIGQUIT)
-        {
-            ft_printf("Quit\t\t\t\t(core dumped) ");
-            print_argv(argv, FALSE);
-        }
-        g_signal = 128 + sig;
-        *status = 128 + sig;
-    }
+	if (waitpid(pid, status, 0) == -1)
+	{
+		perror("waitpid");
+		*status = 1;
+		return ;
+	}
+	if (WIFEXITED(*status))
+		*status = WEXITSTATUS(*status);
+	else if (WIFSIGNALED(*status))
+	{
+		sig = WTERMSIG(*status);
+		if (sig == SIGINT)
+			ft_printf("\n");
+		else if (sig == SIGQUIT)
+		{
+			ft_printf("Quit\t\t\t\t(core dumped) ");
+			print_argv(argv, FALSE);
+		}
+		g_signal = 128 + sig;
+		*status = 128 + sig;
+	}
 }
 
 void	handle_missing_command(t_node *node)

@@ -6,14 +6,14 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 20:29:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/25 07:58:16 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:12:11 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <boolean.h>
-#include <parsing/tree.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
 void	free_str_arr(char **str_arr, int n)
 {
@@ -41,13 +41,12 @@ void	free_redirects(t_redirect **head, t_bool close_fds)
 	while (*head)
 	{
 		next = (*head)->next;
-        if ((*head)->fd >= 0 && close_fds)
-        {
-            if ((*head)->fd != STDIN_FILENO &&
-                (*head)->fd != STDOUT_FILENO &&
-                (*head)->fd != STDERR_FILENO)
-            close((*head)->fd);
-        }
+		if ((*head)->fd >= 0 && close_fds)
+		{
+			if ((*head)->fd != STDIN_FILENO && (*head)->fd != STDOUT_FILENO
+				&& (*head)->fd != STDERR_FILENO)
+				close((*head)->fd);
+		}
 		if ((*head)->fname)
 			free((*head)->fname);
 		if ((*head)->heredoc)

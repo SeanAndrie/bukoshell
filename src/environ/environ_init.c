@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <environ.h>
+#include <libft.h>
 
 size_t	environ_size(char **envp)
 {
@@ -47,7 +47,7 @@ t_environ	*create_entry(char *key, char *value)
 	if (!entry)
 		return (NULL);
 	entry->key = ft_strdup(key);
-    entry->readonly = FALSE;
+	entry->readonly = FALSE;
 	if (!entry->key)
 	{
 		free(entry);

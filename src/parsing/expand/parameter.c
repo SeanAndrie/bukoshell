@@ -24,7 +24,7 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 	char		*value;
 	t_environ	*entry;
 
-	key = ft_substr(token->lexeme, 1, ft_strlen(token->lexeme) - 1);
+	key = ft_strdup(token->lexeme + 1);
 	if (!key)
 		return (FALSE);
 	entry = search_entry(map, key);
@@ -51,7 +51,8 @@ static char	*create_expanded_lexeme(t_map *map, t_token **tokens)
 	curr = *tokens;
 	while (curr)
 	{
-		if (is_token_type(curr->type, T_PARAMETER) && !handle_expansion(map, curr))
+		if (is_token_type(curr->type, T_PARAMETER) && !handle_expansion(map,
+				curr))
 			curr->type = TOKEN_NONE;
 		curr = curr->next;
 	}

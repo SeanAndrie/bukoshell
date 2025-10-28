@@ -6,23 +6,23 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 02:51:56 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/16 23:30:27 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:16:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <debug.h>
-#include <libft.h>
 #include <environ.h>
+#include <libft.h>
 #include <signals.h>
-#include <parsing/tree.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
 void	*heredoc_interrupt(char *line, char *accum)
 {
 	if (line)
 		free(line);
 	free(accum);
-    set_signals_interactive();
+	set_signals_interactive();
 	return (NULL);
 }
 
@@ -37,15 +37,15 @@ void	*heredoc_eof(char *accum, char *delim)
 char	*heredoc_success(char *line, char *accum, t_map *map,
 		t_token_type delim_type)
 {
-    char    *join;
+	char	*join;
 
 	free(line);
 	set_signals_interactive();
-    if (!accum)
-        return(NULL);
-    join = ft_strjoin(accum, "\n");
-    free(accum);
+	if (!accum)
+		return (NULL);
+	join = ft_strjoin(accum, "\n");
+	free(accum);
 	if (join && ft_strchr(join, '$'))
-        heredoc_expansion(&join, map, delim_type);
+		heredoc_expansion(&join, map, delim_type);
 	return (join);
 }

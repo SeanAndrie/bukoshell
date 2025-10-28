@@ -15,15 +15,15 @@
 
 # include <token_types.h>
 
-typedef enum e_bool t_bool;
-typedef struct s_map t_map;
+typedef enum e_bool		t_bool;
+typedef struct s_map	t_map;
 
 typedef struct s_token
 {
 	enum e_token_type	type;
 	struct s_token		*next;
 	char				*lexeme;
-    t_bool              expandable;
+	t_bool				expandable;
 }						t_token;
 
 /*
@@ -59,7 +59,8 @@ t_token					*create_token(char *lexeme, t_token_type type);
 ** @return      A pointer to the head of the token list,
 **              or NULL if memory allocation or token creation fails.
 */
-t_token					*create_tokens(char *line, t_bool suppress_error, t_bool heredoc);
+t_token					*create_tokens(char *line, t_bool suppress_error,
+							t_bool heredoc);
 
 /*
 ** Concatenates the lexemes of a linked list of tokens into a single string
@@ -93,7 +94,7 @@ t_token					*pop_token_type(t_token **head, t_token_type type);
 ** @return         true if the token was successfully created and appended,
 **                 false if memory allocation for the token fails.
 */
-void                    append_token(t_token **head, t_token *token);
+void					append_token(t_token **head, t_token *token);
 
 /*
 ** Removes all tokens of a specified type from a linked list and frees
@@ -147,7 +148,8 @@ unsigned int			create_token_mask(t_token *head);
 */
 t_token					*copy_tokens(t_token *start, t_token *end);
 
-t_bool                  is_expandable(t_token *token);
-void                    apply_expansions(t_token **head, t_map *map, t_bool heredoc);
+t_bool					is_expandable(t_token *token);
+void					apply_expansions(t_token **head, t_map *map,
+							t_bool heredoc);
 
 #endif

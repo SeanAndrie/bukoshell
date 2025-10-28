@@ -13,15 +13,15 @@
 #ifndef TREE_H
 # define TREE_H
 
-#include <boolean.h>
-#include <token_types.h>
+# include <boolean.h>
+# include <token_types.h>
 
-typedef struct s_map t_map;
-typedef struct s_token t_token;
+typedef struct s_map	t_map;
+typedef struct s_token	t_token;
 
 # define EOF_MSG "here-document delimited by end-of-file (wanted '%s')\n"
 
-typedef enum e_bool t_bool;
+typedef enum e_bool		t_bool;
 
 typedef enum e_node_type
 {
@@ -45,11 +45,11 @@ typedef struct s_node
 	enum e_node_type	type;
 	struct s_node		*left;
 	struct s_node		*right;
-    struct s_token      *inner;
+	struct s_token		*inner;
 	char				**argv;
 	enum e_token_type	operand;
 	struct s_redirect	*redirect;
-    enum e_bool         in_pipeline;
+	enum e_bool			in_pipeline;
 }						t_node;
 
 /*
@@ -159,12 +159,14 @@ t_token					*find_lowest_precedence(t_token *start, t_token *end);
 ** @param map   Environment variable mapping used for parameter expansion.
 */
 void					collect_heredocs(t_node *node, t_map *map);
-t_bool                  is_operator_or_group_token(t_token_type type);
-void	                heredoc_expansion(char **join, t_map *map, t_token_type delim_type);
+t_bool					is_operator_or_group_token(t_token_type type);
+void					heredoc_expansion(char **join, t_map *map,
+							t_token_type delim_type);
 
-int	                    heredoc_event_hook(void);
-void	                *heredoc_eof(char *accum, char *delim);
-void	                *heredoc_interrupt(char *line, char *accum);
-char	                *heredoc_success(char *line, char *accum, t_map *map, t_token_type delim_type);
+int						heredoc_event_hook(void);
+void					*heredoc_eof(char *accum, char *delim);
+void					*heredoc_interrupt(char *line, char *accum);
+char					*heredoc_success(char *line, char *accum, t_map *map,
+							t_token_type delim_type);
 
 #endif

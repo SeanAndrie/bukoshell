@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <boolean.h>
-#include <parsing/tree.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
 static void	*free_helper(t_redirect *redir)
 {
@@ -30,20 +30,20 @@ static t_redirect	*create_redirect(t_token *token)
 	if (!redir)
 		return (NULL);
 	redir->type = token->type;
-    redir->fd = -1;
+	redir->fd = -1;
 	if (token->next && is_token_type(token->type, T_HEREDOC))
 	{
 		redir->delim = token->next;
-        redir->delim->type |= TOKEN_AFTER_REDIR;
+		redir->delim->type |= TOKEN_AFTER_REDIR;
 		if (!redir->delim)
-            return (free_helper(redir));
+			return (free_helper(redir));
 		redir->heredoc = NULL;
 		return (redir);
 	}
 	redir->fname = ft_strdup(token->next->lexeme);
 	if (!redir->fname)
-        return (free_helper(redir));
-    token->next->type |= TOKEN_AFTER_REDIR;
+		return (free_helper(redir));
+	token->next->type |= TOKEN_AFTER_REDIR;
 	redir->next = NULL;
 	return (redir);
 }

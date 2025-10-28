@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <environ.h>
+#include <libft.h>
 
 static t_bool	clear_entry(t_environ **head, char *key)
 {
@@ -25,8 +25,8 @@ static t_bool	clear_entry(t_environ **head, char *key)
 	{
 		if (ft_strcmp((*curr)->key, key) == 0)
 		{
-            if ((*curr)->readonly)
-                return (FALSE);
+			if ((*curr)->readonly)
+				return (FALSE);
 			temp = *curr;
 			*curr = (*curr)->next;
 			free(temp->key);

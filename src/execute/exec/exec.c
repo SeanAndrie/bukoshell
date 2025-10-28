@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <signals.h>
 #include <boolean.h>
-#include <sys/wait.h>
+#include <bukoshell.h>
+#include <execute/builtins.h>
+#include <execute/exec.h>
+#include <fcntl.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tree.h>
 #include <parsing/valid.h>
-#include <execute/builtins.h>
-#include <execute/exec.h>
-#include <bukoshell.h>
+#include <signals.h>
+#include <stdio.h>
+#include <sys/wait.h>
 
 int	exec_node(t_node *node, t_shell_ctx *ctx);
 
@@ -94,7 +94,7 @@ int	exec_pipe(t_node *node, t_shell_ctx *ctx)
 		return (0);
 	exec_pipeline(pl, ctx);
 	if (pl->pipes)
-        close_pipes(pl->pipes, pl->n_cmds - 1);
+		close_pipes(pl->pipes, pl->n_cmds - 1);
 	i = 0;
 	while (i < pl->n_cmds)
 	{

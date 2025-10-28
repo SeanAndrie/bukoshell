@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <boolean.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
 
@@ -35,11 +35,11 @@ t_token	*create_token(char *lexeme, t_token_type type)
 	}
 	token->type = type;
 	token->next = NULL;
-    token->expandable = FALSE;
+	token->expandable = FALSE;
 	return (token);
 }
 
-void    append_token(t_token **head, t_token *token)
+void	append_token(t_token **head, t_token *token)
 {
 	t_token	*last;
 
@@ -78,16 +78,15 @@ t_token	*copy_tokens(t_token *start, t_token *end)
 	return (copy);
 }
 
-t_bool is_expandable(t_token *token)
+t_bool	is_expandable(t_token *token)
 {
-    if (!token || !token->lexeme)
-        return (FALSE);
-    if (ft_strchr(token->lexeme, '$'))
-        return (TRUE);
-    else if (ft_strchr(token->lexeme, '*'))
-        return (TRUE);
-    else if (ft_strchr(token->lexeme, '~'))
-        return (TRUE);
-    return (FALSE);
+	if (!token || !token->lexeme)
+		return (FALSE);
+	if (ft_strchr(token->lexeme, '$'))
+		return (TRUE);
+	else if (ft_strchr(token->lexeme, '*'))
+		return (TRUE);
+	else if (ft_strchr(token->lexeme, '~'))
+		return (TRUE);
+	return (FALSE);
 }
-

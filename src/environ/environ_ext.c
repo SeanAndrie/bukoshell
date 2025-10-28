@@ -10,56 +10,56 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <environ.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/expand.h>
 
-char    *getcwd_safe(char *buffer, size_t size, t_map *map)
+char	*getcwd_safe(char *buffer, size_t size, t_map *map)
 {
-    t_environ   *pwd;
-    char        *res;
+	t_environ	*pwd;
+	char		*res;
 
-    res = getcwd(buffer, size);
-    if (res)
-        return (res);
-    if (!map)
-        return (NULL);
-    pwd = search_entry(map, "PWD");
-    if (!pwd || !pwd->value)
-        return (NULL);
-    if (buffer && size)
-    {
-        if (ft_strlen(pwd->value) >= size)
-            return (NULL);
-        ft_strlcpy(buffer, pwd->value, size);
-    }
-    return (ft_strdup(pwd->value));
+	res = getcwd(buffer, size);
+	if (res)
+		return (res);
+	if (!map)
+		return (NULL);
+	pwd = search_entry(map, "PWD");
+	if (!pwd || !pwd->value)
+		return (NULL);
+	if (buffer && size)
+	{
+		if (ft_strlen(pwd->value) >= size)
+			return (NULL);
+		ft_strlcpy(buffer, pwd->value, size);
+	}
+	return (ft_strdup(pwd->value));
 }
 
 void	set_order(t_environ **order, t_environ *entry)
 {
-    t_environ *curr;
+	t_environ	*curr;
 
-    if (!order || !*order || !entry)
-        return ;
-    curr = *order;
-    while (curr)
-    {
-        if (ft_strcmp(curr->key, entry->key) == 0)
-        {
-            if (curr->value)
-                free(curr->value);
-            curr->value = ft_strdup(entry->value);
-            curr->readonly = entry->readonly;
-            return ;
-        }
-        curr = curr->next;
-    }
+	if (!order || !*order || !entry)
+		return ;
+	curr = *order;
+	while (curr)
+	{
+		if (ft_strcmp(curr->key, entry->key) == 0)
+		{
+			if (curr->value)
+				free(curr->value);
+			curr->value = ft_strdup(entry->value);
+			curr->readonly = entry->readonly;
+			return ;
+		}
+		curr = curr->next;
+	}
 	return ;
 }
 
-char **map_to_envp(t_map *map)
+char	**map_to_envp(t_map *map)
 {
 	size_t		i;
 	t_environ	*curr;
@@ -139,4 +139,3 @@ char	**copy_envp(char **envp)
 	copy[i] = NULL;
 	return (copy);
 }
-

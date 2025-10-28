@@ -10,23 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <libft.h>
 #include <environ.h>
-#include <parsing/prompts.h>
 #include <execute/builtins.h>
+#include <libft.h>
+#include <parsing/prompts.h>
+#include <stdio.h>
 
-int builtin_pwd(t_map *map)
+int	builtin_pwd(t_map *map)
 {
-    char    buffer[PATH_MAX];
+	char	buffer[PATH_MAX];
 
-    if (!getcwd_safe(buffer, sizeof(buffer), map))
-    {
-        ft_dprintf(STDERR_FILENO, "bukoshell: ");
-        perror("pwd");
-        return (1);
-    }
-    ft_printf("%s\n", buffer);
-    return (0);
+	if (!getcwd_safe(buffer, sizeof(buffer), map))
+	{
+		ft_dprintf(STDERR_FILENO, "bukoshell: ");
+		perror("pwd");
+		return (1);
+	}
+	ft_printf("%s\n", buffer);
+	return (0);
 }
-

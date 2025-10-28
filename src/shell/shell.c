@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:50:42 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 22:21:26 by sgadinga         ###   ########.fr       */
+/*   Created: 2025/10/28 12:10:28 by sgadinga          #+#    #+#             */
+/*   Updated: 2025/10/28 12:10:30 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 static t_shell	*init_shell(char **envp)
 {
-    t_shell	*shell;
+	t_shell	*shell;
 
-    shell = malloc(sizeof(t_shell));
-    if (!shell)
-        return (NULL);
-    shell->status = 0;
-    shell->line = NULL;
-    shell->head = NULL;
-    shell->root = NULL;
-    shell->envp = copy_envp(envp);
-    ft_memset(shell->cwd, 0, sizeof(shell->cwd));
-    shell->map = create_map(environ_size(shell->envp));
-    return (shell);
+	shell = malloc(sizeof(t_shell));
+	if (!shell)
+		return (NULL);
+	shell->status = 0;
+	shell->line = NULL;
+	shell->head = NULL;
+	shell->root = NULL;
+	shell->envp = copy_envp(envp);
+	ft_memset(shell->cwd, 0, sizeof(shell->cwd));
+	shell->map = create_map(environ_size(shell->envp));
+	return (shell);
 }
 
 static int	shell_loop_interactive(t_shell *shell)
 {
 	char	*prompt;
-    char    *identifier;
+	char	*identifier;
 
 	while (TRUE)
 	{

@@ -10,15 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <boolean.h>
-#include <parsing/tree.h>
+#include <libft.h>
 #include <parsing/clean.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
-t_bool is_operator_or_group_token(t_token_type type)
+t_bool	is_operator_or_group_token(t_token_type type)
 {
-	return  (is_token_type(type, TOKEN_CTRL_OP) || is_token_type(type, TOKEN_GROUP));
+	return (is_token_type(type, TOKEN_CTRL_OP) || is_token_type(type,
+			TOKEN_GROUP));
 }
 
 static char	**alloc_argv(t_token *head, size_t n)

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <fcntl.h>
 #include <environ.h>
+#include <fcntl.h>
+#include <libft.h>
 #include <parsing/clean.h>
 
 char	**get_pair(char *env)
@@ -34,7 +34,7 @@ char	**get_pair(char *env)
 		pair[0] = ft_strdup(env);
 		pair[1] = NULL;
 	}
-    if (!pair[0] && (equal && !pair[1]))
+	if (!pair[0] && (equal && !pair[1]))
 	{
 		free_str_arr(pair, -1);
 		return (NULL);
@@ -43,7 +43,7 @@ char	**get_pair(char *env)
 	return (pair);
 }
 
-static void init_shlvl(t_map *map)
+static void	init_shlvl(t_map *map)
 {
 	int			n;
 	t_environ	*shlvl;
@@ -66,7 +66,7 @@ static void init_shlvl(t_map *map)
 	free(value);
 }
 
-static void init_special_variables(t_map *map)
+static void	init_special_variables(t_map *map)
 {
 	t_environ	*pid;
 	char		*value;
@@ -95,14 +95,14 @@ static void init_special_variables(t_map *map)
 
 void	init_variables(t_map *map)
 {
-	int         fd;
-	t_environ   *hostname;
-	ssize_t     bytes_read;
-	char        buffer[64];
+	int			fd;
+	t_environ	*hostname;
+	ssize_t		bytes_read;
+	char		buffer[64];
 
 	init_shlvl(map);
 	init_special_variables(map);
-	set_entry(map, "OLDPWD", ""); 
+	set_entry(map, "OLDPWD", "");
 	fd = open("/etc/hostname", O_RDONLY);
 	if (fd < 0)
 		return ;

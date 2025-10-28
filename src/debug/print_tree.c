@@ -6,15 +6,15 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:40:31 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/26 23:14:17 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:23:45 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <boolean.h>
 #include <debug.h>
 #include <libft.h>
-#include <boolean.h>
-#include <parsing/tree.h>
 #include <parsing/tokens.h>
+#include <parsing/tree.h>
 
 void	print_argv(char **argv, t_bool formatted)
 {
@@ -25,8 +25,8 @@ void	print_argv(char **argv, t_bool formatted)
 		ft_printf("Command: [empty]\n");
 		return ;
 	}
-    if (formatted)
-	    ft_printf("Command: ");
+	if (formatted)
+		ft_printf("Command: ");
 	i = 0;
 	while (argv[i])
 	{

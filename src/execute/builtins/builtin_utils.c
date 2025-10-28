@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <debug.h>
 #include <boolean.h>
-#include <parsing/tree.h>
+#include <debug.h>
 #include <execute/builtins.h>
+#include <libft.h>
+#include <parsing/tree.h>
 
 t_bool	is_builtin(t_node *node)
 {

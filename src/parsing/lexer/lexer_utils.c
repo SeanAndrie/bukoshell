@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <expand.h>
 #include <boolean.h>
+#include <expand.h>
+#include <libft.h>
 #include <parsing/clean.h>
-#include <parsing/valid.h>
 #include <parsing/tokens.h>
+#include <parsing/valid.h>
 
 void	mark_group_tokens(t_token **head)
 {

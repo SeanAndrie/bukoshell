@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:12:35 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/23 14:51:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:10:33 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,20 @@ static char	*create_cwd(t_shell *shell)
 
 char	*create_identifier(t_map *map)
 {
-    t_environ   *user;
-    t_environ   *host;
+	t_environ	*user;
+	t_environ	*host;
 
 	if (!map)
 		return (NULL);
-    user = search_entry(map, "USER");
-    if (!user)
-        user = search_entry(map, "LOGNAME");
-    host = search_entry(map, "HOSTNAME");
-    if (!user && host)
-        return (ft_strdup(host->value));
-    if (user && !host)
-        return (ft_strdup(user->value));
-    return (ft_vstrjoin(2, "@", user->value, host->value));
+	user = search_entry(map, "USER");
+	if (!user)
+		user = search_entry(map, "LOGNAME");
+	host = search_entry(map, "HOSTNAME");
+	if (!user && host)
+		return (ft_strdup(host->value));
+	if (user && !host)
+		return (ft_strdup(user->value));
+	return (ft_vstrjoin(2, "@", user->value, host->value));
 }
 
 char	*set_prompt(t_shell *shell, char *identifier)

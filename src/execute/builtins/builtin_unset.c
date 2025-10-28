@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <debug.h>
 #include <environ.h>
 #include <execute/builtins.h>
+#include <libft.h>
 
 static int	unset_variable(t_map *map, char *key)
 {
@@ -44,7 +44,7 @@ int	builtin_unset(char **argv, t_map *map)
 	while (argv[i])
 	{
 		if (unset_variable(map, argv[i]) != 0)
-		    status = 1;
+			status = 1;
 		i++;
 	}
 	return (status);
