@@ -14,7 +14,7 @@
 #include <execute/builtins.h>
 #include <libft.h>
 
-static t_bool	is_n_flag(const char *arg)
+static t_bool	is_n_flag(char *arg)
 {
 	size_t	i;
 

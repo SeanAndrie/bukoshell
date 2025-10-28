@@ -59,6 +59,8 @@ static int	start_parser(t_shell *shell)
 		return (2);
 	if (!normalize_tokens(&shell->head, shell->map))
 		return (2);
+	if (!shell->head)
+		return (0);
 	if (DEBUG_MODE)
 		print_tokens(shell->head, TRUE);
 	if (!validate_tokens(shell->head))
@@ -89,7 +91,7 @@ void	start_shell(t_shell *shell)
 	resolve_map_changes(shell);
 	if (g_signal == 0)
 		g_signal = start_parser(shell);
-	if (g_signal == 0)
+	if (g_signal == 0 && shell->head)
 		g_signal = start_execution(shell);
 	update_variables(shell);
 	free_shell(shell, FALSE);

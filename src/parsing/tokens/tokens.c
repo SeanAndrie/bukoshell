@@ -82,6 +82,8 @@ t_bool	normalize_tokens(t_token **head, t_map *map)
 	if (!head || !*head)
 		return (FALSE);
 	apply_expansions(head, map, FALSE);
+	if (!*head)
+		return (TRUE);
 	if (!handle_concatenation(head, TOKEN_WORD))
 		return (FALSE);
 	remove_tokens(head, TOKEN_WHITESPACE);
