@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:49:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 14:12:13 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:59:27 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,28 @@ static void	exit_with_last_status(t_shell_ctx *ctx)
 	exit(status);
 }
 
-int	builtin_exit(char **argv, t_shell_ctx *ctx)
+int builtin_exit(char **argv, t_shell_ctx *ctx)
 {
+	size_t	i;
 	long	value;
 	char	*endptr;
 
 	ft_printf("exit\n");
 	if (!argv[1])
 		return (exit_with_last_status(ctx), 0);
-	if (argv[2])
-	{
-		log_error(ERROR_NONE, ERR_BASE, "exit: too many arguments\n");
-		return (1);
-	}
 	errno = 0;
-	value = ft_strtol(argv[1], &endptr, 10);
-	if (*endptr != '\0' || errno == ERANGE || errno == EINVAL)
+	i = 0;
+	while (argv[++i])
 	{
-		log_error(ERROR_NONE, ERR_BASE, "exit: %s: numeric argument required\n",
-			argv[1]);
-		free_shell(ctx->shell, TRUE);
-		exit(255);
+		value = ft_strtol(argv[1], &endptr, 10);
+		if (*endptr != '\0' || errno == ERANGE || errno == EINVAL)
+		{
+			log_error(ERROR_NONE, ERR_BASE, "exit: %s: numeric argument required\n", argv[i]);
+			free_shell(ctx->shell, TRUE);
+			exit(255);
+		}
+		if (i == 2)
+			return (log_error(ERROR_NONE, ERR_BASE, "exit: too many arguments\n"), 1);
 	}
 	free_shell(ctx->shell, TRUE);
 	exit((unsigned char)value);

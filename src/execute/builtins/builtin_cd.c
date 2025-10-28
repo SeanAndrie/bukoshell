@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:33:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 14:10:41 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:35:18 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	builtin_cd(char **argv, t_map *map)
 	if (argc > 2)
 	{
 		log_error(ERROR_NONE, ERR_BASE, "cd: too many arguments\n");
-		return (2);
+		return (0);
 	}
 	path = resolve_arg(argv, map);
 	if (!path)
