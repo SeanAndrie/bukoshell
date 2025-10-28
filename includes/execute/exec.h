@@ -13,6 +13,8 @@
 #ifndef EXEC_H
 # define EXEC_H
 
+#include <stdlib.h>
+
 typedef enum e_bool			t_bool;
 typedef struct s_map		t_map;
 typedef struct s_node		t_node;

@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <bukoshell.h>
+#include <libft.h>
+#include <stdio.h>
+#include <signals.h>
+#include <parsing/tree.h>
 #include <execute/builtins.h>
 #include <execute/exec.h>
-#include <libft.h>
-#include <parsing/tree.h>
-#include <signals.h>
-#include <stdio.h>
+#include <bukoshell.h>
 
 static int	**alloc_pipes(size_t size)
 {
