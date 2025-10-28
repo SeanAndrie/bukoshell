@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 22:36:08 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/27 00:51:03 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 01:52:58 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,7 @@ t_bool	redirect_heredoc(t_redirect *redir)
 		return (FALSE);
 	}
 	if (!redir->heredoc)
-	{
-		close(fds[0]);
-		close(fds[1]);
-		return (FALSE);
-	}
+		redir->heredoc = ft_strdup("");
 	ft_putstr_fd(redir->heredoc, fds[1]);
 	close(fds[1]);
 	if (dup2(fds[0], STDIN_FILENO) < 0)
