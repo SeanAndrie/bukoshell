@@ -6,7 +6,7 @@
 /*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 00:52:14 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/28 12:19:30 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 09:31:08 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*process_parameter(char **line_ptr, t_token_type *type)
 		(*line_ptr)++;
 	else
 	{
-		while (**line_ptr && (ft_isalpha(**line_ptr) || **line_ptr == '_'))
+		while (**line_ptr && (ft_isalnum(**line_ptr) || **line_ptr == '_'))
 			(*line_ptr)++;
 	}
 	end = *line_ptr;
