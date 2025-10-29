@@ -30,11 +30,12 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 		return (FALSE);
 	entry = search_entry(map, key);
 	free(key);
-	free(token->lexeme);
 	if (!entry)
 	{
-		token->lexeme = NULL;
-		return (FALSE);
+		token->lexeme = ft_strdup("");
+		if (!token->lexeme)
+			return (FALSE);
+		return (TRUE);
 	}
 	value = ft_strdup(entry->value);
 	if (!value)
