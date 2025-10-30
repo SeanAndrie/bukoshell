@@ -84,6 +84,8 @@ char	*create_identifier(t_map *map)
 	if (!user)
 		user = search_entry(map, "LOGNAME");
 	host = search_entry(map, "HOSTNAME");
+	if (!user && !host)
+		return (NULL);
 	if (!user && host)
 		return (ft_strdup(host->value));
 	if (user && !host)
