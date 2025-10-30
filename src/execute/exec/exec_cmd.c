@@ -41,12 +41,12 @@ static char	*find_cmd_path(char *cmd, t_environ *path_var)
 			break ;
 		if (access(cmd_path, X_OK) == 0)
 		{
-			free_str_arr(paths, i);
+			free_str_arr(paths, -1);
 			return (cmd_path);
 		}
 		free(cmd_path);
 	}
-	free_str_arr(paths, i);
+	free_str_arr(paths, -1);
 	return (NULL);
 }
 

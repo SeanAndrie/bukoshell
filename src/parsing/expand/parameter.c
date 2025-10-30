@@ -32,6 +32,7 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 	free(key);
 	if (!entry)
 	{
+        free(token->lexeme);
 		token->lexeme = ft_strdup("");
 		if (!token->lexeme)
 			return (FALSE);
@@ -40,6 +41,7 @@ static t_bool	handle_expansion(t_map *map, t_token *token)
 	value = ft_strdup(entry->value);
 	if (!value)
 		return (FALSE);
+    free(token->lexeme);
 	token->lexeme = value;
 	return (TRUE);
 }
@@ -75,18 +77,16 @@ void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 	t_token	*tokens;
 	t_bool	enclosed;
 
+	if (!token || !*token->lexeme)
+		return ;
 	if (is_token_type(token->type, T_WORD_SQUOTE) || ft_strcmp(token->lexeme,
 			"$") == 0 || !token->expandable)
-		return ;
-	if (!*token->lexeme)
 		return ;
 	enclosed = (is_token_type(token->type, TOKEN_QUOTE));
 	if (enclosed)
 		tokens = create_tokens(token->lexeme, TRUE, TRUE);
 	else
 		tokens = create_tokens(token->lexeme, TRUE, heredoc);
-	if (!tokens)
-		return ;
 	free(token->lexeme);
 	token->lexeme = create_expanded_lexeme(map, &tokens);
 }
