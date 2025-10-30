@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 02:46:44 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/28 18:09:54 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:04:38 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	print_env(t_environ *head, t_bool formatted)
 {
 	t_environ	*curr;
 
+	if (!head)
+		return ;
 	curr = head;
 	while (curr)
 	{

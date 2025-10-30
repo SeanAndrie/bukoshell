@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:19:50 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/26 22:41:40 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:57:23 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void					heredoc_expansion(char **join, t_map *map,
 							t_token_type delim_type);
 
 int						heredoc_event_hook(void);
-void					*heredoc_eof(char *accum, char *delim);
+void					*heredoc_eof(char *accum);
 void					*heredoc_interrupt(char *line, char *accum);
 char					*heredoc_success(char *line, char *accum, t_map *map,
 							t_token_type delim_type);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 21:03:59 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/26 23:02:50 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:06:03 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,15 @@ int	builtin_export(char **argv, t_map *map)
 
 	if (!argv[1])
 	{
+		delete_entry(map, "_");
 		sorted = sort_envp(map);
 		if (!sorted)
 			return (1);
 		head = create_sorted_entries(map, sorted);
 		free_str_arr(sorted, -1);
-		if (!head)
-			return (1);
 		print_env(head, TRUE);
-		return (free_entries(&head), 0);
+		free_entries(&head);
+		return (0);
 	}
 	i = 1;
 	status = 0;

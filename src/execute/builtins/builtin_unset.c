@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: ccastro <ccastro@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 18:55:33 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/26 22:55:05 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:12:06 by ccastro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	unset_variable(t_map *map, char *key)
 	if (!is_valid_identifier(key))
 	{
 		log_error(ERROR_NONE, ERR_BASE,
-			"export: '%s': not a valid identifier\n", key);
+			"unset: '%s': not a valid identifier\n", key);
 		return (1);
 	}
 	delete_entry(map, key);

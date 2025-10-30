@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+         #
+#    By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 17:25:04 by sgadinga          #+#    #+#              #
-#    Updated: 2025/10/27 14:51:13 by sgadinga         ###   ########.fr        #
+#    Updated: 2025/10/29 11:35:38 by sgadinga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell 
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -Iincludes -Iincludes/parsing -Ilibft/includes -g3
+CFLAGS := -Wall -Werror -Wextra -Iincludes -Iincludes/parsing -Ilibft/includes 
 
 RDL_INC := -I/opt/vagrant/embedded/include/
 RDL_LIB := -L/opt/vagrant/embedded/lib/

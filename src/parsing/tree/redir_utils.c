@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgadinga <sgadinga@student.42.abudhabi.ae> +#+  +:+       +#+        */
+/*   By: sgadinga <sgadinga@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 02:51:56 by sgadinga          #+#    #+#             */
-/*   Updated: 2025/10/29 01:45:52 by sgadinga         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:02:44 by sgadinga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ void	*heredoc_interrupt(char *line, char *accum)
 	return (NULL);
 }
 
-void	*heredoc_eof(char *accum, char *delim)
+void	*heredoc_eof(char *accum)
 {
+	char	*res;
+
+	if (!accum)
+		return (NULL);
+	res = ft_strjoin(accum, "\n");
 	free(accum);
 	set_signals_interactive();
-	log_error(ERROR_WARNING, ERR_BASE, EOF_MSG, delim);
-	return (NULL);
+	return (res);
 }
 
 char	*heredoc_success(char *line, char *accum, t_map *map,

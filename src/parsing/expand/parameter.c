@@ -73,13 +73,18 @@ static char	*create_expanded_lexeme(t_map *map, t_token **tokens)
 void	apply_param_expansion(t_token *token, t_map *map, t_bool heredoc)
 {
 	t_token	*tokens;
+	t_bool	enclosed;
 
 	if (is_token_type(token->type, T_WORD_SQUOTE) || ft_strcmp(token->lexeme,
 			"$") == 0 || !token->expandable)
 		return ;
 	if (!*token->lexeme)
 		return ;
-	tokens = create_tokens(token->lexeme, TRUE, heredoc);
+	enclosed = (is_token_type(token->type, TOKEN_QUOTE));
+	if (enclosed)
+		tokens = create_tokens(token->lexeme, TRUE, TRUE);
+	else
+		tokens = create_tokens(token->lexeme, TRUE, heredoc);
 	if (!tokens)
 		return ;
 	free(token->lexeme);
