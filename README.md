@@ -13,7 +13,6 @@ This project is a small Bash-like shell that can parse and execute user commands
 - **Redirections**: `<`, `>`, `>>`, `<<` (heredoc with delimiter expansion control)  
 - **Signal handling**: `SIGINT` (Ctrl+C), `SIGQUIT` (Ctrl+\) — parent ignores, children behave like Bash  
 - **Robust error handling** and exit codes (126, 127, syntax errors)  
-- **Memory safety**: No leaks, no undefined behavior — Valgrind clean  
 
 ### Bonus Features (as per 42 subject)
 These are **optional** and **not required** for the base project:
