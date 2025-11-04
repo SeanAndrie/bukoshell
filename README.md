@@ -19,7 +19,7 @@ These are **optional** and **not required** for the base project:
 
 - **Wildcard expansion** — supports `*` (matches any sequence in filenames)  
 - **Logical operators** — `&&` (and), `||` (or) with short-circuit evaluation  
-- **Subshells** — `(cmd1 && cmd2)` with isolated environment and I/O
+- **Subshells** — `(cmd1 && cmd2)` (Proper environment isolation WIP)
 
 ## Compilation & Usage
 
